@@ -58,18 +58,25 @@ class Scrape extends Command
     static::logger("start {$site_name}");
 
     $site = SiteFactory::forge($site_name);
-    $urls = $site->scrape()->getUrls();
+    try {
+      $urls = $site->scrape()->getUrls();
+    } catch(\Exception $e) {
+        static::logger("リスト取得失敗 {$e->getMessage()}");
+        exit();
+    }
 
     foreach ($urls as $url) {
       $page = PageFactory::forge($site_name, $url);
-      $page->scrape()->save();
-      static::logger("save {$page->getTitle()}");
-
+      try {
+        $page->scrape()->save();
+        static::logger("save {$page->getTitle()}");
+      } catch(\Exception $e) {
+        static::logger("ページ取得失敗 {$e->getMessage()}");
+      }
       // テスト環境は1件のみ
       if (App::environment('local', 'development')) {
         break;
       }
-
       sleep(static::WAIT_SEC);
     }
 
