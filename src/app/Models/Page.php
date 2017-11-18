@@ -31,6 +31,11 @@ class Page
   public function scrape() {
     $crawler = $this->getClient()->request('GET', $this->url);
 
+    $status = $this->getClient()->getResponse()->getStatus();
+    if ($status !== 200) {
+      throw new \Exception("ページ取得エラー status:{$status}", 1);
+    }
+
     $this->extractTitle($crawler);
     $this->extractText($crawler);
     $this->extractPak($crawler);

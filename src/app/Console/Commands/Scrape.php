@@ -55,23 +55,24 @@ class Scrape extends Command
     }
 
     $site_name = $this->argument('site_name');
-    static::logger("start {$site_name}");
+    static::log("start {$site_name}");
 
     $site = SiteFactory::forge($site_name);
     try {
       $urls = $site->scrape()->getUrls();
     } catch(\Exception $e) {
-        static::logger("リスト取得失敗 {$e->getMessage()}");
+        static::errlog("[{$site_name}] リスト取得失敗 {$e->getMessage()}");
         exit();
     }
 
     foreach ($urls as $url) {
       $page = PageFactory::forge($site_name, $url);
       try {
-        $page->scrape()->save();
-        static::logger("save {$page->getTitle()}");
+        $page->scrape();
+        $page->save();
+        static::log("save {$page->getTitle()}");
       } catch(\Exception $e) {
-        static::logger("ページ取得失敗 {$e->getMessage()}");
+        static::errlog("[{$site_name}][{$url}] ページ取得失敗{$e->getMessage()}");
       }
       // テスト環境は1件のみ
       if (App::environment('local', 'development')) {
@@ -80,12 +81,20 @@ class Scrape extends Command
       sleep(static::WAIT_SEC);
     }
 
-    static::logger("end {$site_name}");
+    static::log("end {$site_name}");
   }
 
-  public static function logger($message)
+  public static function log($message)
   {
     echo sprintf("[%s] %s\n", now(), $message);
-    logger($message);
+    logger()->info($message);
+  }
+
+  public static function errlog($message)
+  {
+    if (\App::environment('local', 'development')) {
+      echo sprintf("[%s] %s\n", now(), $message);
+      logger()->error($message);
+    }
   }
 }
