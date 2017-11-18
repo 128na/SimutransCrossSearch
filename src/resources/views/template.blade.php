@@ -17,7 +17,7 @@
   <meta property="og:title" content="{{ config('const.app.name') }}">
   <meta property="og:type" content="{{ config('const.app.type') }}">
   <meta property="og:url" content="{{ route('index') }}">
-  <meta property="og:image" content="{{ config('const.app.image') }}">
+  <meta property="og:image" content="{{ route('index') }}{{ config('const.app.image') }}">
   <meta property="og:site_name" content="{{ config('const.app.name') }}">
   <meta property="og:description" content="{{ config('const.app.description') }}">
 
@@ -26,6 +26,7 @@
   <title>@yield('title') | {{ config('const.app.name') }}</title>
   <link rel="canonical" href="{{ route('index') }}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="shortcut icon" href="{{ route('index') }}{{ config('const.app.favicon') }}" type="image/vnd.microsoft.ico"/>
   <style>
     body { padding-top: 70px; }
     .highlight {background-color: #ff0; }
