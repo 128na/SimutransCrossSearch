@@ -35,6 +35,11 @@ class Page
     if ($status !== 200) {
       throw new \Exception("ページ取得エラー status:{$status}", 1);
     }
+    $current_url =  $this->getClient()->getHistory()->current()->getUri();
+    if ($this->url !== $current_url) {
+      logger()->info("リダイレクト[{$this->url}]->[{$current_url}]");
+      echo "リダイレクト[{$this->url}]->[{$current_url}]\n";
+    }
 
     $this->extractTitle($crawler);
     $this->extractText($crawler);
