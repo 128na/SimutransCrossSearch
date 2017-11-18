@@ -18,11 +18,11 @@ class PageJapaneseSimutrans extends Page
 
   protected function extractPak($crawler)
   {
-    $pak = 'pak64';
+    $pak = config('const.pak.64');
     if (stripos($this->getUrl(), 'Addon128Japan') !== false) {
-      $pak = 'pak128.japan';
+      $pak = config('const.pak.128japan');
     } elseif (stripos($this->getUrl(), 'Addon128') !== false) {
-      $pak = 'pak128';
+      $pak = config('const.pak.128');
     }
     $this->setPak($pak);
   }

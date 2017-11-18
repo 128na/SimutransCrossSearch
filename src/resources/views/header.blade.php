@@ -19,9 +19,9 @@
         <div class="form-group">
           <label class="sr-only" for="pak">選択</label>
           <select class="form-control" id="pak" name="pak">
-            <option value="pak64" {{ (($pak ?? null) === 'pak64') ? 'selected' : '' }}>pak64</option>
-            <option value="pak128" {{ (($pak ?? null) === 'pak128') ? 'selected' : '' }}>pak128</option>
-            <option value="pak128.japan" {{ (($pak ?? null) === 'pak128.japan') ? 'selected' : '' }}>pak128.Japan</option>
+@foreach(array_keys(config('const.pak')) as $name)
+            <option value="{{ $name }}" {{ (($pak ?? null) == $name) ? 'selected' : '' }}>pak{{ $name }}</option>
+@endforeach
           </select>
         </div>
         <button type="submit" class="btn btn-default">検索</button>

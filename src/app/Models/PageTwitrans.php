@@ -21,11 +21,11 @@ class PageTwitrans extends Page
 
   protected function extractPak($crawler)
   {
-    $pak = 'pak64';
+    $pak = config('const.pak.64');
     if (stripos($this->getUrl(), 'pak128.japan') !== false) {
-      $pak = 'pak128.japan';
+      $pak = config('const.pak.128japan');
     } elseif (stripos($this->getUrl(), 'pak128') !== false) {
-      $pak = 'pak128';
+      $pak = config('const.pak.128');
     }
     $this->setPak($pak);
   }

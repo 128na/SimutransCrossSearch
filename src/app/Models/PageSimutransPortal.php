@@ -19,11 +19,15 @@ class PageSimutransPortal extends Page
   protected function extractPak($crawler)
   {
     $paks = $crawler->filter('.pak')->each(function($node) {
-      $pak = $node->text();
-      if ($pak === 'pak128') {
-        $pak = 'pak128';
+
+      switch ($node->text()) {
+        case 'pak128':
+          return config('const.pak.128');
+        case 'pak128.japan':
+          return config('const.pak.128japan');
+        default:
+          config('const.pak.64');
       }
-      return $pak;
     });
     $this->setPak(implode(',', $paks));
   }

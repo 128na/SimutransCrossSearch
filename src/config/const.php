@@ -14,5 +14,11 @@ return [
     'Twitrans'          => ['name' => 'Simutrans的な実験室', 'url' => 'http://wikiwiki.jp/twitrans'],
     'SimutransPortal'   => ['name' => 'Simutransポータル', 'url' => 'https://simutrans.sakura.ne.jp/portal'],
   ],
+  'pak' => [
+    '64'       => '01',
+    '128'      => '02',
+    '128japan' => '03',
+
+  ],
 
 ];

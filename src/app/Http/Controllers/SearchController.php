@@ -15,8 +15,9 @@ class SearchController extends Controller
   {
     $word = $reqest->input('word');
     $pak  = $reqest->input('pak');
+    $pak_value = config('const.pak.'.$reqest->input('pak'));
 
-    $query = Page::where('pak', 'like', "%{$pak}");
+    $query = Page::where('pak', 'like', "%{$pak_value}%");
     $conds = ["「{$pak}」"];
 
     if ($word) {
@@ -26,8 +27,9 @@ class SearchController extends Controller
       });
       $conds[] = "「{$word}」";
     }
-
     $pages = $query->get();
-    return view('search', compact('pages', 'word', 'pak', 'conds'));
+
+    $paks = array_flip(config('const.pak'));
+    return view('search', compact('pages', 'word', 'pak', 'conds', 'paks'));
   }
 }

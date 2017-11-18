@@ -24,4 +24,9 @@ class EloquentPage extends Model
       return mb_strimwidth($this->text, 0, $len, '...', 'UTF-8');
     }
   }
+
+  public function getPakName()
+  {
+    return str_replace(array_values(config('const.pak')), array_keys(config('const.pak')), $this->pak);
+  }
 }

@@ -19,7 +19,7 @@
     <tr>
       <td>{{ $page->site_name }}</td>
       <td><a href="{{ $page->url }}" target="_blank"><span class="highlightable">{{ $page->title }}</span></a></td>
-      <td>{{ $page->pak }}</td>
+      <td>{{ $page->getPakName() }}</td>
       <td><span class="highlightable">{{ $page->expectText($word) }}</span></td>
       <td>{{ $page->updated_at }}</td>
     </tr>
