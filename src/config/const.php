@@ -2,11 +2,12 @@
 
 return [
   'app' => [
-    'name'        => 'Simutrans 横断検索',
+    'name'        => 'Simutransアドオン横断検索',
     'description' => 'Simutransのアドオンを横断検索できます。',
     'keywords'    => ['Simutrans', 'Addon', 'シムトランス', 'アドオン', 'pak', 'pak128', 'pak128.japan'],
     'author'      => '128Na',
     'type'        => 'website',
+    'image'       => '/icon.png',
     'twittercard' => '',
   ],
   'sites' => [
