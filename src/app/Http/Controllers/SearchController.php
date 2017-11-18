@@ -21,7 +21,10 @@ class SearchController extends Controller
     $conds = ["「{$pak}」"];
 
     if ($word) {
-      $query->where('text', 'like', "%{$word}%");
+      $query->where(function($query) use($word) {
+        $query->where('text', 'like', "%{$word}%")
+              ->orWhere('title', 'like', "%{$word}%");
+      });
       $conds[] = "「{$word}」";
     }
     $pages = $query->get();
