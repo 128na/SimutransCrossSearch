@@ -11,15 +11,16 @@ class EloquentPage extends Model
 
   public function expectText($word = null)
   {
-    $len = 400;
+    $len = 100;
 
-    if ($word) {
-      $pos = mb_stripos($this->text, $word, 0, 'UTF-8');
-      $pos   = ($pos !== false) ? $pos : 0;
-      $begin = 2 * ($pos - $len / 2);
-      $begin = ($begin > 0) ? $begin : 0;
-      $res   = mb_strimwidth($this->text, $begin, $len, '...', 'UTF-8');
-      return ($begin > 0) ? '...'.$res : $res;
+    if ($word && mb_strpos($this->text, $word) !== false) {
+      $texts = explode($word, $this->text);
+
+      $pre = static::mb_strrev(mb_strimwidth(
+              static::mb_strrev(array_shift($texts)), 0, $len, '...'), 'UTF-8');
+      $suf = mb_strimwidth(array_shift($texts), 0, $len, '...', 'UTF-8');
+
+      return "{$pre}{$word}{$suf}";
     } else {
       return mb_strimwidth($this->text, 0, $len, '...', 'UTF-8');
     }
@@ -28,5 +29,11 @@ class EloquentPage extends Model
   public function getPakName()
   {
     return str_replace(array_values(config('const.pak')), array_keys(config('const.pak')), $this->pak);
+  }
+
+  private function mb_strrev($str)
+  {
+    $arr = preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
+    return implode(array_reverse($arr));
   }
 }
