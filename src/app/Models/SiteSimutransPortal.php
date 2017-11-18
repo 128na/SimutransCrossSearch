@@ -17,10 +17,10 @@ class SiteSimutransPortal extends Site
     return $this->base_url.'/wp-admin/admin-ajax.php?action=get_articles';
   }
 
-  protected function extractUrls($craweler)
+  protected function extractUrls($crawler)
   {
     // url一覧を取得
-    $urls = $craweler->filter('ul li')->each(function ($node) {
+    $urls = $crawler->filter('ul li')->each(function ($node) {
       return $node->text();
     });
 

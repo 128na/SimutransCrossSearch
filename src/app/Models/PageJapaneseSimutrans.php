@@ -7,12 +7,23 @@ use App\Models\Page;
 class PageJapaneseSimutrans extends Page
 {
 
-  public function extractTitle($craweler) {
-    parent::extractTitle($craweler);
+  protected function extractTitle($crawler) {
+    parent::extractTitle($crawler);
     $this->setTitle(str_replace(' - Simutrans日本語化･解説', '', $this->getTitle()));
   }
 
-  public function extractText($craweler) {
-    $this->setText($craweler->filter('div.ie5')->text());
+  protected function extractText($crawler) {
+    $this->setText($crawler->filter('div.ie5')->text());
+  }
+
+  protected function extractPak($crawler)
+  {
+    $pak = 'pak64';
+    if (stripos($this->getUrl(), 'Addon128Japan') !== false) {
+      $pak = 'pak128.japan';
+    } elseif (stripos($this->getUrl(), 'Addon128') !== false) {
+      $pak = 'pak128_';
+    }
+    $this->setPak($pak);
   }
 }

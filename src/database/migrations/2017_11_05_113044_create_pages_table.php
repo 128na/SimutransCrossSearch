@@ -16,9 +16,10 @@ class CreatePagesTable extends Migration
     Schema::create('pages', function (Blueprint $table) {
       $table->increments('id');
       $table->string('site_name')->comment('掲載サイト名');
-      $table->string('title')->comment('ページ名');
       $table->string('url')->comment('掲載ページURL');
-      $table->text('text')->comment('テキスト');
+      $table->string('title')->nullable()->comment('ページ名');
+      $table->string('pak')->nullable()->comment('pakサイズ');
+      $table->text('text')->nullable()->comment('テキスト');
       $table->timestamps();
     });
   }

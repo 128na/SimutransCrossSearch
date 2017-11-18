@@ -22,13 +22,13 @@ class Site
   // 一覧ページから情報を取得する
   public function scrape()
   {
-    $craweler = $this->getClient()->request('GET', $this->getListPageUrl());
+    $crawler = $this->getClient()->request('GET', $this->getListPageUrl());
 
-    $this->extractUrls($craweler);
+    $this->extractUrls($crawler);
     return $this;
   }
 
-  protected function extractUrls($craweler)
+  protected function extractUrls($crawler)
   {
     throw new \Exception('未実装', 1);
   }

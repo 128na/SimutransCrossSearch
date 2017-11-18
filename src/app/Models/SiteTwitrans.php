@@ -17,10 +17,10 @@ class SiteTwitrans extends Site
     return $this->base_url.'/?cmd=list';
   }
 
-  protected function extractUrls($craweler)
+  protected function extractUrls($crawler)
   {
     // url一覧を取得
-    $urls = $craweler->filter('#body > ul li')->each(function ($node) {
+    $urls = $crawler->filter('#body > ul li')->each(function ($node) {
       return $node->filter('a')->attr('href');
     });
 
