@@ -27,7 +27,7 @@ class Scrape extends Command
   protected $description = 'Scrape Website';
 
   // 取得間隔
-  const WAIT_SEC = 5;
+  const WAIT_SEC = 1;
 
   /**
    * Create a new command instance.

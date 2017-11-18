@@ -9,7 +9,7 @@ trait Scrapable {
   {
     $goutteClient = new Client();
     $guzzleClient = new GuzzleClient(array(
-      'timeout' => 60,
+      'timeout' => 10,
     ));
     $goutteClient->setClient($guzzleClient);
 
