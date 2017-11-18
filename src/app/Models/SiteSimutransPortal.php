@@ -14,7 +14,7 @@ class SiteSimutransPortal extends Site
 
   protected function getListPageUrl()
   {
-    return $this->base_url.'/wp-admin/admin-ajax.php?action=get_articles';
+    return $this->base_url.'/wp-admin/admin-ajax.php?action=get_articles&token='.env('API_TOKEN');
   }
 
   protected function extractUrls($crawler)

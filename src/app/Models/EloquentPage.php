@@ -13,15 +13,15 @@ class EloquentPage extends Model
   {
     $len = 400;
 
-    if (is_null($word)) {
-      return mb_strimwidth($this->text, 0, $len, '...');
-    } else {
-      $pos = mb_stripos($this->text, $word);
+    if ($word) {
+      $pos = mb_stripos($this->text, $word, 0, 'UTF-8');
       $pos   = ($pos !== false) ? $pos : 0;
-      $begin = $pos - $len;
+      $begin = 2 * ($pos - $len / 2);
       $begin = ($begin > 0) ? $begin : 0;
-      $res = mb_strimwidth($this->text, $begin, $len, '...');
+      $res   = mb_strimwidth($this->text, $begin, $len, '...', 'UTF-8');
       return ($begin > 0) ? '...'.$res : $res;
+    } else {
+      return mb_strimwidth($this->text, 0, $len, '...', 'UTF-8');
     }
   }
 }

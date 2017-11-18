@@ -13,7 +13,10 @@ class PageTwitrans extends Page
   }
 
   protected function extractText($crawler) {
-    $this->setText($crawler->filter('#body')->text());
+    $texts = $crawler->filter('#body .ie5')->each(function($n, $i) {
+      return $n->text();
+    });
+    $this->setText(implode("\n", $texts));
   }
 
   protected function extractPak($crawler)
