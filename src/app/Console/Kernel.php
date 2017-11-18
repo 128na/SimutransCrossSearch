@@ -24,8 +24,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function () {
+            DB::table('scrape:site JapaneseSimutrans')->delete();
+        })->dailyAt('1:03');
+        $schedule->call(function () {
+            DB::table('scrape:site Twitrans')->delete();
+        })->dailyAt('2:33');
+        $schedule->call(function () {
+            DB::table('scrape:site SimutransPortal')->delete();
+        })->dailyAt('3:34');
     }
 
     /**
