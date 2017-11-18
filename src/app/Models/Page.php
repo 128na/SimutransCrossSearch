@@ -59,9 +59,9 @@ class Page
   public function save()
   {
     $this->instance->fill([
-      'title' => $this->title,
-      'text'  => $this->text,
-      'pak'   => $this->pak,
+      'title' => mb_convert_encoding($this->title, 'UTF-8'),
+      'text'  => mb_convert_encoding($this->text, 'UTF-8'),
+      'pak'   => mb_convert_encoding($this->pak, 'UTF-8'),
     ])->save();
   }
 

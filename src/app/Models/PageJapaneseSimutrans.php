@@ -22,7 +22,7 @@ class PageJapaneseSimutrans extends Page
     if (stripos($this->getUrl(), 'Addon128Japan') !== false) {
       $pak = 'pak128.japan';
     } elseif (stripos($this->getUrl(), 'Addon128') !== false) {
-      $pak = 'pak128_';
+      $pak = 'pak128';
     }
     $this->setPak($pak);
   }

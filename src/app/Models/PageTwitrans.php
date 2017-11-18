@@ -22,7 +22,7 @@ class PageTwitrans extends Page
     if (stripos($this->getUrl(), 'pak128.japan') !== false) {
       $pak = 'pak128.japan';
     } elseif (stripos($this->getUrl(), 'pak128') !== false) {
-      $pak = 'pak128_';
+      $pak = 'pak128';
     }
     $this->setPak($pak);
   }

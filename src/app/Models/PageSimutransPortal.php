@@ -21,7 +21,7 @@ class PageSimutransPortal extends Page
     $paks = $crawler->filter('.pak')->each(function($node) {
       $pak = $node->text();
       if ($pak === 'pak128') {
-        $pak = 'pak128_';
+        $pak = 'pak128';
       }
       return $pak;
     });
