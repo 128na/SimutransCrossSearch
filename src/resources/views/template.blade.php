@@ -15,6 +15,7 @@
   <meta name="twitter:card" content="{{ config('const.app.twittercard') }}">
 
   <title>@yield('title') | {{ config('const.app.name') }}</title>
+  <link rel="canonical" href="{{ route('index') }}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <style>
     body { padding-top: 70px; }

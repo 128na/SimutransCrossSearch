@@ -7,7 +7,7 @@
   <h2>対応サイト</h2>
   <ul>
 @foreach(config('const.sites') as $site)
-    <li><a href="{{ $site['url'] }}">{{ $site['name'] }} ({{ $site['url'] }})</a></li>
+    <li><a href="{{ $site['url'] }}" target="_blank">{{ $site['name'] }} ({{ $site['url'] }})</a></li>
 @endforeach
   </ul>
 @endsection
