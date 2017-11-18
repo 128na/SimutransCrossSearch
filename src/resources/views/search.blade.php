@@ -4,6 +4,7 @@
 
 @section('content')
 @if (count($pages))
+<h2>{{count($pages) }}件の検索結果</h2>
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
