@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Site;
+
+class SiteTwitrans extends Site
+{
+  public function __construct()
+  {
+    $this->base_url = config('const.sites.Twitrans.url');
+    parent::__construct();
+  }
+
+  protected function getListPageUrl()
+  {
+    return $this->base_url.'/?cmd=list';
+  }
+
+  protected function extractUrls($craweler)
+  {
+    // url一覧を取得
+    $urls = $craweler->filter('#body > ul li')->each(function ($node) {
+      return $node->filter('a')->attr('href');
+    });
+
+    // 文字コード変換
+    $urls = array_map(function($url) {
+      return mb_convert_encoding(urldecode($url), 'UTF-8', 'EUC-JP');
+    }, $urls);
+
+    // アドオン関係のみフィルタ
+    $urls = array_filter($urls, function($url) {
+      return preg_match('/\?addon\/pak(64|128|128\.japan)\//', $url)
+          ;
+    });
+
+    // 特定の不要ページを除外
+    $urls = array_filter($urls, function($url) {
+      return !preg_match('/Campany/', $url)
+          && !preg_match('/Notice/', $url)
+          && !preg_match('/MenuBar/', $url)
+          && !preg_match('/make_support/', $url)
+          && !preg_match('/companyIndex/', $url)
+          && !preg_match('/複製/', $url)
+          && !preg_match('/test/', $url)
+          && !preg_match('/Index/', $url)
+          ;
+    });
+
+    $this->setUrls($urls);
+  }
+}
