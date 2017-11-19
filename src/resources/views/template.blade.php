@@ -42,6 +42,9 @@
   <div class="container">
 @yield('content')
   </div>
+  <script>
+    window.base_url = '{{ route('index') }}'
+  </script>
   <script src="{{ asset('js/app.js') }}"></script>
 @yield('script')
 </body>
