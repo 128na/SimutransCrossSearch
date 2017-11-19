@@ -26,13 +26,13 @@ class Kernel extends ConsoleKernel
   {
     $schedule->call(function () {
       DB::table('scrape:site JapaneseSimutrans')->delete();
-    })->dailyAt('1:03');
+    })->dailyAt('1:00');
     $schedule->call(function () {
       DB::table('scrape:site Twitrans')->delete();
-    })->dailyAt('2:33');
+    })->dailyAt('2:00');
     $schedule->call(function () {
       DB::table('scrape:site SimutransPortal')->delete();
-    })->dailyAt('3:34');
+    })->dailyAt('3:00');
   }
 
   /**
