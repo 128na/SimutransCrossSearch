@@ -1,13 +1,29 @@
 <style scoed>
-  #rss-reader {
-    max-height: 100rem;
-  }
   .rss-feed ul {
     padding: 8px;
   }
   .rss-feed li {
     list-style: none;
   }
+  .rss-feed {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    max-height: 36rem;
+    overflow-y: scroll;
+    background-color: #fff;
+  }
+
+  .nav-tabs > li.active > a,
+  .nav-tabs > li.active > a:hover,
+  .nav-tabs > li.active > a:focus {
+    color: #555555;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-bottom-color: transparent;
+    cursor: default;
+  }
+
 </style>
 
 <template>
