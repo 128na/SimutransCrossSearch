@@ -23,7 +23,7 @@ class RssController extends Controller
     foreach (config('const.rss') as $id => $site) {
       $res['sites'][$id] = [
         'name' => $site['name'],
-        'url'  => $site['url'],
+        'url'  => config("const.sites.{$site['name']}.url"),
       ];
       // RSS取得
       $this->feed->set_feed_url($site['url']);

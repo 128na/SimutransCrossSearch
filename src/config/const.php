@@ -27,5 +27,12 @@ return [
     ['name' => 'Twitrans',          'url' => 'http://wikiwiki.jp/twitrans/?cmd=mixirss'],
     ['name' => 'SimutransPortal',   'url' => 'https://simutrans.sakura.ne.jp/portal/feed'],
   ],
+  'twitter' => [
+    'name' => '@128Na',
+    'url'  => 'https://twitter.com/128Na',
+  ],
+  'github' => [
+    'url' => 'https://github.com/128na/SimutransCrossSearch',
+  ],
 
 ];

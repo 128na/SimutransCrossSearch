@@ -28,7 +28,15 @@
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
   <link rel="shortcut icon" href="{{ route('index') }}{{ config('const.app.favicon') }}" type="image/vnd.microsoft.ico"/>
   <style>
-    body { padding-top: 70px; }
+    body {
+      padding-top: 70px;
+      position: relative;
+      padding-bottom: 10rem;
+    }
+    footer {
+      position: absolute;
+      bottom: 0;
+    }
     .highlight {background-color: #ff0; }
   </style>
 </head>
@@ -41,7 +49,16 @@
 
   <div class="container">
 @yield('content')
+    <footer>
+      <div class="container text-center">
+        <p class="text-muted text-center">
+          <span>created by <a href="{{ config('const.twitter.url') }}" target="_blank">{{ config('const.twitter.name') }}</a>.</span> /
+          <span><a href="{{ config('const.github.url') }}" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Pull requests are always welcome!</a></span>
+        </p>
+      </div>
+    </footer>
   </div>
+
   <script>
     window.base_url = '{{ route('index') }}'
   </script>
