@@ -6,7 +6,6 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "dg/rss-php": "^1.2",
         "fabpot/goutte": "^3.2",
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
