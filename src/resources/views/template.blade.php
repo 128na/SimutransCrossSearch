@@ -22,10 +22,10 @@
   <meta property="og:description" content="{{ config('const.app.description') }}">
 
   <meta name="twitter:card" content="{{ config('const.app.twittercard') }}">
-
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>@yield('title') | {{ config('const.app.name') }}</title>
   <link rel="canonical" href="{{ route('index') }}">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
   <link rel="shortcut icon" href="{{ route('index') }}{{ config('const.app.favicon') }}" type="image/vnd.microsoft.ico"/>
   <style>
     body { padding-top: 70px; }
@@ -42,8 +42,7 @@
   <div class="container">
 @yield('content')
   </div>
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="{{ asset('js/app.js') }}"></script>
 @yield('script')
 </body>
 </html>

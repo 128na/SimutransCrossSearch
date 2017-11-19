@@ -10,4 +10,6 @@
     <li><a href="{{ $site['url'] }}" target="_blank">{{ $site['name'] }} ({{ $site['url'] }})</a></li>
 @endforeach
   </ul>
+  <h2>RSS</h2>
+  <div id="app"></div>
 @endsection

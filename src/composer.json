@@ -6,10 +6,12 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "dg/rss-php": "^1.2",
         "fabpot/goutte": "^3.2",
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "simplepie/simplepie": "^1.5"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
