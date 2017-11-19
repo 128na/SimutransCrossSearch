@@ -5,7 +5,7 @@ axios.defaults.timeout = 2500;
 
 export default {
   fetchRss() {
-    return axios.get('api/rss')
+    return axios.get('/api/rss')
   },
 
 }
