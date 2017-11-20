@@ -26,7 +26,7 @@ class PageSimutransPortal extends Page
         case 'pak128.japan':
           return config('const.pak.128japan');
         default:
-          config('const.pak.64');
+          return config('const.pak.64');
       }
     });
     $this->setPak(implode(',', $paks));

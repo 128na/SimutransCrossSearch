@@ -23,6 +23,9 @@
     border-bottom-color: transparent;
     cursor: default;
   }
+  .label-date {
+    border-bottom: solid 1px #ddd;
+  }
 
 </style>
 
@@ -39,14 +42,9 @@
     <div class="tab-content rss-feed">
       <div class="tab-pane active">
         <ul v-if="hasList">
-          <li
-            v-for="(item, idx) in list"
-            :key="idx"
-          >
-            <span>[{{ timeFormat(item.time) }}]</span>
-            <a :href="item.link" target="_blank">{{ item.title }}</a>
-            <span>( <a :href="site(item.sid).url" target="_blank">{{ site(item.sid).name }}</a> )</span>
-          </li>
+          <rss-contents :contents="listToday">今日</rss-contents>
+          <rss-contents :contents="listThisWeek">今週</rss-contents>
+          <rss-contents :contents="listLastWeek">先週以前</rss-contents>
         </ul>
         <ul v-else>
           <li>データがありません</li>
@@ -60,14 +58,19 @@
 <script>
 import moment from 'moment'
 import api from './services/api'
-
+import RssContents from './components/RssContents'
 export default {
+  components: {
+    'rss-contents': RssContents
+  },
   data() {
     return {
-      loaded: false,
-      sites: [],
-      data: [],
-      sid : null,
+      loaded    : false,
+      sites     : [],
+      data      : [],
+      sid       : null,
+      today     : moment().startOf('day'),
+      this_week : moment().subtract(7, 'days'),
     }
   },
   created() {
@@ -77,9 +80,12 @@ export default {
     async fetchRss() {
       try {
         const res = await api.fetchRss()
-        console.log(res)
         this.sites = res.data.sites
-        this.data  = res.data.data
+        this.data  = res.data.data.map(d => {
+          d.time = moment(d.time, 'X')
+          d.site = this.sites[d.sid]
+          return d
+        })
         if (res.data.error.length) {
           console.warn(res.data.error)
         }
@@ -92,24 +98,29 @@ export default {
     toggleList(sid = null) {
       this.sid = sid
     },
-
-    timeFormat(time) {
-      return moment(time, 'X').format('YYYY/MM/DD HH:mm')
-    },
-
-    site(sid) {
-      return this.sites[sid]
-    },
   },
   computed: {
     list() {
       return this.sid ? this.data.filter(d => d.sid === this.sid) : this.data
     },
-    hasList() {
-      return this.list.length > 0
+    // 今日
+    listToday() {
+      return this.list.filter(d => this.today <= d.time)
     },
+    // 今週
+    listThisWeek() {
+      return this.list.filter(d => this.this_week <= d.time && d.time < this.today)
+    },
+    // 1週間より前
+    listLastWeek() {
+      return this.list.filter(d => d.time < this.this_week)
+    },
+
     total() {
       return this.data.length
+    },
+    hasList() {
+      return this.list.length > 0
     }
   }
 }
