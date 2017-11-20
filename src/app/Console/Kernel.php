@@ -24,15 +24,10 @@ class Kernel extends ConsoleKernel
    */
   protected function schedule(Schedule $schedule)
   {
-    $schedule->call(function () {
-      DB::table('scrape:site JapaneseSimutrans')->delete();
-    })->dailyAt('1:00');
-    $schedule->call(function () {
-      DB::table('scrape:site Twitrans')->delete();
-    })->dailyAt('2:00');
-    $schedule->call(function () {
-      DB::table('scrape:site SimutransPortal')->delete();
-    })->dailyAt('3:00');
+    foreach (config('const.cron') as $name => $time) {
+      $schedule->call("scrape:site {$name}")
+        ->dailyAt($time);
+    }
   }
 
   /**
