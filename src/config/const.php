@@ -34,5 +34,10 @@ return [
   'github' => [
     'url' => 'https://github.com/128na/SimutransCrossSearch',
   ],
+  'cron' => [
+    ['name' => 'JapaneseSimutrans', 'time' => '1:00'],
+    ['name' => 'Twitrans',          'time' => '2:00'],
+    ['name' => 'SimutransPortal',   'time' => '3:00'],
+  ],
 
 ];
