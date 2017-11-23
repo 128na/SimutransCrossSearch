@@ -12,7 +12,11 @@
       </a>
     </div>
     <div class="collapse navbar-collapse" id="navbarEexample8">
+
       <form class="navbar-form navbar-right" role="search" action="{{ route('search') }}" method="get">
+        <div class="form-group">
+          <a href="{{ route('sites') }}">関連サイト更新情報</a>
+        </div>
         <div class="form-group">
           <input type="text" class="form-control" placeholder="アドオン名" name="word" value="{{ $word ?? null }}">
         </div>

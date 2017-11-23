@@ -10,6 +10,9 @@ return [
     'twittercard' => '',
     'image'       => '/icon.png',
     'favicon'     => '/favicon.ico',
+    'rss_cache'   => 'framework/cache/rss',
+    'rss_expired' => 6 * 60 * 60,
+
   ],
   'sites' => [
     'JapaneseSimutrans' => ['name' => 'Simutrans Japan',   'url' => 'http://japanese.simutrans.com'],
@@ -33,6 +36,11 @@ return [
   ],
   'github' => [
     'url' => 'https://github.com/128na/SimutransCrossSearch',
+  ],
+  'cron' => [
+    ['name' => 'JapaneseSimutrans', 'time' => '1:00'],
+    ['name' => 'Twitrans',          'time' => '2:00'],
+    ['name' => 'SimutransPortal',   'time' => '3:00'],
   ],
 
 ];

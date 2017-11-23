@@ -13,10 +13,17 @@ require('./bootstrap');
  */
 import Vue from 'vue'
 import App from './App.vue'
+import AppUser from './AppUser.vue'
 
 if ($('#app').length) {
   new Vue({
     el: '#app',
     render: h => h(App)
+  })
+}
+if ($('#app-user').length) {
+  new Vue({
+    el: '#app-user',
+    render: h => h(AppUser)
   })
 }
