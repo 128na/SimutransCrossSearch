@@ -10,6 +10,9 @@ return [
     'twittercard' => '',
     'image'       => '/icon.png',
     'favicon'     => '/favicon.ico',
+    'rss_cache'   => 'framework/cache/rss',
+    'rss_expired' => 6 * 60 * 60,
+
   ],
   'sites' => [
     'JapaneseSimutrans' => ['name' => 'Simutrans Japan',   'url' => 'http://japanese.simutrans.com'],

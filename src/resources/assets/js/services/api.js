@@ -7,5 +7,8 @@ export default {
   fetchRss() {
     return axios.get('/api/rss')
   },
+  fetchSite(sid) {
+    return axios.get(`/api/site/${sid}`)
+  },
 
 }

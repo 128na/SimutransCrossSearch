@@ -13,4 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/rss', 'RssController@index');
+Route::get('/rss', 'Api\RssController@index');
+Route::get('/site/{id}', 'Api\RssController@site');
