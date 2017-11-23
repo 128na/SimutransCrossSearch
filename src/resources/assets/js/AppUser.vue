@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     list() {
-      return this.data.sort((a, b) => a.time - b.time)
+      return this.data.sort((a, b) => b.time - a.time)
     },
     // 今日
     listToday() {
