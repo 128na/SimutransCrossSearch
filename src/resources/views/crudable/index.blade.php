@@ -15,7 +15,6 @@
     padding-left: 0;
   }
 </style>
-
 <form method="post" action="{{ route($route.'.store') }}" class="">
   {{ csrf_field() }}
 @foreach($fields as $field => $type)
