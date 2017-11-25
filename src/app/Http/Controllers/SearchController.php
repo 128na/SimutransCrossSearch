@@ -18,14 +18,14 @@ class SearchController extends Controller
     $pak_value = config('const.pak.'.$reqest->input('pak'));
 
     $query = Page::where('pak', 'like', "%{$pak_value}%");
-    $conds = ["「{$pak}」"];
+    $conds = ["pak{$pak}"];
 
     if ($word) {
       $query->where(function($query) use($word) {
         $query->where('text', 'like', "%{$word}%")
               ->orWhere('title', 'like', "%{$word}%");
       });
-      $conds[] = "「{$word}」";
+      $conds[] = "{$word}";
     }
     $pages = $query->get();
 
