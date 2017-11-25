@@ -8,30 +8,35 @@ trait CRUDable {
 
   protected $view_name  = 'crudable';
   protected $title      = 'crudable';
-  protected $model_name;
-  protected $route      = 'user';
-  protected $fields     = [
-    'name' => 'text',
-  ];
-  protected $validation = [
-    'name' => 'required',
-  ];
+  protected $model_name = '';
+  protected $route      = '';
+  protected $fields     = [];
+  protected $options    = [];
+  protected $validation = [];
 
   /**
    * 一覧
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
+  public function index(Request $request)
   {
-    $models    = $this->model_name::all();
+    $view_name = $this->view_name;
     $title     = $this->title;
+    $models    = $this->model_name::all();
     $route     = $this->route;
     $fields    = $this->fields;
-    $view_name = $this->view_name;
+    $options   = $this->options;
 
     return view("{$this->view_name}.index",
-      compact('models', 'title', 'fields', 'route', 'view_name'));
+      compact(
+        'view_name',
+        'title',
+        'models',
+        'route',
+        'fields',
+        'options'
+      ));
   }
 
   /**
@@ -42,10 +47,11 @@ trait CRUDable {
    */
   public function store(Request $request)
   {
-    $validator = Validator::make($request->all(), $this->validation);
+    $validator = Validator::make($request->all(), $this->validation['store']);
     if ($validator->fails()) {
       return redirect()
         ->route("{$this->route}.index")
+        ->withInput()
         ->withErrors($validator, 'create');
     }
 
@@ -63,10 +69,11 @@ trait CRUDable {
    */
   public function update(Request $request, $id)
   {
-    $validator = Validator::make($request->all(), $this->validation);
+    $validator = Validator::make($request->all(), $this->validation['update']);
     if ($validator->fails()) {
       return redirect()
         ->route("{$this->route}.index")
+        ->withInput()
         ->withErrors($validator, "update.{$id}");
     }
 

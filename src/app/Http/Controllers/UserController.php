@@ -22,9 +22,16 @@ class UserController extends Controller
       'password' => 'password',
     ];
     $this->validation = [
-      'name'     => 'required|unique:users,name',
-      'email'    => 'required|email|unique:users,email',
-      'password' => 'required',
+      'store' => [
+        'name'     => 'required|unique:users,name',
+        'email'    => 'required|email|unique:users,email',
+        'password' => 'required',
+      ],
+      'update' => [
+        'name'     => 'required',
+        'email'    => 'required|email',
+        'password' => 'required',
+      ],
     ];
   }
 

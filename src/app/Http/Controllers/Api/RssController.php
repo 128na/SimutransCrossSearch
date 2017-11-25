@@ -51,7 +51,7 @@ class RssController extends Controller
 
   public function site($id)
   {
-    $site = EloquentRss::findOrFail($id);
+    $site = EloquentRss::where('id', $id)->active()->firstOrFail();
 
     // RSS取得
     abort_unless($this->fetch($site->url), 404);
@@ -68,5 +68,4 @@ class RssController extends Controller
     ];
     return $data;
   }
-
 }

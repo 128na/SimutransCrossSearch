@@ -1,6 +1,6 @@
 @extends('template')
 
-@section('title', implode('、',$conds).'での検索結果')
+@section('title', implode(', ',$conds).'での検索結果')
 
 @section('content')
 @if (count($pages))

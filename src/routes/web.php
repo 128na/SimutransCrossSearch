@@ -14,6 +14,7 @@
 Route::get('/', 'SearchController@index')->name('index');
 Route::get('/search', 'SearchController@search')->name('search');
 Route::get('/sites',  'SiteController@index'   )->name('sites');
+Route::post('/sites',  'SiteController@store'   )->name('sites.store');
 
 // basic認証つける
 Route::group(['middleware' => 'auth.basic'], function () {
