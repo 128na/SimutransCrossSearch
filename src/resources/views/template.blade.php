@@ -48,6 +48,27 @@
   @include('header')
 
   <div class="container">
+@if (session('success'))
+<p class="alert alert-success">
+  <strong>成功：</strong>
+  <span>{{ session('success') }}</span>
+</p>
+@endif
+
+@if (session('error'))
+<p class="alert alert-danger">
+  <strong>エラー：</strong>
+  <span>{{ session('error') }}</span>
+</p>
+@endif
+
+@if (session('status'))
+<p class="alert alert-info">
+  <span>{{ session('status') }}</span>
+</p>
+@endif
+
+
 @yield('content')
     <footer>
       <div class="container text-center">
