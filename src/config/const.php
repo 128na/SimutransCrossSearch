@@ -7,7 +7,7 @@ return [
     'keywords'    => ['Simutrans', 'Addon', 'シムトランス', 'アドオン', 'pak', 'pak128', 'pak128.japan'],
     'author'      => '128Na',
     'type'        => 'website',
-    'twittercard' => '',
+    'twittercard' => 'summary',
     'image'       => '/icon.png',
     'favicon'     => '/favicon.ico',
     'rss_cache'   => 'framework/cache/rss',
