@@ -30,7 +30,9 @@ class SiteController extends Controller
     // rss取得できないURLは申し訳ないがNG
     if (!$this->fetch($request->input('url'))) {
       $request->session()->flash('error', '無効なRSSフィールドです');
-      return redirect()->route('sites');
+      return redirect()
+        ->withInput()
+        ->route('sites');
     }
 
     // 有効化は管理者がする

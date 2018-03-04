@@ -47,6 +47,7 @@ class UserController extends Controller
     if ($validator->fails()) {
       return redirect()
         ->route("{$this->route}.index")
+        ->withInput()
         ->withErrors($validator, 'create');
     }
 
@@ -72,6 +73,7 @@ class UserController extends Controller
     if ($validator->fails()) {
       return redirect()
         ->route("{$this->route}.index")
+        ->withInput()
         ->withErrors($validator, "update.{$id}");
     }
 

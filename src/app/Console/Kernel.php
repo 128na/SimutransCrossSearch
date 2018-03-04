@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
    * @var array
    */
   protected $commands = [
-    App\Console\Commands\Scrape::class,
+    \App\Console\Commands\Scrape::class,
   ];
 
   /**
