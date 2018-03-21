@@ -1,5 +1,5 @@
 <nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
+  <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed"data-toggle="collapse"data-target="#navbarEexample8">
         <span class="sr-only">Toggle navigation</span>
@@ -15,7 +15,7 @@
 
       <form class="navbar-form navbar-right" role="search" action="{{ route('search') }}" method="get">
         <div class="form-group">
-          <a href="{{ route('sites') }}">関連サイト更新情報</a>
+          <a href="{{ route('sites') }}">関連サイト更新情報</a>｜
         </div>
         <div class="form-group">
           <input type="text" class="form-control" placeholder="アドオン名" name="word" value="{{ $word ?? null }}">
@@ -28,7 +28,7 @@
 @endforeach
           </select>
         </div>
-        <button type="submit" class="btn btn-default">検索</button>
+        <button type="submit" class="btn btn-primary">検索</button>
       </form>
     </div>
   </div>

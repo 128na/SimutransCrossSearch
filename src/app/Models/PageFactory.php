@@ -16,6 +16,6 @@ class PageFactory extends Model
         return new $class_name($url, config("const.sites.{$site_name}.name"));
       }
     }
-    throw new \Exception('site name not exists', 1);
+    throw new \Exception("site {$name} not exists", 1);
   }
 }

@@ -14,6 +14,6 @@ class SiteFactory extends Model
         return new $class_name;
       }
     }
-    throw new \Exception('site name not exists', 1);
+    throw new \Exception("site {$name} not exists", 1);
   }
 }
