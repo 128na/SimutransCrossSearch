@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('/tweet', 'Api\TweetController@index');
 
 Route::get('/rss', 'Api\RssController@index');
 Route::get('/site/{id}', 'Api\RssController@site');
