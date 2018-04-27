@@ -16,6 +16,10 @@ class TweetController extends Controller
 
     $from = $request->input('from');
     $text = Twitter::cleanText($request->input('text'));
+    $tweet_id = Twitter::cleanId($request->input('LinkToTweet'));
+
+    logger('from:'.$from);
+    logger('text:'.$text);
 
     $twitter = new Twitter();
 
@@ -23,7 +27,7 @@ class TweetController extends Controller
 
     $message = static::buildMessage($from, $text, $pages);
 
-    $res = $twitter->tweet($message);
+    $res = $twitter->reply($message, $tweet_id);
 
     logger("processed : {$res->id}");
   }
