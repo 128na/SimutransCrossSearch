@@ -22,8 +22,9 @@ class Twitter
     return $this->fetch('POST', 'statuses/update', ['status' => $message]);
   }
 
-  public function reply($message, $tweet_id)
+  public function reply($message, $user_name, $tweet_id)
   {
+    $message = "@{$user_name} {$message}";
     return $this->fetch('POST', 'statuses/update', ['status' => $message, 'in_reply_to_status_id' => $tweet_id]);
   }
 

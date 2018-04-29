@@ -9,26 +9,78 @@ use App\Models\Twitter;
 
 class TweetController extends Controller
 {
+
+  private $from;
+  private $text;
+  private $tweet_id;
+  private $twitter;
     //
   public function index(Request $request)
   {
     static::validateToken($request->input('token'));
 
-    $from = $request->input('from');
-    $text = Twitter::cleanText($request->input('text'));
-    $tweet_id = Twitter::cleanId($request->input('LinkToTweet'));
+    $this->from     = $request->input('from');
+    $this->text     = Twitter::cleanText($request->input('text'));
+    $this->tweet_id = Twitter::cleanId($request->input('LinkToTweet'));
+    $this->twitter  = new Twitter();
 
-    logger('from:'.$from);
-    logger('text:'.$text);
+    logger('from:'.$this->from);
+    logger('text:'.$this->text);
 
-    $twitter = new Twitter();
+    if ($this->isHelp()) {
+      return $this->replyHelp();
+    }
+    if ($this->isRandom()) {
+      return $this->replyRandom();
+    }
 
-    $pages = static::searchByWord($text);
+    return $this->replySearchResult();
+  }
 
-    $message = static::buildMessage($from, $text, $pages);
 
-    $res = $twitter->reply($message, $tweet_id);
+  private function isHelp()
+  {
+    return strtolower($this->text) === 'help';
+  }
 
+
+  private function isRandom()
+  {
+    return $this->text === '';
+  }
+
+
+  private function replyHelp()
+  {
+    $message = <<<EOM
+使い方
+このアカウントにリプライするとアドオン検索などができます。
+help …このメッセージを表示
+空リプ …ランダムにアドオンを紹介
+アドオン名 …アドオンを検索
+EOM;
+
+    $res = $twitter->reply($message, $this->from, $this->tweet_id);
+    logger("processed : {$res->id}");
+  }
+
+
+  private function replyRandom()
+  {
+    $page = Page::inRandomOrder()->first();
+
+    $message = "ランダムにアドオンを検索するよ\n{$page->title}( {$page->url} )";
+    $res = $twitter->reply($message, $this->from, $this->tweet_id);
+  }
+
+
+  private function replySearchResult()
+  {
+    $pages = $this->searchByWord();
+
+    $message = $this->buildSearchResultMessage($pages);
+
+    $res = $twitter->reply($message, $this->from, $this->tweet_id);
     logger("processed : {$res->id}");
   }
 
@@ -41,11 +93,11 @@ class TweetController extends Controller
     }
   }
 
-  private function buildMessage($from, $text, $pages)
+
+  private function buildSearchResultMessage($pages)
   {
-    $message = "@{$from} ";
-    $message .= now()."現在 \n";
-    $message .= "「{$text}」での検索結果\n";
+    $message = now()."現在 \n";
+    $message .= "「{$this->text}」での検索結果\n";
 
     if ($pages->count() === 0) {
       $message .= '該当なし';
@@ -58,7 +110,7 @@ class TweetController extends Controller
         return "pak{$pakname}:{$count}件 ";
       })->implode("\n");
     // 検索リンク
-    $message .= "\n検索結果一覧はこちら→ ".route('search', ['word' => $text]);
+    $message .= "\n検索結果一覧はこちら→ ".route('search', ['word' => $this->text]);
 
     return $message;
   }
@@ -78,11 +130,11 @@ class TweetController extends Controller
   }
 
 
-  private static function searchByWord($word)
+  private function searchByWord()
   {
-    return Page::where(function($query) use ($word) {
-      $query->where('text', 'like', "%{$word}%")
-        ->orWhere('title', 'like', "%{$word}%");
+    return Page::where(function($query) {
+      $query->where('text', 'like', "%{$this->text}%")
+        ->orWhere('title', 'like', "%{$this->text}%");
     })->get();
   }
 }
