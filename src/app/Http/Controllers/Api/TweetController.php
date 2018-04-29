@@ -22,7 +22,6 @@ class TweetController extends Controller
     $this->from     = $request->input('from');
     $this->text     = Twitter::cleanText($request->input('text'));
     $this->tweet_id = Twitter::cleanId($request->input('LinkToTweet'));
-    $this->twitter  = new Twitter();
 
     logger('from:'.$this->from);
     logger('text:'.$this->text);
@@ -49,6 +48,14 @@ class TweetController extends Controller
     return $this->text === '';
   }
 
+  private function reply($message)
+  {
+    $twitter = new Twitter();
+    $res = $twitter->reply($message, $this->from, $this->tweet_id);
+    logger("processed : {$res->id}");
+
+    return response('OK', 200);
+  }
 
   private function replyHelp()
   {
@@ -60,8 +67,7 @@ help …このメッセージを表示
 アドオン名 …アドオンを検索
 EOM;
 
-    $res = $this->twitter->reply($message, $this->from, $this->tweet_id);
-    logger("processed : {$res->id}");
+    return $this->reply($message);
   }
 
 
@@ -70,7 +76,7 @@ EOM;
     $page = Page::inRandomOrder()->first();
 
     $message = "ランダムにアドオンを検索するよ\n{$page->title}( {$page->url} )";
-    $res = $this->twitter->reply($message, $this->from, $this->tweet_id);
+    return $this->reply($message);
   }
 
 
@@ -80,8 +86,7 @@ EOM;
 
     $message = $this->buildSearchResultMessage($pages);
 
-    $res = $this->twitter->reply($message, $this->from, $this->tweet_id);
-    logger("processed : {$res->id}");
+    return $this->reply($message);
   }
 
 
