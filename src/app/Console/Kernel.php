@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
   protected function schedule(Schedule $schedule)
   {
     foreach (config('const.cron') as $cron) {
-      $schedule->call("scrape:site {$cron['name']}")
+      $schedule->command("scrape:site {$cron['name']}")
         ->dailyAt($cron['time']);
     }
   }

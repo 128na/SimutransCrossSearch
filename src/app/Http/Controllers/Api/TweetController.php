@@ -60,7 +60,7 @@ help …このメッセージを表示
 アドオン名 …アドオンを検索
 EOM;
 
-    $res = $twitter->reply($message, $this->from, $this->tweet_id);
+    $res = $this->twitter->reply($message, $this->from, $this->tweet_id);
     logger("processed : {$res->id}");
   }
 
@@ -70,7 +70,7 @@ EOM;
     $page = Page::inRandomOrder()->first();
 
     $message = "ランダムにアドオンを検索するよ\n{$page->title}( {$page->url} )";
-    $res = $twitter->reply($message, $this->from, $this->tweet_id);
+    $res = $this->twitter->reply($message, $this->from, $this->tweet_id);
   }
 
 
@@ -80,7 +80,7 @@ EOM;
 
     $message = $this->buildSearchResultMessage($pages);
 
-    $res = $twitter->reply($message, $this->from, $this->tweet_id);
+    $res = $this->twitter->reply($message, $this->from, $this->tweet_id);
     logger("processed : {$res->id}");
   }
 
