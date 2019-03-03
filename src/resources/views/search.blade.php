@@ -1,10 +1,10 @@
 @extends('template')
 
-@section('title', implode(', ',$conds).'での検索結果')
+@section('title', "「{$condition_text}」での検索結果")
 
 @section('content')
+<h2>「{{ $condition_text }}」での検索結果：{{ count($pages) }}件</h2>
 @if (count($pages))
-<h2>{{count($pages) }}件の検索結果</h2>
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
@@ -21,7 +21,7 @@
       <td>{{ $page->site_name }}</td>
       <td><a href="{{ $page->url }}" target="_blank"><span class="highlightable">{{ $page->title }}</span></a></td>
       <td>{{ $page->getPakName() }}</td>
-      <td><span class="highlightable">{{ $page->expectText($word) }}</span></td>
+      <td><span class="highlightable">{{ $page->expectText($words) }}</span></td>
       <td>{{ $page->updated_at }}</td>
     </tr>
   </tbody>
@@ -32,13 +32,11 @@
   href="https://twitter.com/share?ref_src=twsrc%5Etfw"
   class="twitter-share-button"
   data-size="large"
-  data-text="{{ implode('、',$conds).'での検索結果' }} | {{ config('const.app.name') }}"
+  data-text="「{{ $condition_text }}」での検索結果 | {{ config('const.app.name') }}"
   data-url="{{ url()->full() }}"
   data-hashtags="simutrans_cross_search"
   data-show-count="false"
 >Tweet</a>
-@else
-  <span>ないです</span>
 @endif
 @endsection
 
@@ -46,11 +44,15 @@
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script>
   $(function() {
-    const word = '{{ $word }}'
-    if (word) {
+    const words = @json($highlight_words);
+    if (words.length) {
       $('.highlightable').toArray().map(n => {
         const $n = $(n)
-        $n.html($n.text().replace(word, `<span class="highlight">${word}</span>`))
+        let text = $n.text();
+        words.map(w => {
+          text = text.replace(w, `<span class="highlight">${w}</span>`)
+        });
+        $n.html(text);
       })
     }
 });

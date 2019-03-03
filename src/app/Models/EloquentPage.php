@@ -9,20 +9,24 @@ class EloquentPage extends Model
   protected $table = 'pages';
   protected $fillable = ['site_name', 'url', 'title', 'text', 'pak'];
 
-  public function expectText($word = null)
+  public function expectText($word = '')
   {
-    $len = 100;
+    if (is_string($word)) {
+      $len = 100;
 
-    if ($word && mb_strpos($this->text, $word) !== false) {
-      $texts = explode($word, $this->text);
+      if ($word && mb_strpos($this->text, $word) !== false) {
+        $texts = explode($word, $this->text);
 
-      $pre = static::mb_strrev(mb_strimwidth(
-              static::mb_strrev(array_shift($texts)), 0, $len, '...'), 'UTF-8');
-      $suf = mb_strimwidth(array_shift($texts), 0, $len, '...', 'UTF-8');
+        $pre = static::mb_strrev(mb_strimwidth(
+                static::mb_strrev(array_shift($texts)), 0, $len, '...'), 'UTF-8');
+        $suf = mb_strimwidth(array_shift($texts), 0, $len, '...', 'UTF-8');
 
-      return "{$pre}{$word}{$suf}";
+        return "{$pre}{$word}{$suf}";
+      } else {
+        return mb_strimwidth($this->text, 0, $len, '...', 'UTF-8');
+      }
     } else {
-      return mb_strimwidth($this->text, 0, $len, '...', 'UTF-8');
+      return $word->map([$this, 'expectText'])->implode('...');
     }
   }
 
