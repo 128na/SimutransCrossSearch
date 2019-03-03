@@ -9,12 +9,10 @@ use App\Models\Twitter;
 
 class TweetController extends Controller
 {
-
   private $from;
   private $text;
   private $tweet_id;
-  private $twitter;
-    //
+
   public function index(Request $request)
   {
     static::validateToken($request->input('token'));
