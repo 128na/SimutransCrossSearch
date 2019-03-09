@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EloquentPage as Page;
+use App\Models\SearchWords;
 
 class SearchController extends Controller
 {
@@ -22,12 +23,12 @@ class SearchController extends Controller
     $query = Page::query();
 
     if ($request->filled('word')) {
-      $word = $request->input('word');
-      $words = static::parseWord($word);
-      $query = static::buildWordQuery($query, $words);
-      $data['word'] = $word;
-      $data['words'] = $words;
-      $data['highlight_words'] = $words->flatten();
+      $data['word'] = $request->input('word');
+
+      $words = new SearchWords($data['word']);
+      $data['words'] = $words->getWordsCollection();
+      $query = static::buildWordSearchQuery($query, $data['words']);
+      $data['highlight_words'] = $words->getFlattenWords();
     }
 
     if ($request->filled('pak')) {
@@ -38,12 +39,12 @@ class SearchController extends Controller
     }
 
     $data['pages'] = $query->get();
-    $data['condition_text'] = static::conditionText($data['words'], $data['pak']);
+    $data['condition_text'] = static::buildConditionText($data['words'], $data['pak']);
 
     return view('search', $data);
   }
 
-  private function conditionText($words, $pak)
+  private function buildConditionText($words, $pak)
   {
     $text = '';
     if ($pak) {
@@ -57,30 +58,8 @@ class SearchController extends Controller
     return $text;
   }
 
-  private static function cleanWord($word)
-  {
-    $word = str_replace('　', ' ', $word);
-    $word = str_replace('＆', '&', $word);
-    $word = trim($word);
-    return $word;
-  }
 
-  /**
-   * 検索ワードをand,orで抽出する
-   * @example hoge foo&bar -> [[hoge],[foo,bar]] -> hoge or (foo and bar)
-   */
-  private static function parseWord($word)
-  {
-    $word = static::cleanWord($word);
-    $words = collect(explode(' ', $word));
-
-    $words = $words->map(function($w) {
-      return collect(explode('&', $w));
-    });
-    return $words;
-  }
-
-  private static function buildWordQuery($query, $words)
+  private static function buildWordSearchQuery($query, $words)
   {
     $words->each(function($and_words) use ($query) {
       $query->orWhere(function($or_query) use ($and_words) {
