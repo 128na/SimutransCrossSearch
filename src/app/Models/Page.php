@@ -20,7 +20,7 @@ class Page
 
   public function __construct($url, $site_name)
   {
-    $this->url = $url;
+    $this->url = $this->prepareUrl($url);
     $this->site_name = $site_name;
     $this->scrapeInit();
 
@@ -47,6 +47,14 @@ class Page
 
     $this->trimText();
     return $this;
+  }
+
+  /**
+   * URL整形
+   */
+  protected function prepareUrl($url)
+  {
+    return $url;
   }
 
   protected function extractTitle($crawler) {
