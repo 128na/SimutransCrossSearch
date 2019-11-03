@@ -90,7 +90,7 @@ EOM;
 
   private static function validateToken($token)
   {
-    if($token !== env('IFTTT_TOKEN')) {
+    if($token !== config('app.twitter.ifttt_token')) {
       logger('invalid token');
       exit;
     }

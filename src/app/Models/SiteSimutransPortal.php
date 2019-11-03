@@ -14,7 +14,7 @@ class SiteSimutransPortal extends Site
 
   protected function getListPageUrl()
   {
-    return $this->base_url.'/api/v1/articles?token='.env('API_TOKEN');
+    return $this->base_url.'/api/v1/articles?token='.config('app.simutrans_portal.api_token');
   }
 
   protected function extractUrls($crawler)

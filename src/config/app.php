@@ -2,6 +2,17 @@
 
 return [
 
+  'twitter' => [
+      'consumer_key' => env('CONSUMER_KEY'),
+      'consumer_secret' => env('CONSUMER_SECRET'),
+      'access_token' => env('ACCESS_TOKEN'),
+      'access_token_secret' => env('ACCESS_TOKEN_SECRET'),
+      'twitter_user' => env('TWITTER_USER'),
+      'ifttt_token' => env('IFTTT_TOKEN'),
+  ],
+  'simutrans_portal' => [
+    'api_token' => env('API_TOKEN'),
+  ],
     /*
     |--------------------------------------------------------------------------
     | Application Name

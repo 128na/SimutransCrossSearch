@@ -10,10 +10,10 @@ class Twitter
   public function __construct()
   {
     $this->client = new TwitterOAuth(
-      env('CONSUMER_KEY'),
-      env('CONSUMER_SECRET'),
-      env('ACCESS_TOKEN'),
-      env('ACCESS_TOKEN_SECRET')
+      config('app.twitter.consumer_key'),
+      config('app.twitter.consumer_secret'),
+      config('app.twitter.access_token'),
+      config('app.twitter.access_token_secret')
     );
   }
 
@@ -35,7 +35,7 @@ class Twitter
 
   public static function cleanText($text)
   {
-    return trim(str_replace(['@'.env('TWITTER_USER')], '', $text));
+    return trim(str_replace(['@'.config('app.twitter.twitter_user')], '', $text));
   }
 
   public static function cleanId($text)
