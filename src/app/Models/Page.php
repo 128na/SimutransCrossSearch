@@ -9,14 +9,14 @@ class Page
 {
   use Scrapable;
 
-  private $url;
-  private $site_name;
-  private $title;
-  private $text;
-  private $pak;
+  protected $url;
+  protected $site_name;
+  protected $title;
+  protected $text;
+  protected $pak;
 
-  private $model_name = EloquentPage::class;
-  private $instance;
+  protected $model_name = EloquentPage::class;
+  protected $instance;
 
   public function __construct($url, $site_name)
   {

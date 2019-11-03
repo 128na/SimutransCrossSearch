@@ -64,6 +64,7 @@ class Scrape extends Command
         static::errlog("[{$site_name}] リスト取得失敗 {$e->getMessage()}");
         exit();
     }
+    static::log("[{$site_name}] URL一覧取得 ".count($urls));
 
     foreach ($urls as $url) {
       $page = PageFactory::forge($site_name, $url);

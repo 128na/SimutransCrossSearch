@@ -8,22 +8,21 @@ class PageSimutransPortal extends Page
 {
 
   protected function extractTitle($crawler) {
-    parent::extractTitle($crawler);
-    $this->setTitle(str_replace('  |  Simutransポータル', '', $this->getTitle()));
+    $this->setTitle($crawler->filter('h1')->text());
   }
 
   protected function extractText($crawler) {
-    $this->setText($crawler->filter('article')->text());
+    $this->setText($crawler->filter('.article')->text());
   }
 
   protected function extractPak($crawler)
   {
-    $paks = $crawler->filter('.pak')->each(function($node) {
+    $paks = $crawler->filter('.badge-danger')->each(function($node) {
 
-      switch ($node->text()) {
-        case 'pak128':
+      switch (trim($node->text())) {
+        case 'Pak128':
           return config('const.pak.128');
-        case 'pak128.japan':
+        case 'Pak128.japan':
           return config('const.pak.128japan');
         default:
           return config('const.pak.64');
