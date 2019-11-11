@@ -20,18 +20,13 @@ class SiteTwitrans extends Site
   protected function extractUrls($crawler)
   {
     // url一覧を取得
-    $urls = $crawler->filter('#body > ul li')->each(function ($node) {
-      return $node->filter('a')->attr('href');
+    $urls = $crawler->filter('#body ul li ul li')->each(function ($node) {
+      return str_replace('/twitrans', $this->base_url, $node->filter('a')->attr('href'));
     });
-
-    // 文字コード変換
-    $urls = array_map(function($url) {
-      return mb_convert_encoding(urldecode($url), 'UTF-8', 'EUC-JP');
-    }, $urls);
 
     // アドオン関係のみフィルタ
     $urls = array_filter($urls, function($url) {
-      return preg_match('/\?addon\/pak(64|128|128\.japan)\//', $url)
+      return preg_match('/\/addon\/pak(64|128|128\.japan)\//', $url)
           ;
     });
 
