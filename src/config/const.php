@@ -16,7 +16,7 @@ return [
   ],
   'sites' => [
     'JapaneseSimutrans' => ['name' => 'Simutrans Japan',   'url' => 'http://japanese.simutrans.com'],
-    'Twitrans'          => ['name' => 'Simutrans的な実験室', 'url' => 'http://wikiwiki.jp/twitrans'],
+    'Twitrans'          => ['name' => 'Simutrans的な実験室', 'url' => 'https://wikiwiki.jp/twitrans'],
     'SimutransPortal'   => ['name' => 'Simutransポータル',    'url' => 'https://simutrans.sakura.ne.jp/portal'],
   ],
   'pak' => [
@@ -27,7 +27,7 @@ return [
   ],
   'rss' => [
     ['name' => 'JapaneseSimutrans', 'url' => 'http://japanese.simutrans.com/index.php?cmd=rss'],
-    ['name' => 'Twitrans',          'url' => 'http://wikiwiki.jp/twitrans/?cmd=mixirss'],
+    ['name' => 'Twitrans',          'url' => 'https://wikiwiki.jp/twitrans/?cmd=mixirss'],
     ['name' => 'SimutransPortal',   'url' => 'https://simutrans.sakura.ne.jp/portal/feed'],
   ],
   'twitter' => [
