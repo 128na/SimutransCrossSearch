@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePagesTable extends Migration
+class CreateRawPagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,12 @@ class CreatePagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('raw_pages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('raw_page_id');
             $table->string('site_name');
             $table->string('url')->unique();
-            $table->longText('text');
-            $table->string('title');
+            $table->longText('html');
             $table->timestamps();
-
-            $table->foreign('raw_page_id')->references('id')->on('raw_pages')->onDelete('cascade');
         });
     }
 
@@ -33,10 +29,6 @@ class CreatePagesTable extends Migration
      */
     public function down()
     {
-
-        Schema::table('pages', function (Blueprint $table) {
-            $table->dropForeign(['raw_page_id']);
-        });
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('raw_pages');
     }
 }

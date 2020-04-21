@@ -1,0 +1,44 @@
+@startuml
+title モデル
+class SiteService{
+  name
+  url
+  ---
+  getUrls
+  extractContents
+  getHTML
+  saveOrUpdateRawPage
+  removeExcludes
+  getUpdatedRawPages
+  saveOrUpdatePage
+}
+class RawPage{
+  site_name
+  url
+  html
+}
+class Page{
+  site_name
+  url
+  text
+  title
+}
+class Pak{
+  name
+  slug
+}
+class SiteSimutransPortalService
+class SiteJapaneseSimutransService
+class SiteTwitransService
+class ScrapeCommand
+class ExtractCommand
+ScrapeCommand -- SiteService
+ExtractCommand -- SiteService
+SiteService -- RawPage
+SiteService -- Page
+RawPage -- Page
+Page -- Pak
+SiteService <|- SiteSimutransPortalService
+SiteService <|- SiteJapaneseSimutransService
+SiteService <|- SiteTwitransService
+@enduml

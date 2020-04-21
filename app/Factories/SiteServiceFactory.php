@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Facories;
+namespace App\Factories;
 
+use App\Services\SiteService\JapaneseSimutransSiteService;
 use App\Services\SiteService\SimutransAddonPortalSiteService;
-use App\Services\SiteService\SimutransJapanSiteService;
+use App\Services\SiteService\SiteService;
 use App\Services\SiteService\TwitransSiteService;
 use Exception;
 
 class SiteServiceFactory
 {
-    public function make($name)
+    public function make($name): SiteService
     {
         switch ($name) {
-            case 'simutrans-addon-portal':
+            case 'portal':
                 return app(SimutransAddonPortalSiteService::class);
-            case 'simutrans-japan':
-                return app(SimutransJapanSiteService::class);
+            case 'japan':
+                return app(JapaneseSimutransSiteService::class);
             case 'twitrans':
                 return app(TwitransSiteService::class);
             default:

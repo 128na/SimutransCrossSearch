@@ -1,15 +1,17 @@
 <?php
 
 return [
-    'simutrans-addon-portal' => [
-        'name' => 'simutrans-addon-portal',
+    'portal' => [
+        'name' => 'portal',
         'display_name' => 'Simutrans Addon Portal',
-        'url' => 'https://simutrans.sakura.ne.jp/portal',
+        'url' => 'http://localhost:1080',
+        // 'url' => 'https://simutrans.sakura.ne.jp/portal',
+        'token' => env('SIMUTRANS_PORTAL_TOKEN'),
     ],
-    'simutrans-japan' => [
-        'name' => 'simutrans-japan',
+    'japan' => [
+        'name' => 'japan',
         'display_name' => 'Simutrans Japan',
-        'url' => 'https://japanese.simutrans.com/index.php',
+        'url' => 'https://japanese.simutrans.com',
     ],
     'twitrans' => [
         'name' => 'twitrans',
