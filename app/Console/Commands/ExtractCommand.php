@@ -14,14 +14,14 @@ class ExtractCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'extract:page {name}';
+    protected $signature = 'page:extract {name}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'extract page';
+    protected $description = 'extract from raw pages to pages contents';
 
     /**
      * @var SiteServiceFactory

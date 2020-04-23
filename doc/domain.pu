@@ -5,11 +5,11 @@ class SiteService{
   url
   ---
   getUrls
-  extractContents
   getHTML
   saveOrUpdateRawPage
   removeExcludes
   getUpdatedRawPages
+  extractContents
   saveOrUpdatePage
 }
 class RawPage{
@@ -27,18 +27,22 @@ class Pak{
   name
   slug
 }
-class SiteSimutransPortalService
-class SiteJapaneseSimutransService
-class SiteTwitransService
+class SimutransPortalSiteService
+class JapaneseSimutransSiteService
+class TwitransSiteService
 class ScrapeCommand
 class ExtractCommand
+class Portal\Article
+class Portal\Category
 ScrapeCommand -- SiteService
 ExtractCommand -- SiteService
 SiteService -- RawPage
 SiteService -- Page
 RawPage -- Page
 Page -- Pak
-SiteService <|- SiteSimutransPortalService
-SiteService <|- SiteJapaneseSimutransService
-SiteService <|- SiteTwitransService
+SiteService <|- JapaneseSimutransSiteService
+SiteService <|- TwitransSiteService
+SiteService <|- SimutransPortalSiteService
+SimutransPortalSiteService -- Portal\Article
+SimutransPortalSiteService -- Portal\Category
 @enduml

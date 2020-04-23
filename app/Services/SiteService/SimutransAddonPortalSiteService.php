@@ -4,6 +4,7 @@ namespace App\Services\SiteService;
 
 use App\Models\Page;
 use App\Models\Pak;
+use App\Models\Portal\Article;
 use App\Models\RawPage;
 use Illuminate\Support\Collection;
 
@@ -24,26 +25,20 @@ class SimutransAddonPortalSiteService extends SiteService
 
     public function getUrls(): Collection
     {
-        $url = $this->url . "/api/v2/cross-search?token={$this->token}";
-        $crawler = $this->client->request('GET', $url);
-        $json = $this->client->getResponse()->getContent();
-
-        $urls = json_decode($json, true);
-        return collect($urls);
+        return Article::select('slug')->get()->map(function ($article) {
+            return "{$this->url}/articles/{$article->slug}";
+        });
     }
 
     public function extractContents(RawPage $raw_page): array
     {
         $slug = basename($raw_page->url);
-        $url = $this->url . "/api/v2/cross-search/{$slug}?token={$this->token}";
-        $crawler = $this->client->request('GET', $url);
-        $json = $this->client->getResponse()->getContent();
+        $article = Article::where('slug', $slug)
+            ->with('categories')->first();
 
-        $data = json_decode($json, true);
-
-        $title = $data['data']['title'];
-        $text = $data['data']['contents'];
-        $paks = $data['data']['paks'];
+        $title = $article->title;
+        $text = $article->text_contents;
+        $paks = $article->category_paks->pluck('slug')->all();
 
         return compact('title', 'text', 'paks');
     }

@@ -13,14 +13,14 @@ class ScrapeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'scrape:site {name}';
+    protected $signature = 'page:scrape {name}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'scrape site';
+    protected $description = 'scrape sites to raw pages';
 
     /**
      * @var SiteServiceFactory
@@ -53,7 +53,6 @@ class ScrapeCommand extends Command
         $this->site_service = $this->site_service_factory->make($name);
 
         $urls = $this->site_service->getUrls();
-        dd($urls);
 
         $raw_page_urls = $urls->map(function ($url) {
             $this->info($url);
@@ -61,7 +60,6 @@ class ScrapeCommand extends Command
                 $html = $this->site_service->getHTML($url);
                 return $this->site_service->saveOrUpdateRawPage($url, $html);
             }, 1000);
-            sleep(5);
             return $raw_page->url;
         });
 

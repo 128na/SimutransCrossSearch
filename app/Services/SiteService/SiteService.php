@@ -59,15 +59,27 @@ abstract class SiteService
     public function getHTML(string $url): string
     {
         $crawler = $this->client->request('GET', $url);
+        $this->wait();
         return $crawler->outerHtml();
+    }
+
+    protected function wait(): void
+    {
+        sleep(5);
     }
 
     public function saveOrUpdateRawPage(string $url, string $html): RawPage
     {
-        return $this->raw_page->updateOrCreate(
-            ['url' => $url],
-            ['site_name' => $this->name, 'html' => $html]
-        );
+        $raw_page = $this->raw_page->where('url', $url)->first();
+        // 新規ページ？
+        if (is_null($raw_page)) {
+            return $this->raw_page->create(['url' => $url, 'site_name' => $this->name, 'html' => $html]);
+        }
+        // 変更有り？
+        if ($raw_page->html !== $html) {
+            $raw_page->update(['html' => $html]);
+        }
+        return $raw_page;
     }
 
     public function removeExcludes(Collection $urls): int
@@ -99,11 +111,11 @@ abstract class SiteService
         return $page;
     }
 
-    protected function getCrawler(RawPage $raw_page): Crawler
+    protected function getCrawler(string $html): Crawler
     {
         $crawler = new Crawler;
         // charasetによらず保存時にUTF8となっているため注意
-        $crawler->addHtmlContent($raw_page->html, 'UTF-8');
+        $crawler->addHtmlContent($html, 'UTF-8');
         return $crawler;
     }
 }

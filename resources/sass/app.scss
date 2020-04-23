@@ -1,1 +1,15 @@
-//
+$primary: #4787cd;
+$info: hsla(188, 78%, 48%, 1);
+$success: hsla(134, 61%, 48%, 1);
+@import "~bootstrap";
+
+header nav.navbar {
+    border-top: solid 4px var(--primary);
+}
+
+body {
+    display: grid;
+    min-height: 100vh;
+
+    grid-template-rows: 6rem 1fr 3rem;
+}

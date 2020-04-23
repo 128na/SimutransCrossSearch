@@ -47,7 +47,7 @@ class TwitransSiteService extends SiteService
             })
             ->filter(function ($url) use ($str_copy) { // 不要ページを除去
                 return stripos($url, 'test') === false
-                && stripos($url, 'companyIndex') === false
+                && stripos($url, 'index') === false
                 && stripos($url, 'menubar') === false
                 && stripos($url, $str_copy) === false;
             })
@@ -58,11 +58,46 @@ class TwitransSiteService extends SiteService
 
     public function extractContents(RawPage $raw_page): array
     {
-        $crawler = $this->client->request('GET', $url);
+        $html = $this->modifyHTML($raw_page->html);
+        $crawler = $this->getCrawler($html);
 
-        return [
-            'title' => '',
-            'text' => '',
-        ];
+        $title = $this->extractTitle($crawler);
+        $text = $this->extractText($crawler);
+        $paks = $this->extractPaks($raw_page->url);
+
+        return compact('title', 'text', 'paks');
+    }
+
+    /**
+     * scriptタグを除去する
+     */
+    private function modifyHTML($html)
+    {
+        return preg_replace('/<script([\s\S]+?)script>/mi', '', $html);
+    }
+
+    private function extractTitle($crawler)
+    {
+        $title = $crawler->filter('title')->text();
+        return str_replace(' - Simutrans的な実験室 Wiki*', '', $title);
+    }
+
+    private function extractText($crawler)
+    {
+        return $crawler->filter('div#content')->text();
+    }
+
+    private function extractPaks($url)
+    {
+        if (stripos($url, 'pak64/') !== false) {
+            return ['64'];
+        }
+        if (stripos($url, 'pak128/') !== false) {
+            return ['128'];
+        }
+        if (stripos($url, 'pak128.japan/') !== false) {
+            return ['128-japan'];
+        }
+        return [];
     }
 }

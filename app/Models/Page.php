@@ -18,4 +18,13 @@ class Page extends Model
         return $this->belongsTo(RawPage::class);
     }
 
+    public function getDisplaySiteNameAttribute()
+    {
+        return config("sites.{$this->site_name}.display_name", '');
+    }
+
+    public function getSiteUrlAttribute()
+    {
+        return config("sites.{$this->site_name}.url", '');
+    }
 }
