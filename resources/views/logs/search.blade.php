@@ -22,7 +22,7 @@
                             {{ $log->count }}
                         </td>
                         <td>
-                            {{ urldecode($log->query) }}
+                            <a href="{{ route('search') }}?{{ $log->query }}">{{ urldecode($log->query) }}</a>
                         </td>
                         <td>
                             {{ $log->updated_at->format('Y/m/d H:i:s') }}

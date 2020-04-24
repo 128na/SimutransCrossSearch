@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchRequest;
+use App\Services\SearchLogService;
 use App\Services\SearchService;
 
 class FrontController extends Controller
@@ -10,16 +11,21 @@ class FrontController extends Controller
     /**
      * @var SearchService
      */
-    private $service;
+    private $search_service;
+    /**
+     * @var SearchLogService
+     */
+    private $search_log_service;
 
-    public function __construct(SearchService $service)
+    public function __construct(SearchService $search_service, SearchLogService $search_log_service)
     {
-        $this->service = $service;
+        $this->search_service = $search_service;
+        $this->search_log_service = $search_log_service;
     }
 
     public function index()
     {
-        $pages = $this->service->latest();
+        $pages = $this->search_service->latest();
         return view('index', compact('pages'));
     }
 
@@ -29,13 +35,13 @@ class FrontController extends Controller
         $type = $request->type ?? 'and';
         $paks = $request->paks ?? [];
 
-        $pages = $this->service->search($word, $type, $paks);
-        $title = $this->service->getTitle($word, $paks);
+        $pages = $this->search_service->search($word, $type, $paks);
+        $title = $this->search_service->getTitle($word, $paks);
         $canonical_url = $request->fullUrl();
 
         if ($pages->total()) {
             $query = str_replace([$request->url(), '?'], '', $pages->withQueryString()->url(1));
-            $this->service->putSearchLog($query);
+            $this->search_log_service->put($query);
         }
 
         return view('search', compact('pages', 'word', 'type', 'paks', 'title', 'canonical_url'));

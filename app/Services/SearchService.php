@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Page;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class SearchService
@@ -25,7 +26,7 @@ class SearchService
             ->get();
     }
 
-    public function search(string $word, string $type, array $paks, $per_page = 20): Collection
+    public function search(string $word, string $type, array $paks, $per_page = 20): LengthAwarePaginator
     {
         $search_condition = $this->parseSearchCondition($word, $type);
         $query = $this->buildWordQuery($this->model->query(), $search_condition);
