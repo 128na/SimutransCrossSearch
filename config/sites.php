@@ -4,9 +4,8 @@ return [
     'portal' => [
         'name' => 'portal',
         'display_name' => 'Simutrans Addon Portal',
-        'url' => 'http://localhost:1080',
-        // 'url' => 'https://simutrans.sakura.ne.jp/portal',
-        'token' => env('SIMUTRANS_PORTAL_TOKEN'),
+        'url' => 'https://simutrans.sakura.ne.jp/portal',
+        // 'url' => 'http://localhost:1080',
     ],
     'japan' => [
         'name' => 'japan',
