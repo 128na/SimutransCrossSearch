@@ -17,7 +17,7 @@ class CreatePagesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('raw_page_id');
             $table->string('site_name');
-            $table->string('url')->unique();
+            $table->string('url', 512)->unique();
             $table->longText('text');
             $table->string('title');
             $table->timestamps();
