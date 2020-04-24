@@ -10,16 +10,16 @@ class FrontController extends Controller
     /**
      * @var SearchService
      */
-    private $search_service;
+    private $service;
 
-    public function __construct(SearchService $search_service)
+    public function __construct(SearchService $service)
     {
-        $this->search_service = $search_service;
+        $this->service = $service;
     }
 
     public function index()
     {
-        $pages = $this->search_service->latest();
+        $pages = $this->service->latest();
         return view('index', compact('pages'));
     }
 
@@ -29,14 +29,15 @@ class FrontController extends Controller
         $type = $request->type ?? 'and';
         $paks = $request->paks ?? [];
 
-        $pages = $this->search_service->search($word, $type, $paks);
-        $title = $this->search_service->getTitle($word, $paks);
+        $pages = $this->service->search($word, $type, $paks);
+        $title = $this->service->getTitle($word, $paks);
+        $canonical_url = $request->fullUrl();
 
         if ($pages->total()) {
             $query = str_replace([$request->url(), '?'], '', $pages->withQueryString()->url(1));
-            $this->search_service->putSearchLog($query);
+            $this->service->putSearchLog($query);
         }
 
-        return view('search', compact('pages', 'word', 'type', 'paks', 'title'));
+        return view('search', compact('pages', 'word', 'type', 'paks', 'title', 'canonical_url'));
     }
 }

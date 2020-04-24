@@ -3,11 +3,25 @@
 namespace App\Console;
 
 use App\Models\ScheduleLog;
+use App\Services\ScheduleLogService;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    /**
+     * @var ScheduleLogService
+     */
+    private $service;
+
+    public function __construct(Application $app, Dispatcher $events, ScheduleLogService $service)
+    {
+        parent::__construct($app, $events);
+        $this->service = $service;
+    }
+
     /**
      * The Artisan commands provided by your application.
      *
@@ -54,10 +68,10 @@ class Kernel extends ConsoleKernel
     {
         $schedule
             ->before(function () use ($name) {
-                ScheduleLog::begin($name);
+                $this->service->begin($name);
             })
             ->onSuccess(function () use ($name) {
-                ScheduleLog::end($name);
+                $this->service->end($name);
             })
             ->emailOutputOnFailure(config('mail.cron.address'));
     }

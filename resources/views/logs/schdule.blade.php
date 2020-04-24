@@ -1,16 +1,16 @@
 @extends('layout')
 
-@section('title', 'Cron Logs')
+@section('title', 'Schedule Logs')
 
 @section('content')
     <section class="container mb-4">
-        <h2>Cron Logs</h2>
+        <h2>Schedule Logs</h2>
         <table class="table">
             <thead>
-                <th>Status</th>
                 <th>ID</th>
+                <th>Status</th>
                 <th>Label</th>
-                <th>DateTime</th>
+                <th>Created At</th>
             </thead>
             <tbody>
                 @foreach ($logs as $log)
@@ -21,11 +21,11 @@
                         }
                     @endphp
                     <tr>
-                        <td class="{{$bg}}">
-                            {{ $log->status }}
-                        </td>
                         <td>
                             {{ $log->id }}
+                        </td>
+                        <td class="{{$bg}}">
+                            {{ $log->status }}
                         </td>
                         <td>
                             {{ $log->label }}

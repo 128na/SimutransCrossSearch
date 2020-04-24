@@ -14,5 +14,8 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', 'FrontController@index')->name('index');
-Route::get('/search', 'FrontController@search')->name('search');
-Route::get('/status', 'StatusController@index')->name('status');
+Route::get('search', 'FrontController@search')->name('search');
+Route::get('sitemap', 'SitemapController@index');
+
+Route::get('logs/schedule', 'ScheduleLogController@index')->name('logs.schedule');
+Route::get('logs/search', 'SearchLogController@index')->name('logs.search');

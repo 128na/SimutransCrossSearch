@@ -22,7 +22,7 @@
     <meta name="twitter:card" content="{{ config('app.twittercard') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') | {{ config('app.name') }}</title>
-    <link rel="canonical" href="{{ route('index') }}">
+    <link rel="canonical" href="{{ $canonical_url ?? url()->current() }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="shortcut icon" href="{{ route('index') }}{{ config('app.favicon') }}" type="image/vnd.microsoft.ico"/>
 </head>

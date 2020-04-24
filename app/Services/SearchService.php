@@ -2,49 +2,42 @@
 namespace App\Services;
 
 use App\Models\Page;
-use App\Models\SearchLog;
+use Illuminate\Support\Collection;
 
 class SearchService
 {
     /**
      * @var Page
      */
-    private $page;
-    /**
-     * @var SearchLog
-     */
-    private $search_log;
+    private $model;
 
-    public function __construct(Page $page, SearchLog $search_log)
+    public function __construct(Page $model)
     {
-        $this->page = $page;
-        $this->search_log = $search_log;
+        $this->model = $model;
     }
 
-    public function latest($limit = 20)
+    public function latest($limit = 20): Collection
     {
-        return $this->page
+        return $this->model
             ->orderBy('updated_at', 'desc')
             ->limit($limit)
             ->with('paks')
             ->get();
     }
 
-    public function search(string $word, string $type, array $paks, $per_page = 20)
+    public function search(string $word, string $type, array $paks, $per_page = 20): Collection
     {
         $search_condition = $this->parseSearchCondition($word, $type);
-        $query = $this->buildWordQuery($this->page->query(), $search_condition);
+        $query = $this->buildWordQuery($this->model->query(), $search_condition);
 
         if (count($paks)) {
             $query = $this->buildPakQuery($query, $paks);
         }
 
-        $res = $query
+        return $query
             ->orderBy('updated_at', 'desc')
             ->with('paks')
             ->paginate($per_page);
-
-        return $res;
     }
 
     private function buildWordQuery($query, $search_condition)
@@ -101,20 +94,4 @@ class SearchService
         $str = trim($str);
         return $str;
     }
-
-    /**
-     * 検索履歴の保存
-     */
-    public function putSearchLog(String $query): SearchLog
-    {
-        $log = $this->search_log->firstOrNew(['query' => $query]);
-
-        if ($log->isDirty()) {
-            $log->save();
-        } else {
-            $log->update(['count' => $log->count + 1]);
-        }
-        return $log;
-    }
-
 }

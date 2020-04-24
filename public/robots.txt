@@ -1,2 +1,3 @@
 User-agent: *
 Disallow:
+Sitemap: https://simutrans.sakura.ne.jp/cross_search/sitemap
