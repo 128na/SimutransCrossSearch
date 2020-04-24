@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Factories\SiteServiceFactory;
 use App\Services\SiteService\SiteService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use \Throwable;
 
 class ScrapeCommand extends Command
 {
@@ -30,6 +32,10 @@ class ScrapeCommand extends Command
      * @var SiteService
      */
     private $site_service;
+    /**
+     * @var null|Throwable
+     */
+    private $last_error = null;
 
     /**
      * Create a new command instance.
@@ -49,24 +55,41 @@ class ScrapeCommand extends Command
      */
     public function handle()
     {
+        DB::beginTransaction();
+
         $name = $this->argument('name');
         $this->site_service = $this->site_service_factory->make($name);
 
-        $urls = $this->site_service->getUrls();
+        try {
+            $urls = $this->site_service->getUrls();
+        } catch (Throwable $e) {
+            logger()->error($e->getMessage());
+            throw $e;
+        }
 
         $raw_page_urls = $urls->map(function ($url) {
-            $this->info($url);
-            $raw_page = retry(3, function () use ($url) {
-                $html = $this->site_service->getHTML($url);
-                return $this->site_service->saveOrUpdateRawPage($url, $html);
-            }, 1000);
-            return $raw_page->url;
+            try {
+                $this->info($url);
+                $raw_page = retry(3, function () use ($url) {
+                    $html = $this->site_service->getHTML($url);
+                    return $this->site_service->saveOrUpdateRawPage($url, $html);
+                }, 1000);
+                return $raw_page->url;
+            } catch (Throwable $e) {
+                $this->last_error = $e;
+                logger()->error($e->getMessage());
+            }
         });
 
+        DB::commit();
+        if ($this->last_error) {
+            throw $this->last_error;
+        }
         $this->info(sprintf('%d raw page updated', $raw_page_urls->count()));
 
+        DB::beginTransaction();
         $count = $this->site_service->removeExcludes($raw_page_urls);
-
+        DB::commit();
         $this->info(sprintf('%d raw page deleted', $count));
     }
 }
