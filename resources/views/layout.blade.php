@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MLK48JC');</script>
     <!-- End Google Tag Manager -->
 
-    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="{{ config('app.description') }}">
     <meta name="keywords" content="{{ implode(', ', config('app.keywords', [])) }}">
     <meta name="author" content="{{ config('app.author') }}">
@@ -32,19 +34,14 @@
         @include('parts.header')
     </header>
     <main>
+        @includeWhen($errors->any(), 'parts.errors')
+
         @yield('content')
     </main>
     <footer>
-        <div class="container text-center">
-        <p class="text-muted text-center">
-            <span>created by <a href="{{ config('app.twitter.url') }}" target="_blank">{{ config('app.twitter.name') }}</a>.</span> /
-            <span><a href="{{ config('app.github.url') }}" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Pull requests are always welcome!</a></span>
-        </p>
-        </div>
+        @include('parts.footer')
     </footer>
     </div>
 
-    <script src="{{ asset('js/app.js') }}"></script>
-    @yield('script')
 </body>
 </html>

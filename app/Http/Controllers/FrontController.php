@@ -2,41 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SearchWords;
-use App\Services\PageSearchService;
-use Illuminate\Http\Request;
+use App\Http\Requests\SearchRequest;
+use App\Services\SearchService;
 
 class FrontController extends Controller
 {
     /**
-     * @var PageSearchService
+     * @var SearchService
      */
-    private $page_search_service;
+    private $search_service;
 
-    public function __construct(PageSearchService $page_search_service)
+    public function __construct(SearchService $search_service)
     {
-        $this->page_search_service = $page_search_service;
+        $this->search_service = $search_service;
     }
 
     public function index()
     {
-        $pages = $this->page_search_service->latest();
+        $pages = $this->search_service->latest();
         return view('index', compact('pages'));
     }
 
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
-        $word = $request->word;
+        $word = $request->word ?? '';
+        $type = $request->type ?? 'and';
         $paks = $request->paks ?? [];
-        $search_words = new SearchWords($word);
-        $pages = $this->page_search_service->search($search_words, $paks);
-        $title = $this->page_search_service->getTitle($word, $paks);
+
+        $pages = $this->search_service->search($word, $type, $paks);
+        $title = $this->search_service->getTitle($word, $paks);
 
         if ($pages->total()) {
             $query = str_replace([$request->url(), '?'], '', $pages->withQueryString()->url(1));
-            $this->page_search_service->updateSearchLog($query);
+            $this->search_service->putSearchLog($query);
         }
 
-        return view('search', compact('pages', 'word', 'paks', 'title'));
+        return view('search', compact('pages', 'word', 'type', 'paks', 'title'));
     }
 }

@@ -3,9 +3,8 @@ namespace App\Services;
 
 use App\Models\Page;
 use App\Models\SearchLog;
-use App\Models\SearchWords;
 
-class PageSearchService
+class SearchService
 {
     /**
      * @var Page
@@ -31,13 +30,10 @@ class PageSearchService
             ->get();
     }
 
-    public function search(SearchWords $search_words, $paks, $per_page = 20)
+    public function search(string $word, string $type, array $paks, $per_page = 20)
     {
-
-        $query = $this->buildWordSearchQuery(
-            $this->page->query(),
-            $search_words->getWords()
-        );
+        $search_condition = $this->parseSearchCondition($word, $type);
+        $query = $this->buildWordQuery($this->page->query(), $search_condition);
 
         if (count($paks)) {
             $query = $this->buildPakQuery($query, $paks);
@@ -51,15 +47,17 @@ class PageSearchService
         return $res;
     }
 
-    private function buildWordSearchQuery($query, $words)
+    private function buildWordQuery($query, $search_condition)
     {
-        $words->each(function ($word) use ($query) {
-            $query->where(function ($query) use ($word) {
-                $query->where('text', 'like', "%{$word}%")
-                    ->orWhere('title', 'like', "%{$word}%");
-            });
+        return $query->where(function ($query) use ($search_condition) {
+            $where_method = $search_condition['type'] === 'and' ? 'where' : 'orWhere';
+            foreach ($search_condition['words'] as $word) {
+                $query->$where_method(function ($query) use ($word) {
+                    $query->where('text', 'like', "%{$word}%")
+                        ->orWhere('title', 'like', "%{$word}%");
+                });
+            }
         });
-        return $query;
     }
 
     private function buildPakQuery($query, $paks)
@@ -82,10 +80,32 @@ class PageSearchService
         return "「{$cond}」での検索結果";
     }
 
+    public function parseSearchCondition($word, $type = 'and')
+    {
+        $word = $this->clean($word);
+        return [
+            'words' => explode(' ', $word),
+            'type' => $type,
+        ];
+    }
+
+    /**
+     * 検索条件に関わる文字を統一
+     */
+    private function clean($str)
+    {
+        $from = ['　'];
+        $to = ' ';
+        $str = str_replace($from, $to, $str);
+        $str = mb_strtolower($str);
+        $str = trim($str);
+        return $str;
+    }
+
     /**
      * 検索履歴の保存
      */
-    public function updateSearchLog(String $query): SearchLog
+    public function putSearchLog(String $query): SearchLog
     {
         $log = $this->search_log->firstOrNew(['query' => $query]);
 

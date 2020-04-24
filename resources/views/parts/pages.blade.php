@@ -15,10 +15,10 @@
                 {{ $page->paks->pluck('name')->implode(', ') }}
             </td>
             <td>
-                <a target="_blank" rel="noopener noreferrer" href="{{ $page->url }}"><span>{{ $page->title }}</span></a>
+                <a target="_blank" rel="noopener noreferrer" class="link-page" href="{{ $page->url }}"><span>{{ $page->title }}</span></a>
             </td>
             <td>
-                <a target="_blank" rel="noopener noreferrer" href="{{ $page->site_url }}"><span>{{ $page->display_site_name }}</span></a>
+                <a target="_blank" rel="noopener noreferrer" class="link-site" href="{{ $page->site_url }}"><span>{{ $page->display_site_name }}</span></a>
             </td>
         </tr>
         @endforeach
