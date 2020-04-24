@@ -10,3 +10,4 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
+Route::get('v1/search', 'Api\v1\SearchController@search')->name('api.v1.search');

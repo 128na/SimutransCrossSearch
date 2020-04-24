@@ -20,7 +20,7 @@ class SearchService
     public function latest($limit = 20): Collection
     {
         return $this->model
-            ->select('id', 'site_name', 'title', 'updated_at')
+            ->select('id', 'site_name', 'title', 'url', 'updated_at')
             ->orderBy('updated_at', 'desc')
             ->limit($limit)
             ->with('paks')
@@ -29,7 +29,7 @@ class SearchService
 
     public function search(string $word, string $type, array $paks, $per_page = 20): LengthAwarePaginator
     {
-        $query = $this->model->select('id', 'site_name', 'title', 'updated_at');
+        $query = $this->model->select('id', 'site_name', 'title', 'url', 'updated_at');
 
         $search_condition = $this->parseSearchCondition($word, $type);
         $query = $this->buildWordQuery($query, $search_condition);
