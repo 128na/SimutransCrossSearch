@@ -9,7 +9,7 @@
         @foreach ($pages as $page)
         <tr>
             <td>
-                {{ $page->updated_at->format('Y/m/d') }}
+                {{ $page->last_modified->format('Y/m/d') }}
             </td>
             <td>
                 {{ $page->paks->pluck('name')->implode(', ') }}

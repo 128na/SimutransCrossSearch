@@ -5,6 +5,7 @@ namespace App\Services\SiteService;
 use App\Models\Page;
 use App\Models\Pak;
 use App\Models\RawPage;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class TwitransSiteService extends SiteService
@@ -56,6 +57,23 @@ class TwitransSiteService extends SiteService
             });
     }
 
+    public function isUpdated(RawPage $raw_page, string $html): bool
+    {
+        $crawler = $this->getCrawler($html);
+        $last_modified = $this->extractLastModified($crawler);
+
+        return $last_modified >= $raw_page->updated_at;
+    }
+
+    private function extractLastModified($crawler): Carbon
+    {
+        $text = $crawler->filter('div#lastmodified')->text();
+        $text = str_replace('Last-modified:', '', $text);
+        $text = trim($text);
+        $text = str_replace([' (月)', ' (火)', ' (水)', ' (木)', ' (金)', ' (土)', ' (日)'], '', $text);
+        return Carbon::createFromFormat('Y-m-d H:i:s', $text);
+    }
+
     public function extractContents(RawPage $raw_page): array
     {
         $html = $this->modifyHTML($raw_page->html);
@@ -64,8 +82,9 @@ class TwitransSiteService extends SiteService
         $title = $this->extractTitle($crawler);
         $text = $this->extractText($crawler);
         $paks = $this->extractPaks($raw_page->url);
+        $last_modified = $this->extractLastModified($crawler);
 
-        return compact('title', 'text', 'paks');
+        return compact('title', 'text', 'paks', 'last_modified');
     }
 
     /**

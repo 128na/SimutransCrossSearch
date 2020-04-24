@@ -20,7 +20,7 @@ class Pages extends ResourceCollection
                 'title' => $item->title,
                 'url' => $item->url,
                 'paks' => $item->paks->pluck('name'),
-                'updated_at' => $item->updated_at->toISOString(),
+                'last_modified' => $item->last_modified->toISOString(),
             ];
         });
     }

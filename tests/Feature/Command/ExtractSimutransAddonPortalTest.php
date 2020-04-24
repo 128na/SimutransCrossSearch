@@ -21,9 +21,10 @@ class ExtractSimutransAddonPortalTest extends ExtractTestCase
         $this->instance($this->site_service_class,
             Mockery::mock($this->site_service_class, [app(RawPage::class), app(Page::class), app(Pak::class)], function ($mock) {
                 $mock->shouldReceive('extractContents')->times(2)->andReturn(
-                    ['title' => 'first title', 'text' => 'first text', 'paks' => ['64', '128']],
-                    ['title' => 'second title', 'text' => 'second text', 'paks' => ['128', '128-japan']]
+                    ['title' => 'first title', 'text' => 'first text', 'paks' => ['64', '128'], 'last_modified' => now()->modify('-1 day')],
+                    ['title' => 'second title', 'text' => 'second text', 'paks' => ['128', '128-japan'], 'last_modified' => now()]
                 );
+                $mock->shouldReceive('isUpdated')->andReturn(true);
             })->makePartial()
         );
     }

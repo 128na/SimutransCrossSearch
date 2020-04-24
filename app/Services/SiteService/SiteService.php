@@ -53,7 +53,20 @@ abstract class SiteService
         $this->client = new Client(HttpClient::create(['timeout' => 60]));
     }
 
+    /**
+     * URL一覧の取得
+     */
     abstract public function getUrls(): Collection;
+
+    /**
+     * 取得HTMLの更新日が保存済みRawPage作成日よりも新しいか
+     */
+    abstract protected function isUpdated(RawPage $raw_page, string $html): bool;
+
+    /**
+     * 取得HTMLからタイトル、テキスト、pakセット一覧を取得する
+     * @return array(title => string, text => string, paks => string[])
+     */
     abstract public function extractContents(RawPage $raw_page): array;
 
     public function getHTML(string $url): string
@@ -76,7 +89,7 @@ abstract class SiteService
             return $this->raw_page->create(['url' => $url, 'site_name' => $this->name, 'html' => $html]);
         }
         // 変更有り？
-        if ($raw_page->html !== $html) {
+        if ($this->isUpdated($raw_page, $html)) {
             $raw_page->update(['html' => $html]);
         }
         return $raw_page;
@@ -100,9 +113,13 @@ abstract class SiteService
 
     public function saveOrUpdatePage(RawPage $raw_page, array $data): Page
     {
-        $page = $raw_page->page()->updateOrCreate([],
-            ['site_name' => $this->name, 'url' => $raw_page->url, 'title' => $data['title'], 'text' => $data['text']]
-        );
+        $page = $raw_page->page()->updateOrCreate([], [
+            'site_name' => $this->name,
+            'url' => $raw_page->url,
+            'title' => $data['title'],
+            'text' => $data['text'],
+            'last_modified' => $data['last_modified'],
+        ]);
 
         $pak_ids = $this->pak->whereIn('slug', $data['paks'])->get()
             ->pluck('id')->unique()->toArray();

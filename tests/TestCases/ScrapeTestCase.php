@@ -21,6 +21,7 @@ abstract class ScrapeTestCase extends TestCase
             Mockery::mock($this->site_service_class, [app(RawPage::class), app(Page::class), app(Pak::class)], function ($mock) {
                 $mock->shouldReceive('getUrls')->andReturn(collect(['http://example.com']));
                 $mock->shouldReceive('getHTML')->times(2)->andReturn('first example', 'second example');
+                $mock->shouldReceive('isUpdated')->andReturn(true);
             })->makePartial()
         );
     }

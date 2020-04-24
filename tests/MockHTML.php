@@ -32,7 +32,7 @@ class MockHTML
         </tr>
     </table>
     <div id="attach">{$exclude_text}</div>
-    <div id="lastmodified">{$exclude_text}</div>
+    <div id="lastmodified">Last-modified: 2020-01-01 (金) 00:00:00</div>
     <div id="footer">{$exclude_text}</div>
 </body>
 </html>
@@ -57,7 +57,10 @@ EOT;
         <div class="columns-container-center clearfix">
             <div class="column-center clearfix">
             <div id="body">
-                <div id="title">{$exclude_text}</div>
+                <div id="title">
+                    <h1 class="title" id="header">{$exclude_text}</h1>
+                        <div id="lastmodified">Last-modified: 2020-01-01 (金) 00:00:00</div>
+                </div>
                 <div id="content">{$include_text}</div>
                 <div id="prframe" style="height:280px;float:left;margin:50px 8px 10px 0px;">{$exclude_text}</div>
                 <div id="prframe" style="height:280px;float:left;margin:50px 0px 50px 0px;">{$exclude_text}</div>
