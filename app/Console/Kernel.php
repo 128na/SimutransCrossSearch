@@ -40,16 +40,16 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // 1 min
-        $this->appendLogging($schedule->command('page:scrape portal')->dailyAt('1:00'), 'scrape-portal');
-        $this->appendLogging($schedule->command('page:extract portal')->dailyAt('2:00'), 'extract-portal');
+        $this->appendLogging($schedule->command('page:scrape portal')->dailyAt('0:00'), 'scrape-portal');
+        $this->appendLogging($schedule->command('page:extract portal')->dailyAt('1:00'), 'extract-portal');
 
         // 15 min
         $this->appendLogging($schedule->command('page:scrape twitrans')->dailyAt('2:00'), 'scrape-twitrans');
         $this->appendLogging($schedule->command('page:extract twitrans')->dailyAt('3:00'), 'extract-twitrans');
 
         // 15 min
-        $this->appendLogging($schedule->command('page:scrape japan')->dailyAt('3:00'), 'scrape-japan');
-        $this->appendLogging($schedule->command('page:extract japan')->dailyAt('4:00'), 'extract-japan');
+        $this->appendLogging($schedule->command('page:scrape japan')->dailyAt('4:00'), 'scrape-japan');
+        $this->appendLogging($schedule->command('page:extract japan')->dailyAt('5:00'), 'extract-japan');
     }
 
     /**
