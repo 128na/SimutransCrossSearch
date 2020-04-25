@@ -39,6 +39,8 @@ php artisan optimize:clear
 php artisan optimize
 php artisan view:cache
 php artisan event:cache
+# ルートをキャッシュするとトップが405になる不具合
+php artisan route:clear
 
 echo ""
 echo "|--------------------------------------------------------------------------"
