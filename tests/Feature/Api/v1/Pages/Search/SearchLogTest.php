@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v1\Search;
+namespace Tests\Feature\Api\v1\Search\Pages;
 
 use App\Models\Page;
 use App\Models\RawPage;

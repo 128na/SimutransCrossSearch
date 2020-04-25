@@ -17,12 +17,15 @@ class Article extends Model
 
     public function getDisplayMediaTypeAttribute()
     {
-        $label = ['video' => '動画', 'image' => '画像'];
-        return $label[$this->media_type];
+        return config("media_types.{$this->media_type}");
     }
 
     public function getSiteUrlAttribute()
     {
         return config("media.{$this->site_name}.url", '');
+    }
+    public function getIsVideoAttribute()
+    {
+        return $this->media_type === 'video';
     }
 }

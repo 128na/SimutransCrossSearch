@@ -46,7 +46,7 @@ class SmileVideoMediaService extends MediaService
                 'text' => $item['description'],
                 'media_type' => 'video',
                 'url' => "{$this->url}/watch/{$item['contentId']}",
-                'thumbnail_url' => $item['thumbnailUrl'],
+                'thumbnail_url' => $item['thumbnailUrl'] . '.L',
                 'last_modified' => new Carbon($item['startTime']),
             ];
         });
