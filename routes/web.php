@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/', 'FrontController@index')->name('index');
-Route::get('/search', 'FrontController@search')->name('search');
+Route::get('/', 'PageController@index')->name('pages.index');
+Route::get('/search', 'PageController@search')->name('pages.search');
+Route::get('/articles', 'ArticleController@index')->name('articles.index');
+Route::get('/articles/search', 'ArticleController@search')->name('articles.search');
 
 Route::get('/sitemap', 'SitemapController@index')->name('sitemap');
 Route::get('/logs/schedule', 'ScheduleLogController@index')->name('logs.schedule');

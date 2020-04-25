@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Search;
+namespace Tests\Feature\Pages\Search;
 
 use Tests\TestCase;
 
@@ -8,28 +8,28 @@ class ValidateTest extends TestCase
 {
     public function testValidate()
     {
-        $url = route('search');
+        $url = route('pages.search');
         $res = $this->get($url);
         $res->assertStatus(200);
 
         // word
-        $url = route('search', ['word' => str_repeat('a', 101)]);
+        $url = route('pages.search', ['word' => str_repeat('a', 101)]);
         $res = $this->get($url);
         $res->assertSessionHasErrors(['word']);
-        $url = route('search', ['word' => ['array']]);
+        $url = route('pages.search', ['word' => ['array']]);
         $res = $this->get($url);
         $res->assertSessionHasErrors(['word']);
 
         // type
-        $url = route('search', ['type' => 'invalid']);
+        $url = route('pages.search', ['type' => 'invalid']);
         $res = $this->get($url);
         $res->assertSessionHasErrors(['type']);
 
         // paks
-        $url = route('search', ['paks' => 'not array']);
+        $url = route('pages.search', ['paks' => 'not array']);
         $res = $this->get($url);
         $res->assertSessionHasErrors(['paks']);
-        $url = route('search', ['paks' => ['invalid']]);
+        $url = route('pages.search', ['paks' => ['invalid']]);
         $res = $this->get($url);
         $res->assertSessionHasErrors(['paks.0']);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Pages;
 
 use Tests\TestCase;
 
@@ -8,14 +8,14 @@ class ShowTest extends TestCase
 {
     public function testIndex()
     {
-        $url = route('index');
+        $url = route('pages.index');
         $res = $this->get($url);
         $res->assertStatus(200);
     }
 
     public function testSearch()
     {
-        $url = route('search');
+        $url = route('pages.search');
         $res = $this->get($url);
         $res->assertStatus(200);
     }

@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use \Throwable;
 
-class ScrapeCommand extends Command
+class ScrapePageCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -27,7 +27,7 @@ class ScrapeCommand extends Command
     /**
      * @var SiteServiceFactory
      */
-    private $site_service_factory;
+    private $service_factory;
     /**
      * @var SiteService
      */
@@ -42,10 +42,10 @@ class ScrapeCommand extends Command
      *
      * @return void
      */
-    public function __construct(SiteServiceFactory $site_service_factory)
+    public function __construct(SiteServiceFactory $service_factory)
     {
         parent::__construct();
-        $this->site_service_factory = $site_service_factory;
+        $this->service_factory = $service_factory;
     }
 
     /**
@@ -58,7 +58,7 @@ class ScrapeCommand extends Command
         DB::beginTransaction();
 
         $name = $this->argument('name');
-        $this->site_service = $this->site_service_factory->make($name);
+        $this->site_service = $this->service_factory->make($name);
 
         try {
             $urls = $this->site_service->getUrls();

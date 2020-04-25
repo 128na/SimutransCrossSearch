@@ -1,18 +1,18 @@
 <?php
 namespace App\Services;
 
-use App\Models\Page;
+use App\Models\Article;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-class SearchService
+class ArticleSearchService
 {
     /**
-     * @var Page
+     * @var Article
      */
     private $model;
 
-    public function __construct(Page $model)
+    public function __construct(Article $model)
     {
         $this->model = $model;
     }
@@ -20,16 +20,16 @@ class SearchService
     public function latest($limit = 20): Collection
     {
         return $this->model
-            ->select('id', 'site_name', 'title', 'url', 'last_modified')
+            ->select('id', 'site_name', 'media_type', 'title', 'url', 'thumbnail_url', 'last_modified')
             ->orderBy('last_modified', 'desc')
             ->limit($limit)
-            ->with('paks')
             ->get();
     }
 
     public function search(string $word, string $type, array $paks, $per_page = 20): LengthAwarePaginator
     {
-        $query = $this->model->select('id', 'site_name', 'title', 'url', 'last_modified');
+        $query = $this->model
+            ->select('id', 'site_name', 'media_type', 'title', 'url', 'thumbnail_url', 'last_modified');
 
         $search_condition = $this->parseSearchCondition($word, $type);
         $query = $this->buildWordQuery($query, $search_condition);

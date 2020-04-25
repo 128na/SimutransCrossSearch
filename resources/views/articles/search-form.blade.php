@@ -5,7 +5,7 @@
     @endforeach
     に投稿されているアドオンをまとめて検索できます。
 </p>
-<form class="form" action="{{route('search')}}" method="GET">
+<form class="form" action="{{route('articles.search')}}" method="GET">
     <div class="form-group">
         <div class="input-group">
             <input class="form-control flex-2" name="word" type="search" placeholder="キーワード" aria-label="Search" value="{{ old('word', $word ?? '') }}">

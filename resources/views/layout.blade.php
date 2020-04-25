@@ -21,8 +21,8 @@
 
     <meta property="og:title" content="{{ config('app.name') }}">
     <meta property="og:type" content="{{ config('app.type') }}">
-    <meta property="og:url" content="{{ route('index') }}">
-    <meta property="og:image" content="{{ route('index') }}{{ config('app.image') }}">
+    <meta property="og:url" content="{{ route('pages.index') }}">
+    <meta property="og:image" content="{{ route('pages.index') }}{{ config('app.image') }}">
     <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta property="og:description" content="{{ config('app.description') }}">
 
@@ -31,7 +31,7 @@
     <title>@yield('title') | {{ config('app.name') }}</title>
     <link rel="canonical" href="{{ $canonical_url ?? url()->current() }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="shortcut icon" href="{{ route('index') }}{{ config('app.favicon') }}" type="image/vnd.microsoft.ico"/>
+    <link rel="shortcut icon" href="{{ route('pages.index') }}{{ config('app.favicon') }}" type="image/vnd.microsoft.ico"/>
 </head>
 <body>
     <header>

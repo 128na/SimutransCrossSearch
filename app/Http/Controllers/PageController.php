@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchRequest;
+use App\Services\PageSearchService;
 use App\Services\SearchLogService;
-use App\Services\SearchService;
 
-class FrontController extends Controller
+class PageController extends Controller
 {
     /**
-     * @var SearchService
+     * @var PageSearchService
      */
     private $search_service;
     /**
@@ -17,7 +17,7 @@ class FrontController extends Controller
      */
     private $search_log_service;
 
-    public function __construct(SearchService $search_service, SearchLogService $search_log_service)
+    public function __construct(PageSearchService $search_service, SearchLogService $search_log_service)
     {
         $this->search_service = $search_service;
         $this->search_log_service = $search_log_service;
@@ -26,7 +26,7 @@ class FrontController extends Controller
     public function index()
     {
         $pages = $this->search_service->latest();
-        return view('index', compact('pages'));
+        return view('pages.index', compact('pages'));
     }
 
     public function search(SearchRequest $request)
@@ -44,6 +44,6 @@ class FrontController extends Controller
             $this->search_log_service->put($query);
         }
 
-        return view('search', compact('pages', 'word', 'type', 'paks', 'title', 'canonical_url'));
+        return view('pages.search', compact('pages', 'word', 'type', 'paks', 'title', 'canonical_url'));
     }
 }
