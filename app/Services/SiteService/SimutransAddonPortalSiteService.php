@@ -42,11 +42,13 @@ class SimutransAddonPortalSiteService extends SiteService
     {
         $slug = basename($raw_page->url);
         $article = Article::where('slug', $slug)
-            ->with('categories')->first();
+            ->with(['categories' => function ($q) {
+                $q->select('slug')->where('type', 'pak');
+            }])->first();
 
         $title = $article->title;
         $text = $article->text_contents;
-        $paks = $article->category_paks->pluck('slug')->all();
+        $paks = $article->pluck('slug')->all();
         $last_modified = $article->updated_at;
 
         return compact('title', 'text', 'paks', 'last_modified');
