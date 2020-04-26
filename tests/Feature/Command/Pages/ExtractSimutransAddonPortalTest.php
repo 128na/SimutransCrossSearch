@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Command\Pages;
 
+use App\Events\ContentsUpdated;
 use App\Models\Page;
 use App\Models\Pak;
 use App\Models\RawPage;
 use App\Services\SiteService\SimutransAddonPortalSiteService as SiteService;
+use Illuminate\Support\Facades\Event;
 use Mockery;
 use Tests\TestCases\ExtractTestCase;
 
@@ -32,10 +34,12 @@ class ExtractSimutransAddonPortalTest extends ExtractTestCase
     public function testScrape()
     {
         $command = 'page:extract portal';
+        Event::fake();
 
         $raw_page = RawPage::create(['site_name' => 'portal', 'html' => '', 'url' => 'http://example.com']);
 
         $this->assertDatabaseMissing('pages', ['url' => 'http://example.com']);
+        Event::assertNotDispatched(ContentsUpdated::class);
 
         $this->artisan($command)->assertExitCode(0);
         $this->assertDatabaseHas('pages', ['url' => 'http://example.com', 'title' => 'first title', 'text' => 'first text']);
@@ -43,11 +47,13 @@ class ExtractSimutransAddonPortalTest extends ExtractTestCase
         $this->assertDatabaseHas('page_pak', ['page_id' => $page->id, 'pak_id' => $this->pak64->id]);
         $this->assertDatabaseHas('page_pak', ['page_id' => $page->id, 'pak_id' => $this->pak128->id]);
         $this->assertDatabaseMissing('page_pak', ['page_id' => $page->id, 'pak_id' => $this->pak128jp->id]);
+        Event::assertDispatched(ContentsUpdated::class);
 
         $this->artisan($command)->assertExitCode(0);
         $this->assertDatabaseHas('pages', ['url' => 'http://example.com', 'title' => 'second title', 'text' => 'second text']);
         $this->assertDatabaseMissing('page_pak', ['page_id' => $page->id, 'pak_id' => $this->pak64->id]);
         $this->assertDatabaseHas('page_pak', ['page_id' => $page->id, 'pak_id' => $this->pak128->id]);
         $this->assertDatabaseHas('page_pak', ['page_id' => $page->id, 'pak_id' => $this->pak128jp->id]);
+        Event::assertDispatched(ContentsUpdated::class, 2);
     }
 }

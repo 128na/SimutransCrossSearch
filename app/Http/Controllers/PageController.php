@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ContentsUpdated;
 use App\Http\Requests\Pages\SearchRequest;
 use App\Services\PageSearchService;
 use App\Services\SearchLogService;
@@ -42,6 +43,7 @@ class PageController extends Controller
         if ($pages->total()) {
             $query = str_replace([$request->url(), '?'], '', $pages->withQueryString()->url(1));
             $this->search_log_service->put($query);
+            event(new ContentsUpdated);
         }
 
         return view('pages.search', compact('pages', 'word', 'type', 'paks', 'title', 'canonical_url'));

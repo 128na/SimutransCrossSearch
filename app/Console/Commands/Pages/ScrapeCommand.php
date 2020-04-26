@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Pages;
 
+use App\Events\ContentsUpdated;
 use App\Factories\SiteServiceFactory;
 use App\Services\SiteService\SiteService;
 use Illuminate\Console\Command;
@@ -91,5 +92,7 @@ class ScrapeCommand extends Command
         $count = $this->site_service->removeExcludes($raw_page_urls);
         DB::commit();
         $this->info(sprintf('%d raw page deleted', $count));
+
+        event(new ContentsUpdated);
     }
 }

@@ -18,15 +18,15 @@ class SitemapService
 
     public function getOrGenerate()
     {
-        return Storage::disk('public')->exists(self::FILENAME) ? self::get() : self::generate();
+        return Storage::disk('public')->exists(self::FILENAME) ? $this->get() : $this->generate();
     }
 
-    private static function get()
+    private function get()
     {
         return Storage::disk('public')->get(self::FILENAME);
     }
 
-    public static function generate()
+    public function generate()
     {
         $sitemap = SitemapGenerator::create();
 
@@ -42,12 +42,13 @@ class SitemapService
         };
 
         // listing pages
-        $add(route('index'), '1', Url::CHANGE_FREQUENCY_DAILY);
+        $add(route('pages.index'), '1', Url::CHANGE_FREQUENCY_DAILY);
+        $add(route('articles.index'), '1', Url::CHANGE_FREQUENCY_DAILY);
 
         // logs
         foreach (SearchLog::orderBy('created_at', 'desc')->cursor() as $log) {
             $add(
-                route('search') . '?' . $log->query,
+                route('pages.search') . '?' . $log->query,
                 '0.5',
                 Url::CHANGE_FREQUENCY_DAILY,
                 $log->updated_at

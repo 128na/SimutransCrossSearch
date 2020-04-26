@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Pages;
 
+use App\Events\ContentsUpdated;
 use App\Factories\SiteServiceFactory;
 use App\Models\RawPage;
 use App\Services\SiteService\SiteService;
@@ -78,5 +79,7 @@ class ExtractCommand extends Command
             throw $this->last_error;
         }
         $this->info(sprintf('%d page updated', $result->count()));
+
+        event(new ContentsUpdated);
     }
 }

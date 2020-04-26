@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v1\Search\Pages;
+namespace Tests\Feature\Api\v1\Pages\Search;
 
 use Tests\TestCase;
 

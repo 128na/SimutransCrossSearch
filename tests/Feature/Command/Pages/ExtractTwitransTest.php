@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Command\Pages;
 
+use App\Events\ContentsUpdated;
 use App\Models\Page;
 use App\Models\RawPage;
+use Illuminate\Support\Facades\Event;
 use Tests\MockHTML;
 use Tests\TestCases\ExtractTestCase;
 
@@ -48,6 +50,7 @@ class ExtractTwitransTest extends ExtractTestCase
     private function extract($url, \Closure $assert_fn)
     {
         $command = 'page:extract twitrans';
+        Event::fake();
 
         $html = MockHTML::twitrans('first title', 'first text', 'exclude text');
         $raw_page = RawPage::create(['site_name' => 'twitrans', 'html' => $html, 'url' => $url]);
@@ -56,17 +59,20 @@ class ExtractTwitransTest extends ExtractTestCase
         $this->assertDatabaseMissing('page_pak', ['pak_id' => $this->pak64->id]);
         $this->assertDatabaseMissing('page_pak', ['pak_id' => $this->pak128->id]);
         $this->assertDatabaseMissing('page_pak', ['pak_id' => $this->pak128jp->id]);
+        Event::assertNotDispatched(ContentsUpdated::class);
 
         $this->artisan($command)->assertExitCode(0);
         $this->assertDatabaseHas('pages', ['url' => $url, 'title' => 'first title', 'text' => 'first text']);
         $page = Page::first();
         $assert_fn($page);
+        Event::assertDispatched(ContentsUpdated::class);
 
         $html = MockHTML::twitrans('second title', 'second text', 'exclude text');
         $raw_page->update(['html' => $html]);
         $this->artisan($command)->assertExitCode(0);
         $this->assertDatabaseHas('pages', ['url' => $url, 'title' => 'second title', 'text' => 'second text']);
         $assert_fn($page);
+        Event::assertDispatched(ContentsUpdated::class, 2);
 
     }
 }
