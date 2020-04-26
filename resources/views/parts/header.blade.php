@@ -8,7 +8,7 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item {{ request()->route()->named('pages.index') ? 'active' : ''}}">
+              <li class="nav-item {{ request()->route()->named(['pages.index', 'pages.search']) ? 'active' : ''}}">
                 <a class="nav-link" href="{{ route('pages.index') }}">Addon</a>
               </li>
               <li class="nav-item {{ request()->route()->named('articles.index') ? 'active' : ''}}">
