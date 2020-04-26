@@ -5,7 +5,7 @@
 @section('content')
     <section class="container mb-5">
         <h2 class="mb-3">アドオン横断検索</h2>
-        @include('pages.search-form')
+        @include('pages.form')
     </section>
     <section class="container mb-5">
         <h3 class="mb-3">

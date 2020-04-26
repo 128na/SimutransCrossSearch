@@ -46,6 +46,6 @@
         @include('parts.footer')
     </footer>
     </div>
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </body>
-<script src="{{ asset('js/app.js') }}" defer></script>
 </html>

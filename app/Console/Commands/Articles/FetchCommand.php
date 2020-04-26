@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use \Throwable;
 
-class MediaFetchCommand extends Command
+class FetchCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -59,18 +59,14 @@ class MediaFetchCommand extends Command
         try {
             $items = $this->media_service->search('Simutrans', 50);
 
-            $article_urls = $items->map(function ($item) {
-                $article = $this->media_service->saveArticleIfNeeded($item);
-                return $item['url'];
-            });
-
-            $this->media_service->removeExcludes($article_urls);
-
+            $articles = $items->map(function ($item) {
+                return $this->media_service->saveArticleIfNeeded($item);
+            })->filter();
         } catch (Throwable $e) {
             logger()->error($e->getMessage());
             throw $e;
         }
         DB::commit();
-        $this->info(sprintf('%d article updated', $items->count()));
+        $this->info(sprintf('%d article updated', $articles->count()));
     }
 }

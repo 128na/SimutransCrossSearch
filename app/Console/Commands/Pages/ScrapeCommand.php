@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use \Throwable;
 
-class ScrapePageCommand extends Command
+class ScrapeCommand extends Command
 {
     /**
      * The name and signature of the console command.

@@ -19,7 +19,7 @@ class ScheduleLogService
     public function getLatest($limit = 50): Collection
     {
         return $this->model
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->limit($limit)
             ->get();
     }

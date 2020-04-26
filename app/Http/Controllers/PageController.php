@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SearchRequest;
+use App\Http\Requests\Pages\SearchRequest;
 use App\Services\PageSearchService;
 use App\Services\SearchLogService;
 

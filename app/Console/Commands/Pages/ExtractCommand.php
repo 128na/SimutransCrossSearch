@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use \Throwable;
 
-class ExtractPageCommand extends Command
+class ExtractCommand extends Command
 {
     /**
      * The name and signature of the console command.

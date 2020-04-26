@@ -2,7 +2,7 @@
 namespace App\Services;
 
 use App\Models\Article;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
 
 class ArticleSearchService
 {
@@ -16,12 +16,15 @@ class ArticleSearchService
         $this->model = $model;
     }
 
-    public function latest(): Collection
+    public function latest($media_types = [], $limit = 50): Paginator
     {
-        return $this->model
-            ->select('id', 'site_name', 'media_type', 'title', 'url', 'thumbnail_url', 'last_modified')
-            ->whereDate('last_modified', '>', now()->modify('-3 months'))
-            ->orderBy('last_modified', 'desc')
-            ->get();
+        $query = $this->model
+            ->select('id', 'site_name', 'media_type', 'title', 'url', 'thumbnail_url', 'last_modified');
+
+        if (count($media_types)) {
+            $query->whereIn('media_type', $media_types);
+        }
+
+        return $query->orderBy('last_modified', 'desc')->simplePaginate($limit);
     }
 }

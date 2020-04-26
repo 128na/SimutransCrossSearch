@@ -23,6 +23,8 @@ class CreateArticlesTable extends Migration
             $table->string('thumbnail_url', 512)->nullable();
             $table->timestamp('last_modified')->nullable()->comment('元記事の最終更新日時');
             $table->timestamps();
+
+            $table->index(['last_modified']);
         });
     }
 
@@ -33,6 +35,10 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropIndex(['last_modified']);
+        });
+
         Schema::dropIfExists('articles');
     }
 }

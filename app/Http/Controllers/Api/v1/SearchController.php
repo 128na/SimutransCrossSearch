@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SearchRequest;
+use App\Http\Requests\Pages\SearchRequest;
 use App\Http\Resources\Pages;
 use App\Services\PageSearchService;
 use App\Services\SearchLogService;

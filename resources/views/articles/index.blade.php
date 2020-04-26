@@ -5,14 +5,18 @@
 @section('content')
     <section class="container mb-5">
         <h2 class="mb-3">
-            最近投稿されたメディア
+            最近投稿されたメディア検索
         </h2>
-        <p>
-            @foreach (config('media') as $media)
-                <a href="{{ $media['url'] }}" class="link-media" target="_blank" rel="noopener noreferrer"><span>{{ $media['display_name'] }}</span></a>
-            @endforeach
-            に投稿された最近3か月ぐらいのSimutrans関連の動画、画像です。
-        </p>
-        @include('articles.table')
+        @include('articles.form')
+        <h3 class="mb-3">
+            検索結果一覧
+        </h3>
+        @if ($articles->isEmpty())
+            <p>該当なし</p>
+        @else
+            {{ $articles->withQueryString()->links('vendor.pagination.simple-bootstrap-4') }}
+            @include('articles.table')
+            {{ $articles->withQueryString()->links('vendor.pagination.simple-bootstrap-4') }}
+        @endif
     </section>
 @endsection
