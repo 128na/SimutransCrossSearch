@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Pages;
 
 use App\Factories\SiteServiceFactory;
 use App\Models\RawPage;

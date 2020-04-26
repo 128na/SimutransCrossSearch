@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Command;
+namespace Tests\Feature\Command\Pages;
 
 use App\Models\Page;
 use App\Models\Pak;
