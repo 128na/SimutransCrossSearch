@@ -1,0 +1,77 @@
+@startuml
+title scrape
+User -> ScrapeCommand: page:scrape {--name}
+activate ScrapeCommand
+ScrapeCommand -> SiteServiceFactory: make(name)
+ScrapeCommand <-- SiteServiceFactory: FooSiteService
+ScrapeCommand -> FooSiteService: getUrls
+ScrapeCommand <-- FooSiteService: Collection<url>
+loop Collection
+    ScrapeCommand -> FooSiteService: getHTML(url)
+    ScrapeCommand <-- FooSiteService: html
+    ScrapeCommand -> FooSiteService: saveOrUpdateRawPage(url, html)
+    activate FooSiteService
+    FooSiteService -> RawPage:first
+    alt doesnt exist?
+        FooSiteService -> RawPage:create
+        FooSiteService <-- RawPage:page
+    else
+        alt updated?
+            FooSiteService -> RawPage:update
+            FooSiteService <-- RawPage:result
+        end
+    end
+    ScrapeCommand <-- FooSiteService: raw_page
+    deactivate FooSiteService
+end
+ScrapeCommand -> FooSiteService: removeExcludes(urls)
+FooSiteService -> RawPage:delete
+ScrapeCommand <-- RawPage: result
+User <- ScrapeCommand: show result
+deactivate ScrapeCommand
+@enduml
+
+@startuml
+title extract
+User -> ExtractCommand: page:extract {--name}
+activate ExtractCommand
+ExtractCommand -> SiteServiceFactory: make(name)
+ExtractCommand <-- SiteServiceFactory: FooSiteService
+ExtractCommand -> FooSiteService: getUpdatedRawPages
+FooSiteService -> RawPage: cursor
+ExtractCommand <-- RawPage: LazyCollection<raw_page>
+loop LazyCollection
+    ExtractCommand -> FooSiteService: extractContents
+    ExtractCommand <-- FooSiteService: [title, text, paks, last_modified]
+    ExtractCommand -> FooSiteService: saveOrUpdatePage
+    FooSiteService -> Page: updateOrCreate
+    FooSiteService <-- Page:page
+    FooSiteService -> Pak: sync
+    FooSiteService <-- Pak
+    ExtractCommand <-- FooSiteService: page
+end
+User <- ExtractCommand: show result
+deactivate ExtractCommand
+@enduml
+
+@startuml
+title fetch
+User -> FetchCommand: media:fetch {--name}
+activate FetchCommand
+FetchCommand -> FetchServiceFactory: make(name)
+FetchCommand <-- FetchServiceFactory: FooFetchService
+FetchCommand -> FooFetchService: search
+FetchCommand <-- FooFetchService: Collection<contents>
+loop Collection
+    FetchCommand -> FooFetchService: saveArticleIfNeeded
+    FooFetchService -> Article: exists
+    FooFetchService <-- Article
+    alt doesnt exist
+        FooFetchService -> Article: create
+        FooFetchService <-- Article:article
+    end
+    FetchCommand <-- FooFetchService: ?Article
+end
+User <- FetchCommand: show result
+deactivate FetchCommand
+@enduml
