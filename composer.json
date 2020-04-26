@@ -17,8 +17,7 @@
         "google/apiclient": "^2.4",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
-        "laravel/tinker": "^2.0",
-        "spatie/laravel-sitemap": "^5.7"
+        "laravel/tinker": "^2.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

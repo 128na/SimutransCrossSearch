@@ -18,9 +18,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        \App\Events\ContentsUpdated::class => [
-            \App\Listeners\UpdateSitemap::class,
-        ],
     ];
 
     /**

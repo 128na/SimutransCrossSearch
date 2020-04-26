@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Events\ContentsUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pages\SearchRequest;
 use App\Http\Resources\Pages;
@@ -37,7 +36,6 @@ class SearchController extends Controller
         if ($pages->total()) {
             $query = str_replace([$request->url(), '?'], '', $pages->withQueryString()->url(1));
             $this->search_log_service->put($query);
-            event(new ContentsUpdated);
         }
 
         return new Pages($pages);
