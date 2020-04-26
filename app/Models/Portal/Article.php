@@ -47,18 +47,6 @@ class Article extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | アクセサ
-    |--------------------------------------------------------------------------
-     */
-    public function getCategoryPaksAttribute()
-    {
-        return $this->categories->filter(function ($category) {
-            return $category->type === 'pak';
-        });
-    }
-
     public function getTextContentsAttribute()
     {
         $contents = $this->contents['description'] ?? '';

@@ -6,20 +6,6 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
-    public function testIndex()
-    {
-        $url = route('index');
-        $res = $this->get($url);
-        $res->assertStatus(200);
-    }
-
-    public function testSearch()
-    {
-        $url = route('search');
-        $res = $this->get($url);
-        $res->assertStatus(200);
-    }
-
     public function testSitemap()
     {
         $url = route('sitemap');

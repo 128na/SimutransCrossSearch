@@ -10,8 +10,6 @@ use Illuminate\Support\Collection;
 
 class SimutransAddonPortalSiteService extends SiteService
 {
-    private $token;
-
     public function __construct(RawPage $raw_page, Page $page, Pak $pak)
     {
         parent::__construct(
@@ -20,7 +18,6 @@ class SimutransAddonPortalSiteService extends SiteService
             $page,
             $pak
         );
-        $this->token = config('sites.portal.token');
     }
 
     public function getUrls(): Collection
@@ -42,11 +39,13 @@ class SimutransAddonPortalSiteService extends SiteService
     {
         $slug = basename($raw_page->url);
         $article = Article::where('slug', $slug)
-            ->with('categories')->first();
+            ->with(['categories' => function ($q) {
+                $q->select('slug')->where('type', 'pak');
+            }])->first();
 
         $title = $article->title;
         $text = $article->text_contents;
-        $paks = $article->category_paks->pluck('slug')->all();
+        $paks = $article->pluck('slug')->all();
         $last_modified = $article->updated_at;
 
         return compact('title', 'text', 'paks', 'last_modified');

@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SearchRequest;
+use App\Http\Requests\Pages\SearchRequest;
 use App\Http\Resources\Pages;
+use App\Services\PageSearchService;
 use App\Services\SearchLogService;
-use App\Services\SearchService;
 
 class SearchController extends Controller
 {
     /**
-     * @var SearchService
+     * @var PageSearchService
      */
     private $search_service;
     /**
@@ -19,7 +19,7 @@ class SearchController extends Controller
      */
     private $search_log_service;
 
-    public function __construct(SearchService $search_service, SearchLogService $search_log_service)
+    public function __construct(PageSearchService $search_service, SearchLogService $search_log_service)
     {
         $this->search_service = $search_service;
         $this->search_log_service = $search_log_service;
