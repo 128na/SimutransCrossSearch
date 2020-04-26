@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands\Articles;
 
-use App\Events\ContentsUpdated;
 use App\Factories\MediaServiceFactory;
 use App\Services\MediaService\MediaService;
 use Illuminate\Console\Command;
@@ -70,6 +69,5 @@ class FetchCommand extends Command
         DB::commit();
         $this->info(sprintf('%d article updated', $articles->count()));
 
-        event(new ContentsUpdated);
     }
 }

@@ -6,12 +6,6 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
-    public function testSitemap()
-    {
-        $url = route('sitemap');
-        $res = $this->get($url);
-        $res->assertStatus(200);
-    }
 
     public function testLogSchedule()
     {

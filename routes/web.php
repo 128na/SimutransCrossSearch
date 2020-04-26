@@ -18,6 +18,5 @@ Route::get('/search', 'PageController@search')->name('pages.search');
 Route::get('/articles', 'ArticleController@index')->name('articles.index');
 Route::get('/articles/search', 'ArticleController@search')->name('articles.search');
 
-Route::get('/sitemap', 'SitemapController@index')->name('sitemap');
 Route::get('/logs/schedule', 'ScheduleLogController@index')->name('logs.schedule');
 Route::get('/logs/search', 'SearchLogController@index')->name('logs.search');
