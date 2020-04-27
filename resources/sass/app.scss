@@ -3,51 +3,22 @@ $info: hsla(188, 78%, 48%, 1);
 $success: hsla(134, 61%, 48%, 1);
 @import "~bootstrap";
 
-header nav.navbar {
-    border-top: solid 4px var(--primary);
-}
-
+// layout
 body {
     display: grid;
     min-height: 100vh;
 
     grid-template-rows: 6rem 1fr 3rem;
 }
-
-.flex-2 {
-    flex: 2 !important;
+header nav.navbar {
+    border-top: solid 4px var(--primary);
 }
 .nav-item.active {
     font-weight: 500;
 }
-article {
-    div {
-        min-width: 128px;
-        max-width: 256px;
-        margin: auto;
-    }
-    .thumbnail {
-        max-width: 256px;
-        max-height: 160px;
-    }
-    .thumbnail-area {
-        position: relative;
-        .play-icon {
-            width: 64px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin: auto;
-
-            fill: var(--light);
-            filter: drop-shadow(3px 3px 5px var(--dark));
-        }
-        &:hover {
-            .play-icon {
-                filter: drop-shadow(3px 3px 5px var(--light));
-            }
-        }
-    }
+.flex-2 {
+    flex: 2 !important;
 }
+
+@import "./article.scss";
+@import "./page.scss";

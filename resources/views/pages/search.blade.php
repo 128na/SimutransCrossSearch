@@ -12,9 +12,9 @@
         @if ($pages->isEmpty())
             <p>該当なし</p>
         @else
-            {{ $pages->withQueryString()->links('vendor.pagination.bootstrap-4') }}
+            {{ $pages->withQueryString()->links('vendor.pagination.simple-bootstrap-4') }}
             @include('pages.table')
-            {{ $pages->withQueryString()->links('vendor.pagination.bootstrap-4') }}
+            {{ $pages->withQueryString()->links('vendor.pagination.simple-bootstrap-4') }}
         @endif
     </section>
 @endsection
