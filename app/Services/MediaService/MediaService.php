@@ -46,12 +46,4 @@ abstract class MediaService
             'last_modified' => $data['last_modified'],
         ]);
     }
-
-    public function removeExcludes(Collection $urls): int
-    {
-        return $this->article
-            ->where('site_name', $this->name)
-            ->whereNotIn('url', $urls->toArray())
-            ->delete();
-    }
 }
