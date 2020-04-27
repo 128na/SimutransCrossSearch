@@ -1,0 +1,116 @@
+@startuml
+title site_erd
+class SiteServiceFactory
+class SiteService{
+  name
+  url
+  ---
+  getUrls
+  getHTML
+  saveOrUpdateRawPage
+  removeExcludes
+  getUpdatedRawPages
+  extractContents
+  saveOrUpdatePage
+}
+class SimutransPortalSiteService
+class JapaneseSimutransSiteService
+class TwitransSiteService
+class RawPage{
+  site_name
+  url
+  html
+}
+class Page{
+  site_name
+  url
+  text
+  title
+  last_modified
+}
+class Pak{
+  name
+  slug
+}
+class ScrapeCommand
+class ExtractCommand
+class Portal\Article
+class Portal\Category
+ScrapeCommand -- SiteServiceFactory
+ExtractCommand -- SiteServiceFactory
+SiteServiceFactory -- SiteService
+SiteService -- RawPage
+SiteService -- Page
+RawPage -- Page
+Page -- Pak
+SiteService <|- JapaneseSimutransSiteService
+SiteService <|- TwitransSiteService
+SiteService <|- SimutransPortalSiteService
+SimutransPortalSiteService -- Portal\Article
+SimutransPortalSiteService -- Portal\Category
+@enduml
+
+@startuml
+title media_erd
+class MediaServiceFactory
+class MediaService{
+  name
+  url
+  ---
+  search
+  saveArticleIfNeeded
+}
+class YoutubeMediaService
+class SmileVideoMediaService
+class TwitterMediaService
+class Article{
+  site_name
+  url
+  title
+  text
+  media_type
+  thumbnail_url
+  last_modified
+}
+class FetchCommand
+FetchCommand -- MediaServiceFactory
+MediaServiceFactory -- MediaService
+MediaService <|-- YoutubeMediaService
+MediaService <|-- SmileVideoMediaService
+MediaService <|-- TwitterMediaService
+MediaService -- Article
+@enduml
+
+@startuml
+title page_search_erd
+class Page
+class Pak
+class SearchLog
+class PageController {
+    index
+    search
+}
+class Api\v1\PageController {
+    search
+}
+class PageSearchService
+class SearchLogService
+PageController -- PageSearchService
+PageController -- SearchLogService
+Api\v1\PageController -- PageSearchService
+Api\v1\PageController -- SearchLogService
+PageSearchService -- Page
+PageSearchService -- Pak
+SearchLogService-- SearchLog
+@enduml
+
+@startuml
+title article_search_erd
+class Article
+class ArticleController {
+    index
+}
+class ArticleSearchService
+ArticleController -- ArticleSearchService
+ArticleSearchService -- Article
+@enduml

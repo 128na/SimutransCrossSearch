@@ -8,7 +8,7 @@ use App\Http\Resources\Pages;
 use App\Services\PageSearchService;
 use App\Services\SearchLogService;
 
-class SearchController extends Controller
+class PageController extends Controller
 {
     /**
      * @var PageSearchService
