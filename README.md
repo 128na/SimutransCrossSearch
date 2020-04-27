@@ -2,14 +2,17 @@
 https://simutrans.sakura.ne.jp/cross_search/
 
 ## 仕組み
-<img src="./docs/flow.png">
+<img src="./docs/spec/img/flow.png">
 
 ## 提供機能
-- 更新一覧、テキスト検索画面
+- アドオン掲載媒体の更新一覧、テキスト検索画面
     - https://simutrans.sakura.ne.jp/cross_search/
 
-- テキスト検索API
+- アドオン掲載媒体のテキスト検索API
     - https://simutrans.sakura.ne.jp/cross_search/api/v1/search
+
+- 動画、画像の新着一覧
+    - https://simutrans.sakura.ne.jp/cross_search/articles
 
 ## API仕様
 IPあたり60回/分の制限があります。
