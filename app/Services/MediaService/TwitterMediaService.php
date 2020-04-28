@@ -83,7 +83,8 @@ class TwitterMediaService extends MediaService
                     'url' => $media->expanded_url,
                     'media_type' => $this->media_types[$media->type],
                     'thumbnail_url' => $media->media_url_https,
-                    'last_modified' => Carbon::createFromFormat('D M d H:i:s +T Y', $item->created_at),
+                    // Date Mon 02 03:04:05 +0000 2020
+                    'last_modified' => Carbon::createFromFormat('D M d H:i:s +T Y', $item->created_at)->tz(config('app.timezone')),
                 ];
             })
             ->values();
