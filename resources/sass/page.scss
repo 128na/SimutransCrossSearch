@@ -1,6 +1,7 @@
 .items {
     a {
         padding: 0.5rem 0;
+        word-break: break-all;
     }
     @media (max-width: 768px) {
         .header span {
