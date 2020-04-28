@@ -47,7 +47,8 @@ class SmileVideoMediaService extends MediaService
                 'media_type' => 'video',
                 'url' => "{$this->url}/watch/{$item['contentId']}",
                 'thumbnail_url' => $item['thumbnailUrl'] . '.L',
-                'last_modified' => new Carbon($item['startTime']),
+                // 2020-01-02T03:04:05+09:00
+                'last_modified' => Carbon::create($item['startTime'])->tz(config('app.timezone')),
             ];
         });
     }

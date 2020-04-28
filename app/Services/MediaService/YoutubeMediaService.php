@@ -46,7 +46,8 @@ class YoutubeMediaService extends MediaService
                     'media_type' => 'video',
                     'url' => "{$this->url}/watch?v={$item['id']['videoId']}",
                     'thumbnail_url' => $item['snippet']['thumbnails']['high']['url'],
-                    'last_modified' => new Carbon($item['snippet']['publishedAt']),
+                    // 2020-01-02T03:04:05.000Z
+                    'last_modified' => Carbon::create($item['snippet']['publishedAt'])->tz(config('app.timezone')),
                 ]);
             }
         }
