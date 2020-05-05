@@ -103,6 +103,13 @@ abstract class SiteService
             ->delete();
     }
 
+    public function getAllRawPages(): LazyCollection
+    {
+        return $this->raw_page
+            ->where('site_name', $this->name)
+            ->cursor();
+    }
+
     public function getUpdatedRawPages(): LazyCollection
     {
         return $this->raw_page
