@@ -45,7 +45,7 @@ class SimutransAddonPortalSiteService extends SiteService
 
         $title = $article->title;
         $text = $article->text_contents;
-        $paks = $article->pluck('slug')->all();
+        $paks = $article->categories->pluck('slug')->all();
         $last_modified = $article->updated_at;
 
         return compact('title', 'text', 'paks', 'last_modified');
