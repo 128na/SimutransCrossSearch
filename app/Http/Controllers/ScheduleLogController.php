@@ -18,8 +18,7 @@ class ScheduleLogController extends Controller
 
     public function index()
     {
-        $logs = $this->service->getLatest(50);
-        $logs = $logs->sortBy('created_at');
+        $logs = $this->service->getLatest();
         return view('logs.schdule', compact('logs'));
     }
 

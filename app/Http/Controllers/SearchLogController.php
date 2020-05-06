@@ -18,7 +18,7 @@ class SearchLogController extends Controller
 
     public function index()
     {
-        $logs = $this->service->getRanking(50);
+        $logs = $this->service->getRanking(20);
         return view('logs.search', compact('logs'));
     }
 
