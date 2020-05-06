@@ -2,7 +2,7 @@
 namespace App\Services;
 
 use App\Models\SearchLog;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
 
 class SearchLogService
 {
@@ -31,11 +31,10 @@ class SearchLogService
         return $model;
     }
 
-    public function getRanking($limit = 50): Collection
+    public function getRanking($limit = 20): Paginator
     {
         return $this->model
             ->orderBy('count', 'desc')
-            ->limit($limit)
-            ->get();
+            ->simplePaginate($limit);
     }
 }

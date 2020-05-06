@@ -2,7 +2,7 @@
 namespace App\Services;
 
 use App\Models\ScheduleLog;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
 
 class ScheduleLogService
 {
@@ -16,12 +16,11 @@ class ScheduleLogService
         $this->model = $model;
     }
 
-    public function getLatest($limit = 50): Collection
+    public function getLatest($limit = 20): Paginator
     {
         return $this->model
             ->orderBy('id', 'desc')
-            ->limit($limit)
-            ->get();
+            ->simplePaginate($limit);
     }
 
     public function begin($label): ScheduleLog

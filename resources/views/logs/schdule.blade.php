@@ -5,6 +5,7 @@
 @section('content')
     <section class="container mb-4">
         <h2>Schedule Logs</h2>
+        {{ $logs->withQueryString()->links('vendor.pagination.simple-bootstrap-4') }}
         <table class="table">
             <thead>
                 <th>ID</th>
@@ -37,6 +38,7 @@
                 @endforeach
             </tbody>
         </table>
+        {{ $logs->withQueryString()->links('vendor.pagination.simple-bootstrap-4') }}
 
     </section>
 @endsection
