@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\HTMLPurifyService;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
@@ -48,6 +49,8 @@ class Page extends Model
             return preg_replace($reg, $rep, $text);
         });
 
-        return '…' . $highlighted->implode('…, ') . '…';
+        $raw_html = '…' . $highlighted->implode('…, ') . '…';
+
+        return app(HTMLPurifyService::class)->purifyHTML($raw_html);
     }
 }
