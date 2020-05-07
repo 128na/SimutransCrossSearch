@@ -3,9 +3,8 @@
         padding: 0.5rem 0;
         word-break: break-all;
     }
-    @media (max-width: 768px) {
-        .header span {
-            display: none;
-        }
-    }
+}
+.highlight {
+    background-color: var(--yellow);
+    padding: 0 0.2rem;
 }

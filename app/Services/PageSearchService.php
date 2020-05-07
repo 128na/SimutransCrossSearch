@@ -27,11 +27,10 @@ class PageSearchService
             ->get();
     }
 
-    public function search(string $word, string $type, array $paks, $per_page = 20): LengthAwarePaginator
+    public function search($search_condition, array $paks, $per_page = 20): LengthAwarePaginator
     {
-        $query = $this->model->select('id', 'site_name', 'title', 'url', 'last_modified');
+        $query = $this->model->select('id', 'site_name', 'title', 'url', 'last_modified', 'text');
 
-        $search_condition = $this->parseSearchCondition($word, $type);
         $query = $this->buildWordQuery($query, $search_condition);
 
         if (count($paks)) {
