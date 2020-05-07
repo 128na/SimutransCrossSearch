@@ -37,7 +37,7 @@ class Page extends Model
         }
         $word = implode('|', $search_condition['words']);
 
-        $reg = "/(.{0,10}({$word}).{0,10})/iu";
+        $reg = "/(.{0,20}({$word}).{0,20})/iu";
         preg_match_all($reg, $this->text, $matches);
 
         $texts = collect($matches[0]);
@@ -48,6 +48,6 @@ class Page extends Model
             return preg_replace($reg, $rep, $text);
         });
 
-        return $highlighted->implode('\n');
+        return '…' . $highlighted->implode('…, ') . '…';
     }
 }
