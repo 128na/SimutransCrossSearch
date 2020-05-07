@@ -29,4 +29,22 @@ class Page extends Model
     {
         return config("sites.{$this->site_name}.url", '');
     }
+
+    public function highlightText($search_condition)
+    {
+        $word = implode('|', $search_condition['words']);
+
+        $reg = "/(.{0,10}({$word}).{0,10})/iu";
+        preg_match_all($reg, $this->text, $matches);
+
+        $texts = collect($matches[0]);
+
+        $highlighted = $texts->map(function ($text) use ($word) {
+            $reg = "/({$word})/iu";
+            $rep = '<span class="highlight">$1</span>';
+            return preg_replace($reg, $rep, $text);
+        });
+
+        return $highlighted->implode('\n');
+    }
 }

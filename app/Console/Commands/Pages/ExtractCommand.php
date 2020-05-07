@@ -16,7 +16,7 @@ class ExtractCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'page:extract {name}';
+    protected $signature = 'page:extract {name} {--all}';
 
     /**
      * The console command description.
@@ -59,7 +59,9 @@ class ExtractCommand extends Command
         $name = $this->argument('name');
         $this->site_service = $this->site_service_factory->make($name);
 
-        $raw_pages = $this->site_service->getUpdatedRawPages();
+        $raw_pages = $this->option('all')
+        ? $this->site_service->getAllRawPages()
+        : $this->site_service->getUpdatedRawPages();
 
         $result = $raw_pages->map(function (RawPage $raw_page) {
             try {

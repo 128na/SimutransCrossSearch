@@ -35,7 +35,8 @@ class PageController extends Controller
         $type = $request->type ?? 'and';
         $paks = $request->paks ?? [];
 
-        $pages = $this->search_service->search($word, $type, $paks);
+        $search_condition = $this->search_service->parseSearchCondition($word, $type);
+        $pages = $this->search_service->search($search_condition, $paks);
         $title = $this->search_service->getTitle($word, $paks);
         $canonical_url = $request->fullUrl();
 
@@ -44,6 +45,6 @@ class PageController extends Controller
             $this->search_log_service->put($query);
         }
 
-        return view('pages.search', compact('pages', 'word', 'type', 'paks', 'title', 'canonical_url'));
+        return view('pages.search', compact('pages', 'word', 'type', 'paks', 'title', 'canonical_url', 'search_condition'));
     }
 }
