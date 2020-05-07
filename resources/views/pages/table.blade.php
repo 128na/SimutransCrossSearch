@@ -7,7 +7,7 @@
             </div>
             @isset($search_condition)
                 <div class=" mb-2">
-                    {!! $page->highlightText($search_condition) !!}
+                    <small>{!! $page->highlightText($search_condition) !!}</small>
                 </div>
             @endisset
             <div>
