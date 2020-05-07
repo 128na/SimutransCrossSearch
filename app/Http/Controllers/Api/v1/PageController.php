@@ -30,8 +30,8 @@ class PageController extends Controller
         $word = $request->word ?? '';
         $type = $request->type ?? 'and';
         $paks = $request->paks ?? [];
-
-        $pages = $this->search_service->search($word, $type, $paks);
+        $search_condition = $this->search_service->parseSearchCondition($word, $type);
+        $pages = $this->search_service->search($search_condition, $paks);
 
         if ($pages->total()) {
             $query = str_replace([$request->url(), '?'], '', $pages->withQueryString()->url(1));
