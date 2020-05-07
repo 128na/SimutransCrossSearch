@@ -32,6 +32,9 @@ class Page extends Model
 
     public function highlightText($search_condition)
     {
+        if (!implode('', $search_condition['words'])) {
+            return '';
+        }
         $word = implode('|', $search_condition['words']);
 
         $reg = "/(.{0,10}({$word}).{0,10})/iu";
