@@ -60,6 +60,9 @@ class TwitterMediaService extends MediaService
         $result = $this->client->get("search/tweets", $params);
 
         return collect($result->statuses)
+            ->filter(function ($item) { // exclude SimutransSearch media?
+                return $item->user->screen_name !== 'SimutransSearch';
+            })
             ->filter(function ($item) { // has media?
                 return isset($item->extended_entities->media);
             })
