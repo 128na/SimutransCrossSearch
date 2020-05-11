@@ -59,6 +59,7 @@ class Kernel extends ConsoleKernel
 
         // 10 min
         $this->appendLogging($schedule->command('media:fetch twitter')->cron('0 0,9,12,15,18,21 * * *'), 'fetch twitter');
+        $this->appendLogging($schedule->command('tweet:summary')->dailyAt('7:00'), 'tweet summary');
     }
 
     /**
