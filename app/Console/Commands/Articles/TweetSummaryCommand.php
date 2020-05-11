@@ -72,7 +72,7 @@ class TweetSummaryCommand extends Command
         $path = storage_path('summary.jpg');
         $image->save($path);
 
-        $date = now()->modify('-1 day')->format('m月d日');
+        $date = now()->modify('-1 day')->format('n月j日');
         $this->tweet_service->postMedia([$path], "昨日（{$date}）のしむとら");
     }
 }
