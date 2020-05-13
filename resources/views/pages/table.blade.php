@@ -3,7 +3,9 @@
         <div class="p-2 border-bottom">
             <div>
                 <span class="badge badge-primary mb-2">{{ $page->paks->pluck('name')->implode(', ') }}</span>
-                <span class=" mb-2"><a target="_blank" rel="noopener noreferrer" class="link-page" href="{{ $page->linkWithWord($search_condition ?? null) }}">{{ $page->title }}</a></span>
+                <span class=" mb-2">
+                    @includeIf("pages.link.{$page->site_name}")
+                </span>
             </div>
             @isset($search_condition)
                 <div class=" mb-2">
