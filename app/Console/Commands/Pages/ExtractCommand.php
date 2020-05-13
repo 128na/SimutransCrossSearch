@@ -25,23 +25,17 @@ class ExtractCommand extends Command
      */
     protected $description = 'extract from raw pages to pages contents';
 
-    /**
-     * @var SiteServiceFactory
-     */
-    private $site_service_factory;
-    /**
-     * @var SiteService
-     */
-    private $site_service;
-    /**
-     * @var null|Throwable
-     */
-    private $last_error = null;
+    private SiteServiceFactory $site_service_factory;
+    private SiteService $site_service;
+
+    private ?Throwable $last_error = null;
+
     /**
      * Create a new command instance.
      *
      * @return void
      */
+
     public function __construct(SiteServiceFactory $site_service_factory)
     {
         parent::__construct();
@@ -80,6 +74,5 @@ class ExtractCommand extends Command
             throw $this->last_error;
         }
         $this->info(sprintf('%d page updated', $result->count()));
-
     }
 }

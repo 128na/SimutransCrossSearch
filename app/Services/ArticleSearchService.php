@@ -6,10 +6,7 @@ use Illuminate\Pagination\Paginator;
 
 class ArticleSearchService
 {
-    /**
-     * @var Article
-     */
-    private $model;
+    private Article $model;
 
     public function __construct(Article $model)
     {

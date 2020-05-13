@@ -6,10 +6,7 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 class TweetService
 {
-    /**
-     * @var TwitterOAuth
-     */
-    private $client;
+    private TwitterOAuth $client;
 
     public function __construct()
     {

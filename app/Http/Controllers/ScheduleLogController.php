@@ -6,10 +6,7 @@ use App\Services\ScheduleLogService;
 
 class ScheduleLogController extends Controller
 {
-    /**
-     * @var ScheduleLogService
-     */
-    private $service;
+    private ScheduleLogService $service;
 
     public function __construct(ScheduleLogService $service)
     {
@@ -21,5 +18,4 @@ class ScheduleLogController extends Controller
         $logs = $this->service->getLatest();
         return view('logs.schdule', compact('logs'));
     }
-
 }

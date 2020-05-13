@@ -17,10 +17,7 @@ class TwitterMediaService extends MediaService
         'photo' => 'image',
     ];
 
-    /**
-     * @var TwitterOAuth
-     */
-    protected $client;
+    protected TwitterOAuth $client;
 
     public function __construct(Article $article)
     {
@@ -92,5 +89,4 @@ class TwitterMediaService extends MediaService
             })
             ->values();
     }
-
 }

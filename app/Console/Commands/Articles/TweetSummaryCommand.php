@@ -24,18 +24,9 @@ class TweetSummaryCommand extends Command
      */
     protected $description = 'Tweet Summary';
 
-    /**
-     * @var ArticleSearchService
-     */
-    private $article_service;
-    /**
-     * @var SummaryImageService
-     */
-    private $image_service;
-    /**
-     * @var TweetService
-     */
-    private $tweet_service;
+    private ArticleSearchService $article_service;
+    private SummaryImageService $image_service;
+    private TweetService $tweet_service;
 
     /**
      * Create a new command instance.

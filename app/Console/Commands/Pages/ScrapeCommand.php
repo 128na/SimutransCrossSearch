@@ -24,18 +24,10 @@ class ScrapeCommand extends Command
      */
     protected $description = 'scrape sites to raw pages';
 
-    /**
-     * @var SiteServiceFactory
-     */
-    private $service_factory;
-    /**
-     * @var SiteService
-     */
-    private $site_service;
-    /**
-     * @var null|Throwable
-     */
-    private $last_error = null;
+    private SiteServiceFactory $service_factory;
+    private SiteService $site_service;
+
+    private ?Throwable $last_error = null;
 
     /**
      * Create a new command instance.
@@ -91,6 +83,5 @@ class ScrapeCommand extends Command
         $count = $this->site_service->removeExcludes($raw_page_urls);
         DB::commit();
         $this->info(sprintf('%d raw page deleted', $count));
-
     }
 }

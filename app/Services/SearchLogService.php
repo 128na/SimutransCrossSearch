@@ -6,10 +6,7 @@ use Illuminate\Pagination\Paginator;
 
 class SearchLogService
 {
-    /**
-     * @var SearchLog
-     */
-    private $model;
+    private SearchLog $model;
 
     public function __construct(SearchLog $model)
     {

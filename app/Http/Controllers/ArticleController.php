@@ -7,10 +7,7 @@ use App\Services\ArticleSearchService;
 
 class ArticleController extends Controller
 {
-    /**
-     * @var ArticleSearchService
-     */
-    private $search_service;
+    private ArticleSearchService $search_service;
 
     public function __construct(ArticleSearchService $search_service)
     {

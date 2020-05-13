@@ -6,10 +6,7 @@ use App\Services\SearchLogService;
 
 class SearchLogController extends Controller
 {
-    /**
-     * @var SearchLogService
-     */
-    private $service;
+    private SearchLogService $service;
 
     public function __construct(SearchLogService $service)
     {
@@ -21,5 +18,4 @@ class SearchLogController extends Controller
         $logs = $this->service->getRanking(20);
         return view('logs.search', compact('logs'));
     }
-
 }

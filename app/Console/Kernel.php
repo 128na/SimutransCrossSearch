@@ -11,10 +11,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * @var ScheduleLogService
-     */
-    private $service;
+    private ScheduleLogService $service;
 
     public function __construct(Application $app, Dispatcher $events, ScheduleLogService $service)
     {

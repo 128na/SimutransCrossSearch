@@ -24,14 +24,8 @@ class FetchCommand extends Command
      */
     protected $description = 'Command description';
 
-    /**
-     * @var MediaServiceFactory
-     */
-    private $service_factory;
-    /**
-     * @var MediaService
-     */
-    private $media_service;
+    private MediaServiceFactory $service_factory;
+    private MediaService $media_service;
 
     /**
      * Create a new command instance.
@@ -68,6 +62,5 @@ class FetchCommand extends Command
         }
         DB::commit();
         $this->info(sprintf('%d article updated', $articles->count()));
-
     }
 }
