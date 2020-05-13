@@ -13,35 +13,12 @@ use Symfony\Component\HttpClient\HttpClient;
 
 abstract class SiteService
 {
-    /**
-     * @var String
-     */
-    protected $name;
-
-    /**
-     * @var String
-     */
-    protected $url;
-
-    /**
-     * @var RawPage
-     */
-    protected $raw_page;
-
-    /**
-     * @var Page
-     */
-    protected $page;
-
-    /**
-     * @var Pak
-     */
-    protected $pak;
-
-    /**
-     * @var Client
-     */
-    protected $client;
+    protected string $name;
+    protected string $url;
+    protected RawPage $raw_page;
+    protected Page $page;
+    protected Pak $pak;
+    protected Client $client;
 
     public function __construct(array $config, RawPage $raw_page, Page $page, Pak $pak)
     {

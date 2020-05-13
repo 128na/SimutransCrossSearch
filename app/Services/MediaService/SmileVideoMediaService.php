@@ -6,16 +6,14 @@ use App\Models\Article;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * @see https://site.nicovideo.jp/search-api-docs/search.html
  */
 class SmileVideoMediaService extends MediaService
 {
-    /**
-     * @var HttpClient
-     */
-    protected $client;
+    protected HttpClientInterface $client;
 
     public function __construct(Article $article)
     {
@@ -52,5 +50,4 @@ class SmileVideoMediaService extends MediaService
             ];
         });
     }
-
 }

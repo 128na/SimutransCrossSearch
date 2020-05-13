@@ -13,10 +13,7 @@ use Illuminate\Support\Collection;
  */
 class YoutubeMediaService extends MediaService
 {
-    /**
-     * @var Google_Service_YouTube
-     */
-    private $client;
+    private Google_Service_YouTube $client;
 
     public function __construct(Article $article)
     {
@@ -53,5 +50,4 @@ class YoutubeMediaService extends MediaService
         }
         return $videos;
     }
-
 }

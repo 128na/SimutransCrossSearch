@@ -6,10 +6,7 @@ use \HTMLPurifier_Config;
 
 class HTMLPurifyService
 {
-    /**
-     * @var HTMLPurifier
-     */
-    private $purifier;
+    private HTMLPurifier $purifier;
 
     public function __construct()
     {

@@ -10,14 +10,8 @@ use App\Services\SearchLogService;
 
 class PageController extends Controller
 {
-    /**
-     * @var PageSearchService
-     */
-    private $search_service;
-    /**
-     * @var SearchLogService
-     */
-    private $search_log_service;
+    private PageSearchService $search_service;
+    private SearchLogService $search_log_service;
 
     public function __construct(PageSearchService $search_service, SearchLogService $search_log_service)
     {

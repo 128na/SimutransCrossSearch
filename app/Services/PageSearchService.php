@@ -7,10 +7,7 @@ use Illuminate\Support\Collection;
 
 class PageSearchService
 {
-    /**
-     * @var Page
-     */
-    private $model;
+    private Page $model;
 
     public function __construct(Page $model)
     {

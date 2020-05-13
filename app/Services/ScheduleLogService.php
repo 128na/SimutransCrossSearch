@@ -6,10 +6,7 @@ use Illuminate\Pagination\Paginator;
 
 class ScheduleLogService
 {
-    /**
-     * @var ScheduleLog
-     */
-    private $model;
+    private ScheduleLog $model;
 
     public function __construct(ScheduleLog $model)
     {
@@ -31,5 +28,4 @@ class ScheduleLogService
     {
         return $this->model->create(['label' => $label, 'status' => $status]);
     }
-
 }

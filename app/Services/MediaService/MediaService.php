@@ -7,20 +7,10 @@ use Illuminate\Support\Collection;
 
 abstract class MediaService
 {
-    /**
-     * @var String
-     */
-    protected $name;
+    protected string $name;
+    protected string $url;
 
-    /**
-     * @var String
-     */
-    protected $url;
-
-    /**
-     * @var Article
-     */
-    protected $article;
+    protected Article $article;
 
     public function __construct(array $config, Article $article)
     {
