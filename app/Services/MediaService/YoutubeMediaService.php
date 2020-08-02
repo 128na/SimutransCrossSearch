@@ -39,7 +39,7 @@ class YoutubeMediaService extends MediaService
             if ($item['id']['kind'] === 'youtube#video') {
                 $videos->push([
                     'title' => $item['snippet']['title'],
-                    'text' => $item['snippet']['description'],
+                    'text' => $item['snippet']['description'] ?? '',
                     'media_type' => 'video',
                     'url' => "{$this->url}/watch?v={$item['id']['videoId']}",
                     'thumbnail_url' => $item['snippet']['thumbnails']['high']['url'],

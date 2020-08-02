@@ -79,7 +79,7 @@ class TwitterMediaService extends MediaService
                 return [
                     'id' => $item->id,
                     'title' => mb_strimwidth($item->text, 0, 20, '…'),
-                    'text' => $item->text,
+                    'text' => $item->text ?? '',
                     'url' => $media->expanded_url,
                     'media_type' => $this->media_types[$media->type],
                     'thumbnail_url' => $media->media_url_https,

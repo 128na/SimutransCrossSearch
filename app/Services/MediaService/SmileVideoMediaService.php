@@ -41,7 +41,7 @@ class SmileVideoMediaService extends MediaService
         return collect($content['data'])->map(function ($item) {
             return [
                 'title' => $item['title'],
-                'text' => $item['description'],
+                'text' => $item['description'] ?? '',
                 'media_type' => 'video',
                 'url' => "{$this->url}/watch/{$item['contentId']}",
                 'thumbnail_url' => $item['thumbnailUrl'] . '.L',

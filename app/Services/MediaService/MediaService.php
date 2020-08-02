@@ -30,7 +30,7 @@ abstract class MediaService
             'site_name' => $this->name,
             'url' => $data['url'],
             'title' => $data['title'],
-            'text' => $data['text'],
+            'text' => $data['text'] ?? '',
             'media_type' => $data['media_type'],
             'thumbnail_url' => $data['thumbnail_url'],
             'last_modified' => $data['last_modified'],
