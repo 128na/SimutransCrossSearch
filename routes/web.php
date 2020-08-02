@@ -12,11 +12,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
+Route::middleware(['cache.headers:public;max_age=3600'])->group(function () {
+    Route::get('/', 'PageController@index')->name('pages.index');
+    Route::get('/search', 'PageController@search')->name('pages.search');
+    Route::get('/articles', 'ArticleController@index')->name('articles.index');
+    Route::get('/articles/search', 'ArticleController@search')->name('articles.search');
 
-Route::get('/', 'PageController@index')->name('pages.index');
-Route::get('/search', 'PageController@search')->name('pages.search');
-Route::get('/articles', 'ArticleController@index')->name('articles.index');
-Route::get('/articles/search', 'ArticleController@search')->name('articles.search');
-
-Route::get('/logs/schedule', 'ScheduleLogController@index')->name('logs.schedule');
-Route::get('/logs/search', 'SearchLogController@index')->name('logs.search');
+    Route::get('/logs/schedule', 'ScheduleLogController@index')->name('logs.schedule');
+    Route::get('/logs/search', 'SearchLogController@index')->name('logs.search');
+});
