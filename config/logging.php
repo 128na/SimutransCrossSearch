@@ -57,7 +57,7 @@ return [
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'Laravel Log',
+            'username' => 'SimutransCrossSearch',
             'emoji' => ':boom:',
             'level' => 'info',
         ],
