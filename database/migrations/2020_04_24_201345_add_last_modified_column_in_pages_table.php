@@ -14,7 +14,7 @@ class AddLastModifiedColumnInPagesTable extends Migration
     public function up()
     {
         Schema::table('pages', function (Blueprint $table) {
-            $table->timestamp('last_modified')->default(0)->after('title')->comment('元記事の最終更新日時');
+            $table->datetime('last_modified')->nullable()->after('title')->comment('元記事の最終更新日時');
             $table->index(['last_modified']);
         });
     }

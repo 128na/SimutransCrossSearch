@@ -39,22 +39,27 @@ class TwitterMediaService extends MediaService
         $loop = 0;
 
         do {
-            $items = $items->merge($this->searchReclusive($word, $max_id, 100));
+            $query = [
+                'q' => $word,
+                'result_type' => 'recent',
+                'max_id' => $max_id,
+                'count' => 100,
+            ];
+            $items = $items->merge($this->fetch($query));
             $max_id = $items->last()['id'] ?? null;
             $loop++;
         } while ($items->count() <= $limit && $loop < $loop_limit && sleep(1) === 0);
 
         return $items;
     }
-    public function searchReclusive(string $word, $max_id = null, $limit = 100): Collection
+    public function searchOld(string $word, Carbon $date, $limit = 50): Collection
     {
-        $params = [
-            'q' => $word,
-            'result_type' => 'recent',
-            'max_id' => $max_id,
-            'count' => $limit,
-        ];
-        $result = $this->client->get("search/tweets", $params);
+        throw new Exception("Twitteri is not supported!", 1);
+    }
+
+    private function fetch($query)
+    {
+        $result = $this->client->get("search/tweets", $query);
 
         return collect($result->statuses)
             ->filter(function ($item) { // exclude SimutransSearch media?
@@ -86,7 +91,6 @@ class TwitterMediaService extends MediaService
                     // Date Mon 02 03:04:05 +0000 2020
                     'last_modified' => Carbon::createFromFormat('D M d H:i:s +T Y', $item->created_at)->tz(config('app.timezone')),
                 ];
-            })
-            ->values();
+            });
     }
 }

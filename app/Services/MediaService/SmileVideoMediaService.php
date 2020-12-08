@@ -24,15 +24,36 @@ class SmileVideoMediaService extends MediaService
 
     public function search(string $word, $limit = 50): Collection
     {
-        $end_point = 'https://api.search.nicovideo.jp/api/v2/video/contents/search';
-        $query = http_build_query([
+        $query = [
             'q' => $word,
             'targets' => 'title,description,tags',
             'fields' => 'contentId,title,description,thumbnailUrl,startTime',
             '_sort' => '-startTime',
             '_limit' => $limit,
             '_context' => config('app.name'),
-        ]);
+        ];
+        return $this->fetch($query);
+    }
+
+    public function searchOld(string $word, Carbon $date, $limit = 50): Collection
+    {
+        $query = [
+            'q' => $word,
+            'targets' => 'title,description,tags',
+            'fields' => 'contentId,title,description,thumbnailUrl,startTime',
+            // 2015-01-01T00:00:00+09:00
+            'filters[startTime][lt]'=>$date->toAtomString(),
+            '_sort' => '-startTime',
+            '_limit' => $limit,
+            '_context' => config('app.name'),
+        ];
+        return $this->fetch($query);
+    }
+
+    private function fetch(array $query)
+    {
+        $end_point = 'https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search';
+        $query = http_build_query($query);
         $url = "{$end_point}?{$query}";
 
         $res = $this->client->request('GET', $url);

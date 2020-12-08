@@ -27,12 +27,31 @@ class YoutubeMediaService extends MediaService
 
     public function search(string $word, $limit = 50): Collection
     {
-        $res = $this->client->search->listSearch('id,snippet', [
+        $query = [
             'q' => $word,
             'order' => 'date',
             'type' => 'video',
             'maxResults' => $limit,
-        ]);
+        ];
+
+        return $this->fetch($query);
+    }
+    public function searchOld(string $word, Carbon $date, $limit = 50): Collection
+    {
+        $query = [
+            'q' => $word,
+            'order' => 'date',
+            'type' => 'video',
+            'publishedBefore' => $date->toRfc3339String(),
+            'maxResults' => $limit,
+        ];
+
+        return $this->fetch($query);
+    }
+
+    private function fetch(array $query)
+    {
+        $res = $this->client->search->listSearch('id,snippet', $query);
 
         $videos = collect([]);
         foreach ($res['items'] as $item) {

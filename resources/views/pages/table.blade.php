@@ -13,7 +13,7 @@
                 </div>
             @endisset
             <div>
-                <span class=" mb-2">[{{ $page->last_modified->format('Y/m/d') }}]</span>
+                <span class=" mb-2">[{{ $page->last_modified ? $page->last_modified->format('Y/m/d') : '?' }}]</span>
                 <span class=" mb-2"><a target="_blank" rel="noopener noreferrer" class="link-site" href="{{ $page->site_url }}">{{ $page->display_site_name }}</a></span>
             </div>
         </div>

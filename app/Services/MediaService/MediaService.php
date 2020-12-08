@@ -21,6 +21,13 @@ abstract class MediaService
 
     abstract public function search(string $word, $limit = 50): Collection;
 
+    public function getOldestArticle(): ?Article
+    {
+        return $this->article
+            ->where('site_name', $this->name)
+            ->orderBy('last_modified')->first();
+    }
+
     public function saveArticleIfNeeded(array $data): ?Article
     {
         if ($this->article->where('url', $data['url'])->exists()) {

@@ -51,11 +51,11 @@ class Kernel extends ConsoleKernel
 
         // 1 min
         $this->appendLogging($schedule->command('media:fetch youtube')->dailyAt('4:00'), 'fetch youtube');
-        // 1 min
-        $this->appendLogging($schedule->command('media:fetch nico')->dailyAt('5:00'), 'fetch nico');
+        // 1 min APIデータ更新は毎日5時
+        $this->appendLogging($schedule->command('media:fetch nico')->dailyAt('6:00'), 'fetch nico');
 
-        // 10 min
-        $this->appendLogging($schedule->command('media:fetch twitter')->cron('0 0,9,12,15,18,21 * * *'), 'fetch twitter');
+        // 10 min 8hサイクル
+        $this->appendLogging($schedule->command('media:fetch twitter')->cron('0 5,13,21 * * *'), 'fetch twitter');
         $this->appendLogging($schedule->command('tweet:summary')->dailyAt('7:00'), 'tweet summary');
     }
 
