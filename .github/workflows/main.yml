@@ -1,0 +1,140 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  push:
+    branches: [master]
+    tags: ["**"]
+  pull_request:
+    branches: [master, develop]
+  workflow_dispatch:
+    inputs:
+      skip_test:
+        description: "テストをスキップする場合は文字を入力する"
+        required: false
+        default: ""
+jobs:
+  deploy:
+    # tag push -> テスト通過後デプロイ
+    # master push -> テストのみ
+    # PR -> テストのみ
+    # 手動実行 -> テスト通過orテストスキップの時デプロイ
+    if: ${{ (github.event_name == 'push' && startsWith( github.ref, 'refs/tags/' ) && success()) || (github.event_name == 'workflow_dispatch' && (success() || github.event.inputs.skip_test != '')) }}
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: .env
+        run: php -r "copy('.env.deploy', '.env');"
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: npm ci
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Build Assets
+        run: npm run prod
+
+      - name: Install SSH key
+        run: mkdir -p ~/.ssh \
+          && echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa \
+          && chmod 0600 ~/.ssh/id_rsa \
+          && echo "${{secrets.KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
+      - name: Deploy
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: cd ${{ secrets.APP_DIR }}
+            && git fetch -p
+            && git checkout ${{ env.github.ref }}
+            && git pull
+            && bash -c 'sed -i "" "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env'
+            && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
+            && php -c ~/www/php.ini artisan migrate --force
+            && php -c ~/www/php.ini artisan migrate:status
+            && php -c ~/www/php.ini artisan optimize
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          privateKey: /home/runner/.ssh/id_rsa
+
+      - name: rsync public dir
+        uses: trendyminds/github-actions-rsync@master
+        with:
+          RSYNC_OPTIONS: -ahvzr --delete --exclude node_modules --exclude '.git*' --exclude 'storage'
+          RSYNC_TARGET: ${{ secrets.APP_DIR }}/public
+          RSYNC_SOURCE: /public/
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}
+          SSH_USERNAME: ${{secrets.USER}}
+          SSH_HOSTNAME: ${{secrets.HOST}}
+
+  test:
+    # 手動実行かつスキップ指定された時のみスキップ
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.skip_test == '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: .env
+        run: php -r "copy('.env.ci', '.env');"
+
+      - name: Cache build assets
+        id: cache-assets
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-assets
+        with:
+          path: ./public
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Setup Node
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v2
+      - name: npm ci
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Build Assets
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        run: npm run prod
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+      - name: PHP vendor Cache
+        id: cache-vendor
+        uses: actions/cache@v2
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-cache-vendor-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cache-vendor-
+      - name: Composer Install
+        if: steps.cache-vendor.outputs.cache-hit != 'true'
+        run: composer install
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
+      - name: Setup database
+        run: |
+          mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;
+            CREATE DATABASE IF NOT EXISTS test_test_1;
+            CREATE DATABASE IF NOT EXISTS test_test_2'
+      - name: Test
+        run: php artisan test -v --env=local --parallel --processes=2
+
+      - if: failure()
+        name: Display Error Log
+        run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
