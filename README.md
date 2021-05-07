@@ -1,23 +1,23 @@
 # Simutrans Cross Search
-https://simutrans.sakura.ne.jp/cross_search/
+https://cross-search.128-bit.net/
 
 ## 仕組み
 <img src="./docs/spec/img/flow.png">
 
 ## 提供機能
 - アドオン掲載媒体の更新一覧、テキスト検索画面
-    - https://simutrans.sakura.ne.jp/cross_search/
+    - https://cross-search.128-bit.net/
 
 - アドオン掲載媒体のテキスト検索API
-    - https://simutrans.sakura.ne.jp/cross_search/api/v1/search
+    - https://cross-search.128-bit.net/api/v1/search
 
 - 動画、画像の新着一覧
-    - https://simutrans.sakura.ne.jp/cross_search/articles
+    - https://cross-search.128-bit.net/articles
 
 ## API仕様
 IPあたり60回/分の制限があります。
 指定可能な検索条件、返却データは画面からの検索と同一です。
-https://simutrans.sakura.ne.jp/cross_search/api/v1/search?word=xxx&paks[]=paksize
+https://cross-search.128-bit.net/api/v1/search?word=xxx&paks[]=paksize
 
 ### パラメーター一覧
 |パラメーター|デフォルト|指定可能な値|説明|
@@ -29,11 +29,11 @@ https://simutrans.sakura.ne.jp/cross_search/api/v1/search?word=xxx&paks[]=paksiz
 ### 例
 JRまたは国鉄を含むpak128, pak128japan
 
-`https://simutrans.sakura.ne.jp/cross_search/api/v1/search?word=JR 国鉄&type=or&paks[]=128&paks[]=128-japan`
+`https://cross-search.128-bit.net/api/v1/search?word=JR 国鉄&type=or&paks[]=128&paks[]=128-japan`
 
 URLエンコード時
 
-`https://simutrans.sakura.ne.jp/cross_search/api/v1/search?word=JR+%E5%9B%BD%E9%89%84&type=or&paks%5B%5D=128&paks%5B%5D=128-japan`
+`https://cross-search.128-bit.net/api/v1/search?word=JR+%E5%9B%BD%E9%89%84&type=or&paks%5B%5D=128&paks%5B%5D=128-japan`
 
 ### レスポンスボディ
 一覧は50件ごとに分かれており50件目以降の記事は data.links.next のURLから取得できます。
