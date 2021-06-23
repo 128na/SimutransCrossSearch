@@ -105,7 +105,7 @@ jobs:
             && git fetch -p
             && git checkout ${{ env.github.ref }}
             && git pull
-            && bash -c 'sed -i "" "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env'
+            && sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env
             && composer install --optimize-autoloader --no-dev
             && php artisan migrate --force
             && php artisan migrate:status
