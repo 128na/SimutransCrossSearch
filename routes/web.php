@@ -18,6 +18,5 @@ Route::middleware(['cache.headers:public;max_age=3600'])->group(function () {
     Route::get('/articles', 'ArticleController@index')->name('articles.index');
     Route::get('/articles/search', 'ArticleController@search')->name('articles.search');
 
-    Route::get('/logs/schedule', 'ScheduleLogController@index')->name('logs.schedule');
     Route::get('/logs/search', 'SearchLogController@index')->name('logs.search');
 });

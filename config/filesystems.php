@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Filesystem Disk
@@ -42,7 +41,6 @@ return [
     */
 
     'disks' => [
-
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
@@ -64,7 +62,13 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
         ],
-
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => 'simutrans.sakura.ne.jp',
+            'root' => 'backup/',
+            'username' => env('SFTP_USER'),
+            'password' => env('SFTP_PASSWORD'),
+        ],
     ],
 
     /*
@@ -81,5 +85,4 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],
-
 ];

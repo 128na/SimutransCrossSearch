@@ -19,7 +19,8 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.5",
         "laravel/framework": "^8.0",
-        "laravel/tinker": "^2.0"
+        "laravel/tinker": "^2.0",
+        "spatie/laravel-backup": "^6.16"
     },
     "require-dev": {
         "brianium/paratest": "^6.2",
