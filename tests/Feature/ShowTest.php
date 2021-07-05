@@ -6,14 +6,6 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
-
-    public function testLogSchedule()
-    {
-        $url = route('logs.schedule');
-        $res = $this->get($url);
-        $res->assertStatus(200);
-    }
-
     public function testLogSearch()
     {
         $url = route('logs.search');
