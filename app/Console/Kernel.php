@@ -30,30 +30,54 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // 1 min
-        $schedule->command('page:scrape portal')->dailyAt('0:00');
+        $schedule->command('page:scrape portal')->dailyAt('0:00')
+            ->withoutOverlapping()
+            ->onOneServer();
 
         // 15 min
-        $schedule->command('page:scrape twitrans')->dailyAt('1:00');
+        $schedule->command('page:scrape twitrans')->dailyAt('1:00')
+            ->withoutOverlapping()
+            ->onOneServer();
 
         // 15 min
-        $schedule->command('page:scrape japan')->dailyAt('2:00');
+        $schedule->command('page:scrape japan')->dailyAt('2:00')
+            ->withoutOverlapping()
+            ->onOneServer();
 
-        $schedule->command('page:extract portal')->dailyAt('3:00');
-        $schedule->command('page:extract twitrans')->dailyAt('3:00');
-        $schedule->command('page:extract japan')->dailyAt('3:00');
+        $schedule->command('page:extract portal')->dailyAt('3:00')
+            ->withoutOverlapping()
+            ->onOneServer();
+        $schedule->command('page:extract twitrans')->dailyAt('3:00')
+            ->withoutOverlapping()
+            ->onOneServer();
+        $schedule->command('page:extract japan')->dailyAt('3:00')
+            ->withoutOverlapping()
+            ->onOneServer();
 
         // 1 min
-        $schedule->command('media:fetch youtube')->dailyAt('4:00');
+        $schedule->command('media:fetch youtube')->dailyAt('4:00')
+            ->withoutOverlapping()
+            ->onOneServer();
 
-        $schedule->command('backup:clean')->dailyAt('5:00');
-        $schedule->command('backup:run')->dailyAt('6:00');
+        $schedule->command('backup:clean')->dailyAt('5:00')
+            ->withoutOverlapping()
+            ->onOneServer();
+        $schedule->command('backup:run')->dailyAt('6:00')
+            ->withoutOverlapping()
+            ->onOneServer();
 
         // 1 min APIデータ更新は毎日5時
-        $schedule->command('media:fetch nico')->dailyAt('6:00');
+        $schedule->command('media:fetch nico')->dailyAt('6:00')
+            ->withoutOverlapping()
+            ->onOneServer();
 
         // 10 min 8hサイクル
-        $schedule->command('media:fetch twitter')->cron('0 5,13,21 * * *');
-        $schedule->command('tweet:summary')->dailyAt('7:00');
+        $schedule->command('media:fetch twitter')->cron('0 5,13,21 * * *')
+            ->withoutOverlapping()
+            ->onOneServer();
+        $schedule->command('tweet:summary')->dailyAt('7:00')
+            ->withoutOverlapping()
+            ->onOneServer();
     }
 
     /**
