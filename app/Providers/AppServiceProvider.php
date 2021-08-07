@@ -22,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        umask(0002);
+        umask(000);
     }
 }
