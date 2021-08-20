@@ -105,11 +105,11 @@ jobs:
             && git fetch -p
             && git checkout ${{ env.github.ref }}
             && git pull
-            && sed -i "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env
-            && composer install --optimize-autoloader --no-dev
-            && php artisan migrate --force
-            && php artisan migrate:status
-            && php artisan optimize
+            && bash -c 'sed -i "" "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env'
+            && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
+            && php -c ~/www/php.ini artisan migrate --force
+            && php -c ~/www/php.ini artisan migrate:status
+            && php -c ~/www/php.ini artisan optimize
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           privateKey: /home/runner/.ssh/id_rsa
