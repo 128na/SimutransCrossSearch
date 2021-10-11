@@ -9,7 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
-        "abraham/twitteroauth": "^1.1",
+        "abraham/twitteroauth": "^3",
         "doctrine/dbal": "^2.10",
         "ezyang/htmlpurifier": "^4.12",
         "fabpot/goutte": "^4.0",
