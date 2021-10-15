@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\HTMLPurifyService;
 use Illuminate\Database\Eloquent\Model;
+use Throwable;
 
 class Page extends Model
 {
@@ -38,25 +39,32 @@ class Page extends Model
         }
         $word = implode('|', $search_condition['words']);
 
-        $reg = "/(.{0,20}({$word}).{0,20})/iu";
-        preg_match_all($reg, $this->text, $matches);
+        try {
+            $reg = "/(.{0,20}({$word}).{0,20})/iu";
+            preg_match_all($reg, $this->text, $matches);
 
-        $texts = collect($matches[0]);
+            $texts = collect($matches[0]);
+            // テキストに該当なしの場合はブランク
+            if (count($texts) < 1) {
+                return '';
+            }
 
-        // テキストに該当なしの場合はブランク
-        if (count($texts) < 1) {
+            $texts->splice(10);
+            $highlighted = $texts->map(function ($text) use ($word) {
+                $reg = "/({$word})/iu";
+                $rep = '<span class="highlight">$1</span>';
+
+                return preg_replace($reg, $rep, $text);
+            });
+
+            $raw_html = '…'.$highlighted->implode('…, ').'…';
+
+            return app(HTMLPurifyService::class)->purifyHTML($raw_html);
+        } catch (Throwable $e) {
+            logger()->error('highlightText', request()->all());
+            report($e);
+
             return '';
         }
-
-        $texts->splice(10);
-        $highlighted = $texts->map(function ($text) use ($word) {
-            $reg = "/({$word})/iu";
-            $rep = '<span class="highlight">$1</span>';
-            return preg_replace($reg, $rep, $text);
-        });
-
-        $raw_html = '…' . $highlighted->implode('…, ') . '…';
-
-        return app(HTMLPurifyService::class)->purifyHTML($raw_html);
     }
 }
