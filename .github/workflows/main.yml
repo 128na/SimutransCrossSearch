@@ -114,13 +114,5 @@ jobs:
           username: ${{ secrets.USER }}
           privateKey: /home/runner/.ssh/id_rsa
 
-      - name: rsync public dir
-        uses: trendyminds/github-actions-rsync@master
-        with:
-          RSYNC_OPTIONS: -ahvzr --delete --exclude 'storage'
-          RSYNC_TARGET: ${{ secrets.APP_DIR }}/public
-          RSYNC_SOURCE: /public/
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}
-          SSH_USERNAME: ${{secrets.USER}}
-          SSH_HOSTNAME: ${{secrets.HOST}}
+      - name: rsync assets
+        run: rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./public/ ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public
