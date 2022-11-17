@@ -98,21 +98,20 @@ jobs:
           && echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa \
           && chmod 0600 ~/.ssh/id_rsa \
           && echo "${{secrets.KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
+
       - name: Deploy
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          command: cd ${{ secrets.APP_DIR }}
-            && git fetch -p
-            && git checkout ${{ env.github.ref }}
-            && git pull
-            && bash -c 'sed -i "" "s/APP_VERSION=.*/APP_VERSION=$( git describe )/" .env'
-            && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
-            && php -c ~/www/php.ini artisan migrate --force
-            && php -c ~/www/php.ini artisan migrate:status
-            && php -c ~/www/php.ini artisan optimize
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          privateKey: /home/runner/.ssh/id_rsa
+        run: >
+          ssh -i /home/runner/.ssh/id_rsa ${{ secrets.USER }}@${{ secrets.HOST }} "
+          cd ${{ secrets.APP_DIR }}
+          && git fetch -p
+          && git checkout ${{ github.ref }}
+          && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
+          && php -c ~/www/php.ini artisan migrate --force
+          && php -c ~/www/php.ini artisan migrate:status
+          && php -c ~/www/php.ini artisan optimize:clear
+          && php -c ~/www/php.ini artisan optimize
+          && php -c ~/www/php.ini artisan event:cache
+          && php -c ~/www/php.ini artisan view:cache"
 
       - name: rsync assets
         run: rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./public/ ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public
