@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
 
       - name: Cache build assets
         id: cache-assets
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: cache-assets
         with:
@@ -44,7 +44,7 @@ jobs:
           php-version: "8"
       - name: PHP vendor Cache
         id: cache-vendor
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./vendor
           key: ${{ runner.os }}-cache-vendor-${{ hashFiles('**/composer.lock') }}
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: .env
         run: php -r "copy('.env.deploy', '.env');"
 
@@ -79,7 +79,7 @@ jobs:
         uses: actions/setup-node@v2
       - name: Cache node modules
         id: cache-node-modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
