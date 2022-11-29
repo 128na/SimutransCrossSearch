@@ -5,6 +5,7 @@ namespace App\Services\SiteService;
 use App\Models\Page;
 use App\Models\Pak;
 use App\Models\RawPage;
+use App\Services\SiteService\Exceptions\RequestFailedException;
 use Goutte\Client;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
@@ -31,25 +32,33 @@ abstract class SiteService
     }
 
     /**
-     * URL一覧の取得
+     * URL一覧の取得.
      */
     abstract public function getUrls(): Collection;
 
     /**
-     * 取得HTMLの更新日が保存済みRawPage作成日よりも新しいか
+     * 取得HTMLの更新日が保存済みRawPage作成日よりも新しいか.
      */
     abstract protected function isUpdated(RawPage $raw_page, string $html): bool;
 
     /**
-     * 取得HTMLからタイトル、テキスト、pakセット一覧を取得する
+     * 取得HTMLからタイトル、テキスト、pakセット一覧を取得する.
+     *
      * @return array(title => string, text => string, paks => string[])
      */
     abstract public function extractContents(RawPage $raw_page): array;
 
     public function getHTML(string $url): string
     {
-        $crawler = $this->client->request('GET', $url);
+        $crawler = retry(5, function () use ($url) {
+            $crawler = $this->client->request('GET', $url);
+            if ($this->client->getResponse()->getStatusCode() === 200) {
+                return $crawler;
+            }
+            throw new RequestFailedException($url);
+        }, 1000);
         $this->wait();
+
         return $crawler->outerHtml();
     }
 
@@ -69,6 +78,7 @@ abstract class SiteService
         if ($this->isUpdated($raw_page, $html)) {
             $raw_page->update(['html' => $html]);
         }
+
         return $raw_page;
     }
 
@@ -114,9 +124,10 @@ abstract class SiteService
 
     protected function getCrawler(string $html): Crawler
     {
-        $crawler = new Crawler;
+        $crawler = new Crawler();
         // charasetによらず保存時にUTF8となっているため注意
         $crawler->addHtmlContent($html, 'UTF-8');
+
         return $crawler;
     }
 }

@@ -5,8 +5,11 @@ namespace App\Services\SiteService;
 use App\Models\Page;
 use App\Models\Pak;
 use App\Models\RawPage;
+use App\Services\SiteService\Exceptions\ElementNotFoundException;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use LogicException;
+use Symfony\Component\DomCrawler\Crawler;
 
 class JapaneseSimutransSiteService extends SiteService
 {
@@ -22,7 +25,7 @@ class JapaneseSimutransSiteService extends SiteService
 
     public function getUrls(): Collection
     {
-        $url = $this->url . '?cmd=list';
+        $url = $this->url.'?cmd=list';
 
         $crawler = $this->client->request('GET', $url);
         $urls = collect($crawler->filter('#body > ul li')->each(function ($node) {
@@ -60,18 +63,29 @@ class JapaneseSimutransSiteService extends SiteService
     public function isUpdated(RawPage $raw_page, string $html): bool
     {
         $crawler = $this->getCrawler($html);
-        $last_modified = $this->extractLastModified($crawler);
+        try {
+            $last_modified = $this->extractLastModified($crawler);
 
-        return $last_modified >= $raw_page->updated_at;
+            return $last_modified >= $raw_page->updated_at;
+        } catch (LogicException $e) {
+            logger()->error($e->getMessage(), [$raw_page->url]);
+
+            return false;
+        }
     }
 
-    private function extractLastModified($crawler): Carbon
+    private function extractLastModified(Crawler $crawler): Carbon
     {
-        $text = $crawler->filter('div#lastmodified')->text();
-        $text = str_replace('Last-modified:', '', $text);
-        $text = trim($text);
-        $text = str_replace([' (月)', ' (火)', ' (水)', ' (木)', ' (金)', ' (土)', ' (日)'], '', $text);
-        return Carbon::createFromFormat('Y-m-d H:i:s', $text);
+        $el = $crawler->filter('div#lastmodified');
+        if ($el->count()) {
+            $text = $el->text();
+            $text = str_replace('Last-modified:', '', $text);
+            $text = trim($text);
+            $text = str_replace([' (月)', ' (火)', ' (水)', ' (木)', ' (金)', ' (土)', ' (日)'], '', $text);
+
+            return Carbon::createFromFormat('Y-m-d H:i:s', $text);
+        }
+        throw new ElementNotFoundException($crawler->html());
     }
 
     public function extractContents(RawPage $raw_page): array
@@ -89,6 +103,7 @@ class JapaneseSimutransSiteService extends SiteService
     private function extractTitle($crawler)
     {
         $title = $crawler->filter('title')->text();
+
         return str_replace(' - Simutrans日本語化･解説', '', $title);
     }
 
@@ -113,7 +128,7 @@ class JapaneseSimutransSiteService extends SiteService
         if (stripos($url, $str_pak128jp) !== false) {
             return ['128-japan'];
         }
+
         return [];
     }
-
 }
