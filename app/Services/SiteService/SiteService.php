@@ -28,7 +28,7 @@ abstract class SiteService
         $this->raw_page = $raw_page;
         $this->page = $page;
         $this->pak = $pak;
-        $this->client = new Client(HttpClient::create(['timeout' => 60]));
+        $this->client = new Client(HttpClient::create(['timeout' => 120]));
     }
 
     /**
