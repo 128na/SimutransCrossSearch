@@ -9,6 +9,35 @@ on:
   pull_request:
     branches: [master, develop]
 jobs:
+  pint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: .env
+        run: php -r "copy('.env.ci', '.env');"
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8"
+      - name: Cache vendor
+        id: cache-composer
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-vendor
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Composer Install
+        if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
+        run: composer install
+      - name: pint
+        run: composer run pint:check
+
   test:
     runs-on: ubuntu-latest
     steps:
