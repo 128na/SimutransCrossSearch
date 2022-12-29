@@ -33,7 +33,6 @@ class CreatePagesTable extends Migration
      */
     public function down()
     {
-
         Schema::table('pages', function (Blueprint $table) {
             $table->dropForeign(['raw_page_id']);
         });

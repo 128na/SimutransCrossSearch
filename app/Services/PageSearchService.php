@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Page;
@@ -70,12 +71,14 @@ class PageSearchService
             $cond = $cond->merge($paks);
         }
         $cond = $cond->implode(', ');
+
         return "「{$cond}」での検索結果";
     }
 
     public function parseSearchCondition($word, $type = 'and')
     {
         $word = $this->clean($word);
+
         return [
             'words' => explode(' ', $word),
             'type' => $type,
@@ -92,6 +95,7 @@ class PageSearchService
         $str = str_replace($from, $to, $str);
         $str = mb_strtolower($str);
         $str = trim($str);
+
         return $str;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands\Articles;
 
-use App\Models\Article;
 use App\Services\ArticleSearchService;
 use App\Services\SummaryImageService;
 use App\Services\TweetService;
@@ -25,7 +24,9 @@ class TweetSummaryCommand extends Command
     protected $description = 'Tweet Summary';
 
     private ArticleSearchService $article_service;
+
     private SummaryImageService $image_service;
+
     private TweetService $tweet_service;
 
     /**

@@ -14,7 +14,6 @@ class SearchLogTest extends TestCase
      */
     public function testNoResultSearchLog()
     {
-
         $this->assertEquals(Page::count(), 0);
         $url = route('pages.search');
 
@@ -28,7 +27,6 @@ class SearchLogTest extends TestCase
      */
     public function testHasResultSearchLog()
     {
-
         $raw_page = RawPage::create(['site_name' => 'test site', 'url' => 'http://example.com', 'html' => 'test html']);
         $page = $raw_page->page()->create(['site_name' => 'test site', 'url' => 'http://example.com', 'title' => 'test title', 'text' => 'test text']);
         $this->assertEquals(Page::count(), 1);

@@ -12,7 +12,6 @@ class ExtractTwitransTest extends ExtractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
     }
 
     public function testExtract64()
@@ -67,6 +66,5 @@ class ExtractTwitransTest extends ExtractTestCase
         $this->artisan($command)->assertExitCode(0);
         $this->assertDatabaseHas('pages', ['url' => $url, 'title' => 'second title', 'text' => 'second text']);
         $assert_fn($page);
-
     }
 }

@@ -15,10 +15,15 @@ use Symfony\Component\HttpClient\HttpClient;
 abstract class SiteService
 {
     protected string $name;
+
     protected string $url;
+
     protected RawPage $raw_page;
+
     protected Page $page;
+
     protected Pak $pak;
+
     protected Client $client;
 
     public function __construct(array $config, RawPage $raw_page, Page $page, Pak $pak)

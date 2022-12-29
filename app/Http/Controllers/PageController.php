@@ -9,6 +9,7 @@ use App\Services\SearchLogService;
 class PageController extends Controller
 {
     private PageSearchService $search_service;
+
     private SearchLogService $search_log_service;
 
     public function __construct(PageSearchService $search_service, SearchLogService $search_log_service)
@@ -20,6 +21,7 @@ class PageController extends Controller
     public function index()
     {
         $pages = $this->search_service->latest();
+
         return view('pages.index', compact('pages'));
     }
 

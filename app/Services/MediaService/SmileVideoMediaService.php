@@ -32,6 +32,7 @@ class SmileVideoMediaService extends MediaService
             '_limit' => $limit,
             '_context' => config('app.name'),
         ];
+
         return $this->fetch($query);
     }
 
@@ -42,11 +43,12 @@ class SmileVideoMediaService extends MediaService
             'targets' => 'title,description,tags',
             'fields' => 'contentId,title,description,thumbnailUrl,startTime',
             // 2015-01-01T00:00:00+09:00
-            'filters[startTime][lt]'=>$date->toAtomString(),
+            'filters[startTime][lt]' => $date->toAtomString(),
             '_sort' => '-startTime',
             '_limit' => $limit,
             '_context' => config('app.name'),
         ];
+
         return $this->fetch($query);
     }
 
@@ -65,7 +67,7 @@ class SmileVideoMediaService extends MediaService
                 'text' => $item['description'] ?? '',
                 'media_type' => 'video',
                 'url' => "{$this->url}/watch/{$item['contentId']}",
-                'thumbnail_url' => $item['thumbnailUrl'] . '.L',
+                'thumbnail_url' => $item['thumbnailUrl'].'.L',
                 // 2020-01-02T03:04:05+09:00
                 'last_modified' => Carbon::create($item['startTime'])->tz(config('app.timezone')),
             ];

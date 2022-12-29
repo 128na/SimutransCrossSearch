@@ -52,6 +52,7 @@ class Article extends Model
         $contents = $this->contents['description'] ?? '';
         $contents .= $this->contents['thanks'] ?? '';
         $contents .= $this->contents['license'] ?? '';
+
         return $contents;
     }
 }

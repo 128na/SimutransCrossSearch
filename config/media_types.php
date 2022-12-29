@@ -1,4 +1,5 @@
 <?php
+
 return [
     'video' => '動画',
     'image' => '画像',

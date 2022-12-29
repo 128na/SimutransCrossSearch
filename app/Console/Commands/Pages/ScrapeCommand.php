@@ -6,7 +6,7 @@ use App\Factories\SiteServiceFactory;
 use App\Services\SiteService\SiteService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use \Throwable;
+use Throwable;
 
 class ScrapeCommand extends Command
 {
@@ -25,6 +25,7 @@ class ScrapeCommand extends Command
     protected $description = 'scrape sites to raw pages';
 
     private SiteServiceFactory $service_factory;
+
     private SiteService $site_service;
 
     private ?Throwable $last_error = null;
@@ -64,8 +65,10 @@ class ScrapeCommand extends Command
                 $this->info($url);
                 $raw_page = retry(3, function () use ($url) {
                     $html = $this->site_service->getHTML($url);
+
                     return $this->site_service->saveOrUpdateRawPage($url, $html);
                 }, 1000);
+
                 return $raw_page->url;
             } catch (Throwable $e) {
                 $this->last_error = $e;

@@ -7,7 +7,15 @@ use Intervention\Image\Facades\Image;
 
 class SummaryImageService
 {
-    private $rows, $cols, $width, $height, $index;
+    private $rows;
+
+    private $cols;
+
+    private $width;
+
+    private $height;
+
+    private $index;
 
     public function make($articles, $rows = 5, $cols = 5, $width = 320, $height = 180)
     {
@@ -25,6 +33,7 @@ class SummaryImageService
                 $y = $this->height * floor($this->index / $this->rows);
 
                 $this->index++;
+
                 return $img->insert($thumb, 'top-left', $x, $y);
             },
             Image::canvas($this->width * $this->rows, $this->height * $this->cols)

@@ -7,7 +7,7 @@ use App\Models\RawPage;
 use App\Services\SiteService\SiteService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use \Throwable;
+use Throwable;
 
 class ExtractCommand extends Command
 {
@@ -26,6 +26,7 @@ class ExtractCommand extends Command
     protected $description = 'extract from raw pages to pages contents';
 
     private SiteServiceFactory $site_service_factory;
+
     private SiteService $site_service;
 
     private ?Throwable $last_error = null;
@@ -35,7 +36,6 @@ class ExtractCommand extends Command
      *
      * @return void
      */
-
     public function __construct(SiteServiceFactory $site_service_factory)
     {
         parent::__construct();
@@ -62,6 +62,7 @@ class ExtractCommand extends Command
                 $this->info($raw_page->id);
 
                 $data = $this->site_service->extractContents($raw_page);
+
                 return $this->site_service->saveOrUpdatePage($raw_page, $data);
             } catch (Throwable $e) {
                 $this->last_error = $e;

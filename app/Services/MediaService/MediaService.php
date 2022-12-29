@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 abstract class MediaService
 {
     protected string $name;
+
     protected string $url;
 
     protected Article $article;
@@ -33,6 +34,7 @@ abstract class MediaService
         if ($this->article->where('url', $data['url'])->exists()) {
             return null;
         }
+
         return $this->article->create([
             'site_name' => $this->name,
             'url' => $data['url'],

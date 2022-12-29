@@ -11,6 +11,7 @@ use App\Services\SearchLogService;
 class PageController extends Controller
 {
     private PageSearchService $search_service;
+
     private SearchLogService $search_log_service;
 
     public function __construct(PageSearchService $search_service, SearchLogService $search_log_service)

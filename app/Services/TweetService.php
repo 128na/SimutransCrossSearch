@@ -50,6 +50,7 @@ class TweetService
             }
             throw new \Exception($msg, 1);
         }
+
         return $res;
     }
 }

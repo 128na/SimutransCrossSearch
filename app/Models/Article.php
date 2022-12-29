@@ -24,6 +24,7 @@ class Article extends Model
     {
         return config("media.{$this->site_name}.url", '');
     }
+
     public function getIsVideoAttribute()
     {
         return $this->media_type === 'video';

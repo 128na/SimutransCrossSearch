@@ -66,6 +66,5 @@ class ExtractJapaneseSimutransTest extends ExtractTestCase
         $this->artisan($command)->assertExitCode(0);
         $this->assertDatabaseHas('pages', ['url' => $url, 'title' => 'second title', 'text' => 'second text']);
         $assert_fn($page);
-
     }
 }

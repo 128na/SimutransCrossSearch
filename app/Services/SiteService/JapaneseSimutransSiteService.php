@@ -25,7 +25,7 @@ class JapaneseSimutransSiteService extends SiteService
 
     public function getUrls(): Collection
     {
-        $url = $this->url . '?cmd=list';
+        $url = $this->url.'?cmd=list';
 
         $crawler = $this->client->request('GET', $url);
         $urls = collect($crawler->filter('#body > ul li')->each(function ($node) {
@@ -45,15 +45,15 @@ class JapaneseSimutransSiteService extends SiteService
 
         return $urls
             ->filter(function ($url) use ($str_pak, $str_pak128, $str_pak128jp) { // アドオンページ以外を除去
-                return stripos($url, $str_pak) !== false
+            return stripos($url, $str_pak) !== false
                     || stripos($url, $str_pak128) !== false
                     || stripos($url, $str_pak128jp) !== false;
             })
             ->filter(function ($url) { // 見出しを除去
-                return stripos($url, $this->url) !== false;
+            return stripos($url, $this->url) !== false;
             })
             ->filter(function ($url) use ($str_report) { // 不要ページを除去
-                return stripos($url, 'menubar') === false
+            return stripos($url, 'menubar') === false
                     && stripos($url, 'Train%20Index') === false
                     && stripos($url, 'TrainIndexNew') === false
                     && stripos($url, $str_report) === false;

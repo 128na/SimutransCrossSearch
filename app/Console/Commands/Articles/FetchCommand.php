@@ -6,7 +6,7 @@ use App\Factories\MediaServiceFactory;
 use App\Services\MediaService\MediaService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use \Throwable;
+use Throwable;
 
 class FetchCommand extends Command
 {
@@ -25,6 +25,7 @@ class FetchCommand extends Command
     protected $description = 'Command description';
 
     private MediaServiceFactory $service_factory;
+
     private MediaService $media_service;
 
     /**

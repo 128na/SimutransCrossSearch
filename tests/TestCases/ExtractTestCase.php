@@ -10,7 +10,9 @@ abstract class ExtractTestCase extends TestCase
     protected $site_service_class;
 
     protected $pak64;
+
     protected $pak128;
+
     protected $pak128jp;
 
     protected function setUp(): void

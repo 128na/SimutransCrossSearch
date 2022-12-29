@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Services;
 
-use \HTMLPurifier;
-use \HTMLPurifier_Config;
+use HTMLPurifier;
+use HTMLPurifier_Config;
 
 class HTMLPurifyService
 {

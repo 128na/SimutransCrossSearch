@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\SearchLog;
@@ -16,7 +17,7 @@ class SearchLogService
     /**
      * 検索履歴の保存
      */
-    public function put(String $query): SearchLog
+    public function put(string $query): SearchLog
     {
         $model = $this->model->firstOrNew(['query' => $query]);
 
@@ -25,6 +26,7 @@ class SearchLogService
         } else {
             $model->update(['count' => $model->count + 1]);
         }
+
         return $model;
     }
 

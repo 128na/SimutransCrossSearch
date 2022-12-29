@@ -11,6 +11,7 @@ class SearchLog extends Model
     protected $casts = [
         'count' => 'int',
     ];
+
     protected $attributes = [
         'count' => 1,
     ];

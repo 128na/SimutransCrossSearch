@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands\Articles;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use App\Factories\MediaServiceFactory;
 use App\Services\MediaService\MediaService;
+use Illuminate\Console\Command;
 
 class FetchOldestCommand extends Command
 {
@@ -14,6 +13,7 @@ class FetchOldestCommand extends Command
     protected $description = '取得済みの最古の記事からさかのぼって昔の記事を探す';
 
     private MediaServiceFactory $service_factory;
+
     private MediaService $media_service;
 
     public function __construct(MediaServiceFactory $service_factory)

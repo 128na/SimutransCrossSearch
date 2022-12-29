@@ -34,7 +34,7 @@ class Page extends Model
 
     public function highlightText($search_condition)
     {
-        if (!implode('', $search_condition['words'])) {
+        if (! implode('', $search_condition['words'])) {
             return '';
         }
         $word = implode('|', $search_condition['words']);

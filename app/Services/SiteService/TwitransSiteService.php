@@ -22,7 +22,7 @@ class TwitransSiteService extends SiteService
 
     public function getUrls(): Collection
     {
-        $url = $this->url . '?cmd=list';
+        $url = $this->url.'?cmd=list';
 
         $crawler = $this->client->request('GET', $url);
         $urls = collect($crawler->filter('#content>ul li')->each(function ($node) {
@@ -39,21 +39,21 @@ class TwitransSiteService extends SiteService
 
         return $urls
             ->filter(function ($url) { // アドオンページ以外を除去
-                return stripos($url, 'addon/pak64/') !== false
+            return stripos($url, 'addon/pak64/') !== false
                 || stripos($url, 'addon/pak128/') !== false
                 || stripos($url, 'addon/pak128.japan/') !== false;
             })
             ->filter(function ($url) use ($root) { // 見出しを削除
-                return stripos($url, $root) !== false;
+            return stripos($url, $root) !== false;
             })
             ->filter(function ($url) use ($str_copy) { // 不要ページを除去
-                return stripos($url, 'test') === false
+            return stripos($url, 'test') === false
                 && stripos($url, 'index') === false
                 && stripos($url, 'menubar') === false
                 && stripos($url, $str_copy) === false;
             })
             ->map(function ($url) use ($root) { // 相対URLを絶対URLに加工
-                return str_replace("/{$root}", $this->url, $url);
+            return str_replace("/{$root}", $this->url, $url);
             });
     }
 
@@ -71,6 +71,7 @@ class TwitransSiteService extends SiteService
         $text = str_replace('Last-modified:', '', $text);
         $text = trim($text);
         $text = str_replace([' (月)', ' (火)', ' (水)', ' (木)', ' (金)', ' (土)', ' (日)'], '', $text);
+
         return Carbon::createFromFormat('Y-m-d H:i:s', $text);
     }
 
@@ -98,6 +99,7 @@ class TwitransSiteService extends SiteService
     private function extractTitle($crawler)
     {
         $title = $crawler->filter('title')->text();
+
         return str_replace(' - Simutrans的な実験室 Wiki*', '', $title);
     }
 
@@ -117,6 +119,7 @@ class TwitransSiteService extends SiteService
         if (stripos($url, 'pak128.japan/') !== false) {
             return ['128-japan'];
         }
+
         return [];
     }
 }

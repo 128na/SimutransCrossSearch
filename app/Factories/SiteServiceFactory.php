@@ -21,7 +21,6 @@ class SiteServiceFactory
                 return app(TwitransSiteService::class);
             default:
                 throw new Exception("{$name} is not defined SiteService", 1);
-
         }
     }
 }

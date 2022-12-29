@@ -18,6 +18,7 @@ class ArticleController extends Controller
     {
         $media_types = $request->media_types ?? [];
         $articles = $this->search_service->latest($media_types);
+
         return view('articles.index', compact('articles', 'media_types'));
     }
 }

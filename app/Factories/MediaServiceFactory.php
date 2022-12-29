@@ -22,7 +22,6 @@ class MediaServiceFactory
 
             default:
                 throw new Exception("{$name} is not defined MediaService", 1);
-
         }
     }
 }

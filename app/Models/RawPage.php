@@ -12,5 +12,4 @@ class RawPage extends Model
     {
         return $this->hasOne(Page::class);
     }
-
 }
