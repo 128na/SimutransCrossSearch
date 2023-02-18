@@ -21,9 +21,11 @@
         "laravel/framework": "^9.51",
         "laravel/sanctum": "^3.2.1",
         "laravel/tinker": "^2.8",
-        "spatie/laravel-backup": "^8.1.7"
+        "spatie/laravel-backup": "^8.1.7",
+        "team-reflex/discord-php": "^7.3.4"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.8",
         "brianium/paratest": "^6.4.4",
         "fakerphp/faker": "^1.21.0",
         "laravel/pint": "^1.4.1",

@@ -15,6 +15,9 @@ return [
     'github' => [
         'url' => 'https://github.com/128na/SimutransCrossSearch',
     ],
+    'command' => [
+        'max_execution_time' => 299,
+    ],
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -187,6 +190,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\DiscordServiceProvider::class,
 
     ],
 
