@@ -25,6 +25,9 @@ class PageSearchService
             ->get();
     }
 
+    /**
+     * @return LengthAwarePaginator<Page>
+     */
     public function search($search_condition, array $paks, $per_page = 20): LengthAwarePaginator
     {
         $query = $this->model->select('id', 'site_name', 'title', 'url', 'last_modified', 'text');

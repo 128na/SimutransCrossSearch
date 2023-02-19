@@ -29,4 +29,9 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'discord' => [
+        'token' => env('DISCORD_TOKEN'),
+        'client_id' => env('DISCORD_CLIENT_ID'),
+        'trigger' => '!cs',
+    ],
 ];
