@@ -4,6 +4,7 @@ namespace App\Console\Commands\Discord;
 
 use App\Services\Discord\SearchBotService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 
 class SearchBot extends Command
 {
@@ -19,7 +20,7 @@ class SearchBot extends Command
 
     public function __construct(
     ) {
-        set_time_limit(config('app.command.max_execution_time'));
+        $this->setMaxExecutionTime();
         parent::__construct();
     }
 
@@ -31,5 +32,12 @@ class SearchBot extends Command
         app(SearchBotService::class)->handle();
 
         return Command::SUCCESS;
+    }
+
+    private function setMaxExecutionTime(): void
+    {
+        if (App::environment('production')) {
+            set_time_limit(config('app.command.max_execution_time'));
+        }
     }
 }
