@@ -11,7 +11,7 @@ class SearchBot extends Command
     /**
      * @var string
      */
-    protected $signature = 'discord:search_bot';
+    protected $signature = 'discord:bot';
 
     /**
      * @var string
@@ -20,7 +20,6 @@ class SearchBot extends Command
 
     public function __construct(
     ) {
-        $this->setMaxExecutionTime();
         parent::__construct();
     }
 
@@ -29,6 +28,7 @@ class SearchBot extends Command
      */
     public function handle()
     {
+        $this->setMaxExecutionTime();
         app(SearchBotService::class)->handle();
 
         return Command::SUCCESS;
@@ -37,6 +37,7 @@ class SearchBot extends Command
     private function setMaxExecutionTime(): void
     {
         if (App::environment('production')) {
+            $this->info('max_execution_time is '.config('app.command.max_execution_time'));
             set_time_limit(config('app.command.max_execution_time'));
         }
     }
