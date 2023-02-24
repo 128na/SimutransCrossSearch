@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Discord\Discord;
+use App\Services\Discord\TimeoutableDiscord;
 use Discord\WebSockets\Intents;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
@@ -14,17 +14,17 @@ class DiscordServiceProvider extends ServiceProvider implements DeferrableProvid
      */
     public function provides()
     {
-        return [Discord::class];
+        return [TimeoutableDiscord::class];
     }
 
     public function register(): void
     {
-        $this->app->singleton(Discord::class, function ($app) {
+        $this->app->singleton(TimeoutableDiscord::class, function ($app) {
             // インスタンス作成時点から動き始めるので注意
-            return new Discord([
+            return new TimeoutableDiscord([
                 'token' => config('services.discord.token'),
                 'intents' => Intents::getDefaultIntents(),
-            ]);
+            ], config('services.discord.timeout'));
         });
     }
 }

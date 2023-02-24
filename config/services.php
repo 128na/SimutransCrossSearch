@@ -33,5 +33,6 @@ return [
         'token' => env('DISCORD_TOKEN'),
         'client_id' => env('DISCORD_CLIENT_ID'),
         'trigger' => '!cs',
+        'timeout' => 300,
     ],
 ];

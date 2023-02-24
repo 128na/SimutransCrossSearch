@@ -7,10 +7,10 @@ use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Event;
 
-class SearchBotService
+class SearchBot
 {
     public function __construct(
-        private Discord $client,
+        private TimeoutableDiscord $client,
         private MessageParser $messageParser,
         private PageSearchService $pageSearchService,
     ) {
