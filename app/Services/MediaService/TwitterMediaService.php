@@ -5,6 +5,7 @@ namespace App\Services\MediaService;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Models\Article;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Collection;
 
 /**
