@@ -106,6 +106,20 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'line-bot' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/line-bot.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
+
+        'discord-bot' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/discord-bot.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
     ],
 
 ];

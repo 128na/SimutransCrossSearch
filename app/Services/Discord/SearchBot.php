@@ -19,7 +19,7 @@ class SearchBot
     public function handle(): void
     {
         $this->client->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) {
-            logger('Event::MESSAGE_CREATE', [
+            logger()->channel('discord-bot')->info('Event::MESSAGE_CREATE', [
                 'message' => $message->content,
                 'user_id' => $message->author->id,
                 'bot' => $message->author->bot,
@@ -30,7 +30,7 @@ class SearchBot
                 $type = $this->messageParser->parseType($message);
                 $condition = $this->pageSearchService->parseSearchCondition($word, $type);
                 $paks = $this->messageParser->parsePaks($message);
-                logger('search condition', [
+                logger()->channel('discord-bot')->info('search condition', [
                     'condition' => $condition,
                     'paks' => $paks,
                 ]);
