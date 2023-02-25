@@ -4,6 +4,7 @@ namespace App\Models\Portal;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Article extends Model
 {
@@ -22,11 +23,6 @@ class Article extends Model
         'contents' => 'json',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | 初期化時設定
-    |--------------------------------------------------------------------------
-     */
     protected static function boot()
     {
         parent::boot();
@@ -37,22 +33,33 @@ class Article extends Model
         });
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | リレーション
-    |--------------------------------------------------------------------------
-     */
-    public function categories()
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
-    public function getTextContentsAttribute()
+    public function tags(): BelongsToMany
     {
-        $contents = $this->contents['description'] ?? '';
-        $contents .= $this->contents['thanks'] ?? '';
-        $contents .= $this->contents['license'] ?? '';
+        return $this->belongsToMany(Tag::class);
+    }
 
-        return $contents;
+    public function getTextContentsAttribute(): string
+    {
+        $fields = [];
+        $fields[] = $this->contents['description'] ?? '';
+        $fields[] = $this->contents['thanks'] ?? '';
+        $fields[] = $this->contents['license'] ?? '';
+        $fields[] = $this->translatedCategory();
+        $fields[] = $this->tags->pluck('name')->implode("\n");
+        $fields[] = $this->tags->pluck('description')->implode("\n");
+
+        return implode("\n", $fields);
+    }
+
+    private function translatedCategory(): string
+    {
+        return $this->categories
+            ->map(fn (Category $c) => __("category.{$c->type}.{$c->slug}"))
+            ->implode("\n");
     }
 }

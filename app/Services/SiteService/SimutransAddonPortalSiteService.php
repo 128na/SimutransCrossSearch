@@ -40,7 +40,7 @@ class SimutransAddonPortalSiteService extends SiteService
         $slug = basename($raw_page->url);
         $article = Article::where('slug', $slug)
             ->with(['categories' => function ($q) {
-                $q->select('slug')->where('type', 'pak');
+                $q->select('slug', 'type')->where('type', 'pak');
             }])->first();
 
         $title = $article->title;

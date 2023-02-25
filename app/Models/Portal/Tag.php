@@ -6,16 +6,13 @@ use App\Models\Article;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Category extends Model
+class Tag extends Model
 {
     protected $connection = 'portal';
 
     protected $fillable = [
         'name',
-        'type',
-        'slug',
-        'order',
-        'need_admin',
+        'description',
     ];
 
     public function articles(): BelongsToMany
