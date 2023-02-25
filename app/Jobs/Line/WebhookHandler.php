@@ -32,7 +32,6 @@ class WebhookHandler implements ShouldQueue
     ): void {
         $this->validate($signatureValidator);
         $events = $this->getEvents();
-        logger()->channel('line-bot')->debug('events', $events);
 
         foreach ($events as $event) {
             try {
@@ -61,7 +60,7 @@ class WebhookHandler implements ShouldQueue
     private function getEvents(): array
     {
         $messages = json_decode($this->body, true);
-        logger()->channel('line-bot')->debug('decode', $messages);
+        logger()->channel('line-bot')->debug('messages', $messages);
 
         return array_map(fn (array $e): Event => new Event($e), $messages['events'] ?? []);
     }
@@ -113,7 +112,6 @@ class WebhookHandler implements ShouldQueue
             ];
         }
 
-        logger()->channel('line-bot')->debug('reply', [$event->getUserId(), $messages]);
         $lineClient->reply($event, $messages);
     }
 }
