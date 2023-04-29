@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,11 +8,14 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-75900038-5"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
 
-    gtag('config', 'UA-75900038-5');
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-75900038-5');
     </script>
 
 
@@ -30,9 +34,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') | {{ config('app.name') }}</title>
     <link rel="canonical" href="{{ $canonical_url ?? url()->current() }}">
-    <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
-    <link rel="shortcut icon" href="{{ route('pages.index') }}{{ config('app.favicon') }}" type="image/vnd.microsoft.ico"/>
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="shortcut icon" href="{{ route('pages.index') }}{{ config('app.favicon') }}"
+        type="image/vnd.microsoft.ico" />
 </head>
+
 <body>
     <header>
         @include('parts.header')
@@ -46,6 +52,6 @@
         @include('parts.footer')
     </footer>
     </div>
-    <script src="{{ asset(mix('js/app.js')) }}" defer></script>
 </body>
+
 </html>
