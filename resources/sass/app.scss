@@ -1,7 +1,7 @@
 $primary: #4787cd;
 $info: hsla(188, 78%, 48%, 1);
 $success: hsla(134, 61%, 48%, 1);
-@import "~bootstrap";
+@import "bootstrap";
 
 // layout
 body {
@@ -10,12 +10,15 @@ body {
 
     grid-template-rows: 6rem 1fr 3rem;
 }
+
 header nav.navbar {
     border-top: solid 4px var(--primary);
 }
+
 .nav-item.active {
     font-weight: 500;
 }
+
 .flex-2 {
     flex: 2 !important;
 }
