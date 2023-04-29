@@ -65,7 +65,7 @@ jobs:
         run: npm ci
       - name: Build Assets
         if: steps.cache-assets.outputs.cache-hit != 'true'
-        run: npm run prod
+        run: npm run build
 
       - name: PHP
         uses: shivammathur/setup-php@v2
@@ -120,7 +120,7 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build Assets
-        run: npm run prod
+        run: npm run build
 
       - name: Install SSH key
         run: mkdir -p ~/.ssh \
