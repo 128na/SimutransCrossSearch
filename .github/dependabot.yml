@@ -9,7 +9,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    reviewers:
+      - "128na"
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
       interval: "weekly"
+    reviewers:
+      - "128na"
