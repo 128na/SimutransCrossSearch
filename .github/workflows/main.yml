@@ -87,7 +87,7 @@ jobs:
       - name: Setup database
         run: mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test'
       - name: Test
-        run: php artisan test -v --env=local
+        run: php artisan test --env=local
 
       - if: failure()
         name: Display Error Log
