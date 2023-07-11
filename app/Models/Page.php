@@ -10,7 +10,9 @@ class Page extends Model
 {
     protected $fillable = ['site_name', 'url', 'title', 'text', 'last_modified'];
 
-    protected $dates = ['last_modified'];
+    protected $casts = [
+        'last_modified' => 'datetime',
+    ];
 
     public function paks()
     {
