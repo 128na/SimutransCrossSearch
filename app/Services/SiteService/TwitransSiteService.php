@@ -39,21 +39,21 @@ class TwitransSiteService extends SiteService
 
         return $urls
             ->filter(function ($url) { // アドオンページ以外を除去
-            return stripos($url, 'addon/pak64/') !== false
-                || stripos($url, 'addon/pak128/') !== false
-                || stripos($url, 'addon/pak128.japan/') !== false;
+                return stripos($url, 'addon/pak64/') !== false
+                    || stripos($url, 'addon/pak128/') !== false
+                    || stripos($url, 'addon/pak128.japan/') !== false;
             })
             ->filter(function ($url) use ($root) { // 見出しを削除
-            return stripos($url, $root) !== false;
+                return stripos($url, $root) !== false;
             })
             ->filter(function ($url) use ($str_copy) { // 不要ページを除去
-            return stripos($url, 'test') === false
-                && stripos($url, 'index') === false
-                && stripos($url, 'menubar') === false
-                && stripos($url, $str_copy) === false;
+                return stripos($url, 'test') === false
+                    && stripos($url, 'index') === false
+                    && stripos($url, 'menubar') === false
+                    && stripos($url, $str_copy) === false;
             })
             ->map(function ($url) use ($root) { // 相対URLを絶対URLに加工
-            return str_replace("/{$root}", $this->url, $url);
+                return str_replace("/{$root}", $this->url, $url);
             });
     }
 

@@ -19,7 +19,7 @@ jobs:
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8"
+          php-version: "8.1"
       - name: Cache vendor
         id: cache-composer
         uses: actions/cache@v3
@@ -70,7 +70,7 @@ jobs:
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8"
+          php-version: "8.1"
       - name: PHP vendor Cache
         id: cache-vendor
         uses: actions/cache@v3
@@ -87,7 +87,7 @@ jobs:
       - name: Setup database
         run: mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test'
       - name: Test
-        run: php artisan test -v --env=local
+        run: php artisan test --env=local
 
       - if: failure()
         name: Display Error Log
