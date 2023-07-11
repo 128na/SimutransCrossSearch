@@ -65,18 +65,18 @@ class TwitterMediaService extends MediaService
 
         return collect($result->statuses)
             ->filter(function ($item) { // exclude SimutransSearch media?
-            return $item->user->screen_name !== 'SimutransSearch';
+                return $item->user->screen_name !== 'SimutransSearch';
             })
             ->filter(function ($item) { // has media?
-            return isset($item->extended_entities->media);
+                return isset($item->extended_entities->media);
             })
             ->filter(function ($item) { // is NOT RT?
-            return ! isset($item->retweeted_status);
+                return ! isset($item->retweeted_status);
             })
             ->filter(function ($item) { // video or image?
-            return collect($item->extended_entities->media)->some(function ($media) {
-                return array_key_exists($media->type, $this->media_types);
-            });
+                return collect($item->extended_entities->media)->some(function ($media) {
+                    return array_key_exists($media->type, $this->media_types);
+                });
             })
             ->map(function ($item) {
                 $media = collect($item->extended_entities->media)->first(function ($media) {
