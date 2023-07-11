@@ -8,7 +8,9 @@ class Article extends Model
 {
     protected $fillable = ['site_name', 'url', 'title', 'media_type', 'text', 'thumbnail_url', 'last_modified'];
 
-    protected $dates = ['last_modified'];
+    protected $casts = [
+        'last_modified' => 'datetime',
+    ];
 
     public function getDisplaySiteNameAttribute()
     {
