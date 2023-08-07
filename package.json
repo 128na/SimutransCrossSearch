@@ -13,6 +13,6 @@
         "resolve-url-loader": "^5",
         "sass": "^1",
         "sass-loader": "^13",
-        "vite": "^4.4.7"
+        "vite": "^4.4.9"
     }
 }
