@@ -11,9 +11,18 @@ updates:
       interval: "weekly"
     assignees:
       - "128na"
+    groups:
+      major-patch-update-js:
+        update-types:
+          - "major"
+          - "patch"
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
       interval: "weekly"
     assignees:
       - "128na"
+    major-patch-update-php:
+      update-types:
+        - "major"
+        - "patch"
