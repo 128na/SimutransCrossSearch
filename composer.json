@@ -13,7 +13,7 @@
         "ezyang/htmlpurifier": "^4.17",
         "fabpot/goutte": "^4.0.3",
         "google/apiclient": "^2.15.1",
-        "guzzlehttp/guzzle": "^7.8.0",
+        "guzzlehttp/guzzle": "^7.8.1",
         "intervention/image": "^2.7.2",
         "laravel/framework": "^10.34.2",
         "laravel/sanctum": "^3.3.2",
