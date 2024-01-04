@@ -1416,16 +1416,16 @@
         },
         {
             "name": "google/auth",
-            "version": "v1.33.0",
+            "version": "v1.34.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "682dc6c30bb509953c9e43bb0960d901582da00b"
+                "reference": "155daeadfd2f09743f611ea493b828d382519575"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/682dc6c30bb509953c9e43bb0960d901582da00b",
-                "reference": "682dc6c30bb509953c9e43bb0960d901582da00b",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/155daeadfd2f09743f611ea493b828d382519575",
+                "reference": "155daeadfd2f09743f611ea493b828d382519575",
                 "shasum": ""
             },
             "require": {
@@ -1468,9 +1468,9 @@
             "support": {
                 "docs": "https://googleapis.github.io/google-auth-library-php/main/",
                 "issues": "https://github.com/googleapis/google-auth-library-php/issues",
-                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.33.0"
+                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.34.0"
             },
-            "time": "2023-11-30T15:49:27+00:00"
+            "time": "2024-01-03T20:45:15+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -10977,16 +10977,16 @@
         },
         {
             "name": "spatie/ignition",
-            "version": "1.11.3",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ignition.git",
-                "reference": "3d886de644ff7a5b42e4d27c1e1f67c8b5f00044"
+                "reference": "5b6f801c605a593106b623e45ca41496a6e7d56d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ignition/zipball/3d886de644ff7a5b42e4d27c1e1f67c8b5f00044",
-                "reference": "3d886de644ff7a5b42e4d27c1e1f67c8b5f00044",
+                "url": "https://api.github.com/repos/spatie/ignition/zipball/5b6f801c605a593106b623e45ca41496a6e7d56d",
+                "reference": "5b6f801c605a593106b623e45ca41496a6e7d56d",
                 "shasum": ""
             },
             "require": {
@@ -11056,7 +11056,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-18T14:09:40+00:00"
+            "time": "2024-01-03T15:49:39+00:00"
         },
         {
             "name": "spatie/laravel-ignition",
