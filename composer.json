@@ -18,7 +18,7 @@
         "laravel/framework": "^10.40.0",
         "laravel/sanctum": "^3.3.3",
         "laravel/tinker": "^2.9.0",
-        "team-reflex/discord-php": "^7.3.4"
+        "team-reflex/discord-php": "^7.3.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9.2",
@@ -28,7 +28,7 @@
         "laravel/sail": "^1.27.0",
         "mockery/mockery": "^1.6.7",
         "nunomaduro/collision": "^7.10.0",
-        "phpunit/phpunit": "^10.5.5",
+        "phpunit/phpunit": "^10.5.6",
         "spatie/laravel-ignition": "^2.4.1"
     },
     "config": {
