@@ -63,6 +63,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('media:fetch nico')->dailyAt('6:00')
             ->withoutOverlapping()
             ->onOneServer();
+
+        $schedule->command('notion:sync-database')->dailyAt('7:00')
+            ->withoutOverlapping()
+            ->onOneServer();
     }
 
     /**
