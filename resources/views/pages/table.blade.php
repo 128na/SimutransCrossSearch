@@ -2,7 +2,7 @@
     @foreach ($pages as $page)
         <div class="p-2 border-bottom">
             <div>
-                <span class="badge badge-primary mb-2">{{ $page->paks->pluck('name')->implode(', ') }}</span>
+                <span class="badge text-bg-primary text-white mb-2">{{ $page->paks->pluck('name')->implode(', ') }}</span>
                 <span class=" mb-2">
                     @includeIf("pages.link.{$page->site_name}")
                 </span>
