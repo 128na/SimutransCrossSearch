@@ -24,9 +24,17 @@ class SyncNotionDatabaseCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(NotionService $notionService)
+    public function handle(NotionService $notionService): int
     {
-        $databaseId = config('services.notion.database_id');
-        $notionService->sync($databaseId, 100);
+        try {
+            $databaseId = config('services.notion.database_id');
+            $notionService->sync($databaseId, 100);
+
+            return Command::SUCCESS;
+        } catch (\Throwable $th) {
+            report($th);
+
+            return Command::FAILURE;
+        }
     }
 }
