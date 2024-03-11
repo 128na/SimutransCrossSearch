@@ -17,7 +17,7 @@ class TimeoutableDiscord extends Discord
     /**
      * Process WebSocket message payloads.
      *
-     * @param  string  $data Message payload.
+     * @param  string  $data  Message payload.
      */
     protected function processWsMessage(string $data): void
     {
