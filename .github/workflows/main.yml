@@ -13,86 +13,75 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
+
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
-      - name: Cache vendor
-        id: cache-composer
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-vendor
-        with:
-          path: ./vendor
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: Composer Install
-        if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
-        run: composer install
+          php-version: "8.2"
+          coverage: none
+
+      - uses: "ramsey/composer-install@v2"
+
       - name: pint
         run: composer run pint:check
 
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php_version: [8.2, 8.3]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
       - name: .env
         run: php -r "copy('.env.ci', '.env');"
-
-      - name: Cache build assets
-        id: cache-assets
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-assets
-        with:
-          path: ./public
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-
-      - name: Setup Node
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        uses: actions/setup-node@v3
-      - name: npm ci
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Build Assets
-        if: steps.cache-assets.outputs.cache-hit != 'true'
-        run: npm run build
 
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
-      - name: PHP vendor Cache
-        id: cache-vendor
-        uses: actions/cache@v3
+          php-version: "8.2"
+          coverage: none
+
+      - uses: "ramsey/composer-install@v2"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          path: ./vendor
-          key: ${{ runner.os }}-cache-vendor-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cache-vendor-
-      - name: Composer Install
-        if: steps.cache-vendor.outputs.cache-hit != 'true'
-        run: composer install
+          node-version: 20
+          cache-dependency-path: package-lock.json
+
+      - name: npm ci
+        run: npm ci
+
+      - name: Build Assets
+        run: npm run build
+
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
+
       - name: Setup database
-        run: mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test'
+        run: |
+          mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;
+            CREATE DATABASE IF NOT EXISTS test_test_1;
+            CREATE DATABASE IF NOT EXISTS test_test_2'
+
+      - name: chmod 777
+        run: chmod -R 0777 ./
+
       - name: Test
         run: php artisan test --env=local
 
-      - if: failure()
-        name: Display Error Log
-        run: "[ -e storage/logs/laravel.log ] && cat storage/logs/laravel.log || echo 'no log file.'"
-
+      - name: Upload Laravel Logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestLaravelLog
+          path: storage/logs
   deploy:
     # tag push -> テスト通過後デプロイ
     needs: test
@@ -100,32 +89,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: .env
         run: php -r "copy('.env.deploy', '.env');"
-
       - name: Setup Node
-        uses: actions/setup-node@v3
-      - name: Cache node modules
-        id: cache-node-modules
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
+        uses: actions/setup-node@v4
         with:
-          path: ./node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
+          node-version: 20
+          cache-dependency-path: package-lock.json
       - name: npm ci
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build Assets
         run: npm run build
 
       - name: Install SSH key
-        run: mkdir -p ~/.ssh \
-          && echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa \
-          && chmod 0600 ~/.ssh/id_rsa \
+        run: >
+          mkdir -p ~/.ssh
+          && echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
+          && chmod 0600 ~/.ssh/id_rsa
           && echo "${{secrets.KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
 
       - name: Deploy
@@ -134,13 +117,17 @@ jobs:
           cd ${{ secrets.APP_DIR }}
           && git fetch -p
           && git checkout ${{ github.ref }}
+          && bash -c 'sed -i ".bak" "s/APP_VERSION=.*/APP_VERSION=$( git describe --tags --abbrev=0 )/" .env'
           && php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
           && php -c ~/www/php.ini artisan migrate --force
           && php -c ~/www/php.ini artisan migrate:status
           && php -c ~/www/php.ini artisan optimize:clear
           && php -c ~/www/php.ini artisan optimize
           && php -c ~/www/php.ini artisan event:cache
+          && php -c ~/www/php.ini artisan view:cache
           && php -c ~/www/php.ini artisan view:cache"
 
       - name: rsync assets
-        run: rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./public/ ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public
+        run: >
+          rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./public/
+          ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public
