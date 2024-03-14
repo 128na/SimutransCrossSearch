@@ -26,6 +26,7 @@ class SyncNotionDatabaseCommand extends Command
      */
     public function handle(NotionService $notionService): int
     {
+        logger('[SyncNotionDatabaseCommand] running');
         try {
             $databaseId = config('services.notion.database_id');
             $notionService->sync($databaseId, 100);

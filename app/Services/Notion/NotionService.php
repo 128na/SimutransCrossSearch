@@ -50,6 +50,7 @@ class NotionService
             if ($page) {
                 // addNewNotionPages側で更新するのでスキップ
             } else {
+                logger('[NotionService]delete', ['url' => $url]);
                 $this->notion->pages()->delete($np);
             }
         }
@@ -69,6 +70,7 @@ class NotionService
             $url = $page->url;
             $np = $notionPages->first(fn (NotionPage $np) => $np->getProperty('URL')->url === $url);
             if ($np) {
+                logger('[NotionService]update', ['url' => $url]);
                 $this->notion->pages()->update($np
                     ->changeTitle($page->title)
                     ->addProperty(self::PAGE_PROP_MAPPING['site_name'], RichTextProperty::fromString($page->displaySiteName))
@@ -78,6 +80,7 @@ class NotionService
                     ))
                 );
             } else {
+                logger('[NotionService]create', ['url' => $url]);
                 $this->notion->pages()->create(NotionPage::create(PageParent::database($database->id))
                     ->changeTitle($page->title)
                     ->addProperty(self::PAGE_PROP_MAPPING['url'], Url::create($page->url))
