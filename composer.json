@@ -22,7 +22,7 @@
         "team-reflex/discord-php": "^7.3.5"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.12.1",
+        "barryvdh/laravel-debugbar": "^3.12.2",
         "brianium/paratest": "^7.3.1",
         "fakerphp/faker": "^1.23.1",
         "laravel/pint": "^1.14.0",
