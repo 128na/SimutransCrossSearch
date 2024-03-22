@@ -15,7 +15,7 @@
         "google/apiclient": "^2.15.3",
         "guzzlehttp/guzzle": "^7.8.1",
         "intervention/image": "^2.7.2",
-        "laravel/framework": "^10.48.3",
+        "laravel/framework": "^10.48.4",
         "laravel/sanctum": "^3.3.3",
         "laravel/tinker": "^2.9.0",
         "mariosimao/notion-sdk-php": "^1.13",
@@ -26,10 +26,10 @@
         "brianium/paratest": "^7.3.1",
         "fakerphp/faker": "^1.23.1",
         "laravel/pint": "^1.14.0",
-        "laravel/sail": "^1.29.0",
-        "mockery/mockery": "^1.6.10",
+        "laravel/sail": "^1.29.1",
+        "mockery/mockery": "^1.6.11",
         "nunomaduro/collision": "^7.10.0",
-        "phpunit/phpunit": "^10.5.13",
+        "phpunit/phpunit": "^10.5.14",
         "spatie/laravel-ignition": "^2.4.2"
     },
     "config": {
