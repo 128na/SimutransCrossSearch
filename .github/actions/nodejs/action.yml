@@ -1,0 +1,31 @@
+name: 'Setup nodejs'
+description: 'Setup nodejs'
+inputs:
+  asset-key:
+    description: 'アセットキャッシュのキー'
+    required: false
+    default: 'asset'
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache-dependency-path: '**/package-lock.json'
+
+    - name: npm install
+      run: npm install
+      shell: bash
+
+    - name: Cache Asset
+      id: cache-asset
+      uses: actions/cache@v4
+      with:
+        path: public
+        key: ${{ inputs.asset-key }}-${{ hashFiles('frontend/src/**/*', 'frontend/public/**/*', 'frontend/*' ) }}
+
+    - name: Build Asset
+      if: steps.cache-asset.outputs.cache-hit != 'true'
+      run: npm run build
+      shell: bash
