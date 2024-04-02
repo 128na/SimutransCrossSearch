@@ -54,7 +54,7 @@ class SmileVideoMediaService extends MediaService
 
     private function fetch(array $query)
     {
-        $end_point = 'https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search';
+        $end_point = 'https://snapshot.search.nicovideo.jp/api/v2/snapshot/video/contents/search';
         $query = http_build_query($query);
         $url = "{$end_point}?{$query}";
 
