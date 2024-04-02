@@ -5,21 +5,17 @@ namespace App\Services\MediaService;
 use App\Models\Article;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Illuminate\Support\Facades\Http;
 
 /**
  * @see https://site.nicovideo.jp/search-api-docs/search.html
  */
 class SmileVideoMediaService extends MediaService
 {
-    protected HttpClientInterface $client;
-
     public function __construct(Article $article)
     {
         parent::__construct(config('media.nico'), $article);
 
-        $this->client = HttpClient::create(['timeout' => 60]);
     }
 
     public function search(string $word, $limit = 50): Collection
@@ -55,10 +51,8 @@ class SmileVideoMediaService extends MediaService
     private function fetch(array $query)
     {
         $end_point = 'https://snapshot.search.nicovideo.jp/api/v2/snapshot/video/contents/search';
-        $query = http_build_query($query);
-        $url = "{$end_point}?{$query}";
 
-        $res = $this->client->request('GET', $url);
+        $res = Http::get($end_point, $query);
         $content = $res->toArray();
 
         return collect($content['data'])->map(function ($item) {

@@ -6,11 +6,9 @@ use App\Models\Page;
 use App\Models\Pak;
 use App\Models\RawPage;
 use App\Services\SiteService\Exceptions\RequestFailedException;
-use Goutte\Client;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpClient\HttpClient;
 
 abstract class SiteService
 {
@@ -24,7 +22,7 @@ abstract class SiteService
 
     protected Pak $pak;
 
-    protected Client $client;
+    protected HtmlFetcher $client;
 
     public function __construct(array $config, RawPage $raw_page, Page $page, Pak $pak)
     {
@@ -33,7 +31,7 @@ abstract class SiteService
         $this->raw_page = $raw_page;
         $this->page = $page;
         $this->pak = $pak;
-        $this->client = new Client(HttpClient::create(['timeout' => 120]));
+        $this->client = app(HtmlFetcher::class);
     }
 
     /**
