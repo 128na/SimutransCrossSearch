@@ -1,0 +1,17 @@
+name: 'Setup MySQL'
+description: 'Setup MySQL'
+runs:
+  using: "composite"
+  steps:
+  - name: Start MySQL
+    run: sudo /etc/init.d/mysql start
+    shell: bash
+
+  - name: Setup database
+    run: |
+      mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
+    shell: bash
+
+  - name: chmod 777
+    run: chmod -R 0777 ./
+    shell: bash
