@@ -24,7 +24,7 @@ class Page extends Model
 
     protected $casts = [
         'site_name' => SiteName::class,
-        'last_modified' => 'datetime',
+        'last_modified' => 'immutable_datetime',
     ];
 
     /**
