@@ -2,8 +2,12 @@
 
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
+use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
+use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
+use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
-use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
+use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -16,6 +20,21 @@ return RectorConfig::configure()
         __DIR__.'/tests',
     ])
     ->withPhpSets(php82: true)
-    ->withRules([
-        AddVoidReturnTypeWhereNoReturnRector::class,
+    ->withPreparedSets(
+        deadCode: true,
+        codeQuality: true,
+        codingStyle: true,
+        typeDeclarations: true,
+        privatization: true,
+        naming: true,
+        instanceOf: true,
+        earlyReturn: true,
+        strictBooleans: true,
+    )
+    ->withSkip([
+        PostIncDecToPreIncDecRector::class, // pintと干渉する
+        StaticArrowFunctionRector::class, //  Cannot bind an instance to a static closure()
+        StaticClosureRector::class, //  Cannot bind an instance to a static closure()
+        IssetOnPropertyObjectToPropertyExistsRector::class, // property_exists($model, 'hoge') return false
+        RenamePropertyToMatchTypeRector::class => [__DIR__.'/tests'], // $admin->$userがNG
     ]);

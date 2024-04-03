@@ -11,8 +11,8 @@ class ScrapeCommandTest extends TestCase
      */
     public function test_example(): void
     {
-        $response = $this->get('/');
+        $testResponse = $this->get('/');
 
-        $response->assertStatus(200);
+        $testResponse->assertStatus(200);
     }
 }
