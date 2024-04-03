@@ -2,31 +2,23 @@
 
 namespace App\Providers;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
-use Notion\Notion;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->singleton(Notion::class, function (Application $app) {
-            return Notion::create(config('services.notion.secret'));
-        });
+        //
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        umask(000);
+        //
     }
 }

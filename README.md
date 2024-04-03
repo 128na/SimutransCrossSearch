@@ -1,71 +1,66 @@
-# Simutrans Cross Search
-https://cross-search.128-bit.net/
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-## 仕組み
-<img src="./docs/spec/img/flow.png">
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## 提供機能
-- アドオン掲載媒体の更新一覧、テキスト検索画面
-    - https://cross-search.128-bit.net/
+## About Laravel
 
-- アドオン掲載媒体のテキスト検索API
-    - https://cross-search.128-bit.net/api/v1/search
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- 動画、画像の新着一覧
-    - https://cross-search.128-bit.net/articles
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-## API仕様
-IPあたり60回/分の制限があります。
-指定可能な検索条件、返却データは画面からの検索と同一です。
-https://cross-search.128-bit.net/api/v1/search?word=xxx&paks[]=paksize
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-### パラメーター一覧
-|パラメーター|デフォルト|指定可能な値|説明|
-|---|---|---|---|
-|word|なし|100文字以内|検索文字列。半角スペースで区切って複数キーワード検索が可能です|
-|type|and|and, or|複数キーワード指定時の結合条件|
-|paks[]|全て|64, 128, 128-japan|検索対象とするpakセット名。複数指定可能|
+## Learning Laravel
 
-### 例
-JRまたは国鉄を含むpak128, pak128japan
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-`https://cross-search.128-bit.net/api/v1/search?word=JR 国鉄&type=or&paks[]=128&paks[]=128-japan`
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-URLエンコード時
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-`https://cross-search.128-bit.net/api/v1/search?word=JR+%E5%9B%BD%E9%89%84&type=or&paks%5B%5D=128&paks%5B%5D=128-japan`
+## Laravel Sponsors
 
-### レスポンスボディ
-一覧は50件ごとに分かれており50件目以降の記事は data.links.next のURLから取得できます。
-```
-{
-  "data": [
-    {
-      "site": string 掲載サイト名,
-      "title": string ページタイトル,
-      "url": string ページURL,
-      "paks": [
-          string pakセットサイズ名,
-          ...
-      ],
-      "updated_at": string 記事更新日時
-    },
-    ...
-  ],
-  "links": {
-    "first": string 一覧最初ページのURL,
-    "last": string 一覧最終ページのURL,
-    "prev": string 一覧一つ前ページのURL,
-    "next": string 一覧一つ次ページのURL
-  },
-  "meta": {
-    "current_page": int 現在のページ番号,
-    "last_page": int 最後のページ番号,
-    "per_page": int 1ページ当たりの記事数,
-    "from": int 返却した一覧の最初の記事番号,
-    "to": int 返却した一覧の最後の記事番号,
-    "total": int 記事の総数
-    "path": string リクエストしたAPI URL,
-  }
-}
-```
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+
+### Premium Partners
+
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
+
+## Contributing
+
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
+## Code of Conduct
+
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
