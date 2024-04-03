@@ -23,11 +23,25 @@ jobs:
       - name: Run Pint
         run: composer run pint:check
 
+  stan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: .env
+        run: php -r "copy('.env.ci', '.env');"
+
+      - uses: ./.github/actions/php
+
+      - name: Run PHP Stan
+        run: composer run stan
+
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php_version: [8.2, 8.3]
+        test_suite: [Unit, Feature]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,23 +53,14 @@ jobs:
       - uses: ./.github/actions/nodejs
       - uses: ./.github/actions/mysql
 
-      - name: Setup database
-        run: |
-          mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;
-            CREATE DATABASE IF NOT EXISTS test_test_1;
-            CREATE DATABASE IF NOT EXISTS test_test_2'
-
-      - name: chmod 777
-        run: chmod -R 0777 ./
-
       - name: Test
-        run: php artisan test --env=local
+        run: php artisan test --env=local --testsuite=${{matrix.test_suite}}
 
       - name: Upload Laravel Logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: TestLaravelLog
+          name: TestLaravelLog-${{ matrix.test_suite }}
           path: storage/logs
 
   deploy:
@@ -66,8 +71,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: .env
         run: php -r "copy('.env.deploy', '.env');"

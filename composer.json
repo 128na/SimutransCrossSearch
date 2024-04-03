@@ -56,6 +56,9 @@
         ],
         "stan": [
             "@php ./vendor/bin/phpstan analyse --memory-limit=2G"
+        ],
+        "rector": [
+            "@php ./vendor/bin/rector"
         ]
     },
     "extra": {
