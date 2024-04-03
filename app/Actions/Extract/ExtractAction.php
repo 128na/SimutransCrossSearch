@@ -6,7 +6,7 @@ namespace App\Actions\Extract;
 
 use App\Enums\SiteName;
 
-class ExtractRawPages
+class ExtractAction
 {
     public function __construct(
         private readonly ExtractHandlerFactory $extractHandlerFactory

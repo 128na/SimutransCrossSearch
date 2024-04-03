@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Pages;
 
+use App\Actions\Scrape\ScrapeAction;
+use App\Enums\SiteName;
 use Illuminate\Console\Command;
 
 class ScrapeCommand extends Command
@@ -18,11 +20,17 @@ class ScrapeCommand extends Command
      */
     protected $description = 'Command description';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle(): int
+    public function handle(ScrapeAction $scrapeAction): int
     {
-        return self::SUCCESS;
+        try {
+            $siteName = SiteName::tryFrom($this->argument('name', ''));
+            $scrapeAction($siteName);
+
+            return self::SUCCESS;
+        } catch (\Throwable $th) {
+            report($th);
+
+            return self::FAILURE;
+        }
     }
 }

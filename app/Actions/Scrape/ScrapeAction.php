@@ -6,7 +6,7 @@ namespace App\Actions\Scrape;
 
 use App\Enums\SiteName;
 
-class ScrapeSites
+class ScrapeAction
 {
     public function __construct(
         private readonly ScrapeHandlerFactory $scrapeHandlerFactory
