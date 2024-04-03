@@ -6,4 +6,7 @@ namespace App\Actions\Extract\Handlers;
 
 class TwitransExtractHandler implements ExtractHandlerInterface
 {
+    public function __invoke(): void
+    {
+    }
 }

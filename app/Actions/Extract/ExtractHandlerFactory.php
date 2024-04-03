@@ -14,7 +14,7 @@ class ExtractHandlerFactory
 {
     /**
      * @param  array<int,SiteName>  $siteNames
-     * @return Generator<\App\Actions\Extract\Handlers\ExtractHandlerInterface>
+     * @return Generator<int,\App\Actions\Extract\Handlers\ExtractHandlerInterface>
      */
     public function create(array $siteNames): Generator
     {

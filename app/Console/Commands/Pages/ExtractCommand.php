@@ -13,7 +13,7 @@ class ExtractCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'app:extract-command';
+    protected $signature = 'app:extract-command {name?}';
 
     /**
      * @var string
@@ -23,12 +23,13 @@ class ExtractCommand extends Command
     public function handle(ExtractAction $extractAction): int
     {
         try {
-            $siteName = SiteName::tryFrom($this->argument('name', ''));
+            $name = $this->argument('name');
+            $siteName = is_string($name) ? SiteName::tryFrom($name) : null;
             $extractAction($siteName);
 
             return self::SUCCESS;
-        } catch (\Throwable $th) {
-            report($th);
+        } catch (\Throwable $throwable) {
+            report($throwable);
 
             return self::FAILURE;
         }

@@ -13,7 +13,7 @@ class ScrapeCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'app:page-scrape {?name}';
+    protected $signature = 'app:page-scrape {name?}';
 
     /**
      * @var string
@@ -23,12 +23,13 @@ class ScrapeCommand extends Command
     public function handle(ScrapeAction $scrapeAction): int
     {
         try {
-            $siteName = SiteName::tryFrom($this->argument('name', ''));
+            $name = $this->argument('name');
+            $siteName = is_string($name) ? SiteName::tryFrom($name) : null;
             $scrapeAction($siteName);
 
             return self::SUCCESS;
-        } catch (\Throwable $th) {
-            report($th);
+        } catch (\Throwable $throwable) {
+            report($throwable);
 
             return self::FAILURE;
         }

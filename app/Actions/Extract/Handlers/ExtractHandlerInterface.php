@@ -6,4 +6,5 @@ namespace App\Actions\Extract\Handlers;
 
 interface ExtractHandlerInterface
 {
+    public function __invoke(): void;
 }

@@ -6,4 +6,7 @@ namespace App\Actions\Extract\Handlers;
 
 class JapanWikiExtractHandler implements ExtractHandlerInterface
 {
+    public function __invoke(): void
+    {
+    }
 }

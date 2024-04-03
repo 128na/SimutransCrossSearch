@@ -48,6 +48,11 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --ansi"
         ],
+        "all": [
+            "@rector",
+            "@stan",
+            "@pint"
+        ],
         "pint": [
             "@php ./vendor/bin/pint"
         ],
