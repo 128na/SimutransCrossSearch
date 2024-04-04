@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Actions\Scrape;
 
-use App\Actions\Scrape\Handlers\JapanWikiScrapeHandler;
-use App\Actions\Scrape\Handlers\PortalScrapeHandler;
-use App\Actions\Scrape\Handlers\TwitransScrapeHandler;
+use App\Actions\Scrape\JapanWiki\ScrapeHandler as JapanWikiScrapeHandler;
+use App\Actions\Scrape\Portal\ScrapeHandler as PortalScrapeHandler;
+use App\Actions\Scrape\Twitrans\ScrapeHandler as TwitransScrapeHandler;
 use App\Enums\SiteName;
 use Generator;
 
@@ -14,7 +14,7 @@ class ScrapeHandlerFactory
 {
     /**
      * @param  array<int,SiteName>  $siteNames
-     * @return Generator<int,\App\Actions\Scrape\Handlers\ScrapeHandlerInterface>
+     * @return Generator<int,\App\Actions\Scrape\ScrapeHandlerInterface>
      */
     public function create(array $siteNames): Generator
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Scrape\Handlers;
+namespace App\Actions\Scrape;
 
 interface ScrapeHandlerInterface
 {
