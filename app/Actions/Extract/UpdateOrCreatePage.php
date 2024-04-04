@@ -10,11 +10,12 @@ use Carbon\CarbonImmutable;
 
 class UpdateOrCreatePage
 {
-    public function __invoke(string $url, SiteName $siteName, string $title, string $text, CarbonImmutable $lastModified): Page
+    public function __invoke(int $rawPageId, string $url, SiteName $siteName, string $title, string $text, CarbonImmutable $lastModified): Page
     {
         return Page::updateOrCreate([
-            'url' => $url,
+            'raw_page_id' => $rawPageId,
         ], [
+            'url' => $url,
             'site_name' => $siteName,
             'title' => $title,
             'text' => $text,

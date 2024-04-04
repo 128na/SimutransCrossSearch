@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Actions\Extract\Japan;
 
 use App\Actions\Extract\FailedExtractExpection;
+use App\Models\RawPage;
 use Carbon\CarbonImmutable;
-use Symfony\Component\DomCrawler\Crawler;
 
 class ExtractLastModified
 {
-    public function __invoke(Crawler $crawler): CarbonImmutable
+    public function __invoke(RawPage $rawPage): CarbonImmutable
     {
+        $crawler = $rawPage->getCrawler();
         $el = $crawler->filter('div#lastmodified');
         if ($el->count() !== 0) {
             $text = $el->text();

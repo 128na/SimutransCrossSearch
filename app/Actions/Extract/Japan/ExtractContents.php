@@ -11,20 +11,15 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ExtractContents
 {
-    public function __construct(
-        private readonly Crawler $crawler
-    ) {
-    }
-
     /**
      * @return array{title:string,text:string,paks:PakSlug[]}
      */
-    public function extractContents(RawPage $rawPage): array
+    public function __invoke(RawPage $rawPage): array
     {
-        $this->crawler->addHtmlContent($rawPage->html, 'UTF-8');
+        $crawler = $rawPage->getCrawler();
 
-        $title = $this->extractTitle();
-        $text = $this->extractText();
+        $title = $this->extractTitle($crawler);
+        $text = $this->extractText($crawler);
         $pakSlug = $this->extractPaks($rawPage->url);
 
         return [
@@ -34,16 +29,16 @@ class ExtractContents
         ];
     }
 
-    private function extractTitle(): string
+    private function extractTitle(Crawler $crawler): string
     {
-        $title = $this->crawler->filter('title')->text();
+        $title = $crawler->filter('title')->text();
 
         return str_replace(' - Simutrans日本語化･解説', '', $title);
     }
 
-    private function extractText(): string
+    private function extractText(Crawler $crawler): string
     {
-        return $this->crawler->filter('div#body')->text();
+        return $crawler->filter('div#body')->text();
     }
 
     private function extractPaks(string $url): PakSlug
