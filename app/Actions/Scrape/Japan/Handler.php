@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Scrape\Twitrans;
+namespace App\Actions\Scrape\Japan;
 
 use App\Actions\Scrape\FetchHtml;
 use App\Actions\Scrape\ScrapeHandlerInterface;
@@ -10,7 +10,7 @@ use App\Actions\Scrape\UpdateOrCreateRawPage;
 use App\Enums\SiteName;
 use Illuminate\Support\Sleep;
 
-class ScrapeHandler implements ScrapeHandlerInterface
+class Handler implements ScrapeHandlerInterface
 {
     public function __construct(
         private readonly FetchHtml $fetchHtml,
@@ -28,7 +28,7 @@ class ScrapeHandler implements ScrapeHandlerInterface
                 $html = ($this->fetchHtml)($url, 'EUC-JP')->outerHtml();
                 ($this->updateOrCreateRawPage)(
                     $url,
-                    SiteName::Twitrans,
+                    SiteName::Japan,
                     $html
                 );
                 Sleep::for(1)->second();

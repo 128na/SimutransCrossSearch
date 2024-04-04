@@ -8,7 +8,7 @@ use App\Actions\Scrape\ScrapeHandlerInterface;
 use App\Actions\Scrape\UpdateOrCreateRawPage;
 use App\Enums\SiteName;
 
-class ScrapeHandler implements ScrapeHandlerInterface
+class Handler implements ScrapeHandlerInterface
 {
     public function __construct(
         private readonly CursorUrl $cursorUrl,

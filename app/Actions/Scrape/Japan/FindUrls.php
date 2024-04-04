@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Scrape\JapanWiki;
+namespace App\Actions\Scrape\Japan;
 
 use App\Actions\Scrape\FetchHtml;
 use Illuminate\Support\Collection;

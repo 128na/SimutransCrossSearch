@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Extract\JapanWiki;
+namespace App\Actions\Extract\Japan;
 
 use App\Actions\Extract\FailedExtractExpection;
 use Carbon\CarbonImmutable;

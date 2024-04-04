@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Extract\JapanWiki;
+namespace App\Actions\Extract\Japan;
 
 use App\Actions\Extract\FailedExtractExpection;
-use App\Constants\JapanWikiPaks;
 use App\Enums\PakSlug;
 use App\Models\RawPage;
 use Symfony\Component\DomCrawler\Crawler;
@@ -49,15 +48,24 @@ class ExtractContents
 
     private function extractPaks(string $url): PakSlug
     {
-        if (str_contains($url, JapanWikiPaks::PAK)) {
+        $url = strtolower($url);
+        if (str_contains($url, '%a5%a2%a5%c9%a5%aa%a5%f3%2f')) {  // アドオン/
             return PakSlug::Pak64;
         }
 
-        if (str_contains($url, JapanWikiPaks::PAK128)) {
+        if (str_contains($url, 'addons%2f64%2f')) {  // Addons/64/
+            return PakSlug::Pak64;
+        }
+
+        if (str_contains($url, 'addon128%2f')) { // Addon128/
             return PakSlug::Pak128;
         }
 
-        if (str_contains($url, JapanWikiPaks::PAK128JP)) {
+        if (str_contains($url, 'addons%2f128%2f')) {  // Addons/128/
+            return PakSlug::Pak128;
+        }
+
+        if (str_contains($url, 'addon128japan%2f')) {   // Addon128/Japan/
             return PakSlug::Pak128Jp;
         }
 

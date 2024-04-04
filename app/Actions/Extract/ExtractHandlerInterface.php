@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Extract\Handlers;
+namespace App\Actions\Extract;
 
 interface ExtractHandlerInterface
 {
