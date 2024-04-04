@@ -13,7 +13,7 @@ class ScrapeCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'app:page-scrape {name?}';
+    protected $signature = 'app:scrape {name?}';
 
     /**
      * @var string

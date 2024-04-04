@@ -8,7 +8,7 @@ use App\Enums\SiteName;
 use App\Models\RawPage;
 use Illuminate\Support\LazyCollection;
 
-class CursorRawPage
+class CursorRawPages
 {
     /**
      * @return LazyCollection<int,\App\Models\RawPage>

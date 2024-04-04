@@ -13,7 +13,7 @@ class ExtractCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'app:extract-command {name?}';
+    protected $signature = 'app:extract {name?}';
 
     /**
      * @var string

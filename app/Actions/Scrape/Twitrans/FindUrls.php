@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Scrape\Twitrans;
 
-use App\Services\FetchHtml;
+use App\Actions\Scrape\FetchHtml;
 use Illuminate\Support\Collection;
 use Symfony\Component\DomCrawler\Crawler;
 

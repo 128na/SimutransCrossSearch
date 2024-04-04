@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Actions\Scrape\JapanWiki;
 
+use App\Actions\Scrape\FetchHtml;
 use App\Actions\Scrape\ScrapeHandlerInterface;
 use App\Actions\Scrape\UpdateOrCreateRawPage;
 use App\Enums\SiteName;
-use App\Services\FetchHtml;
 
 class ScrapeHandler implements ScrapeHandlerInterface
 {
@@ -21,6 +21,7 @@ class ScrapeHandler implements ScrapeHandlerInterface
     public function __invoke(): void
     {
         $urls = ($this->findUrls)();
+        dd($urls);
 
         foreach ($urls as $url) {
             try {

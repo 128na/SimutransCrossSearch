@@ -7,7 +7,7 @@ namespace App\Actions\Extract;
 use App\Models\Portal\Article;
 use Closure;
 
-class CursorRawPages
+class ChunkPortalArticles
 {
     /**
      * @param  Closure(\Illuminate\Support\Collection<int,\App\Models\Portal\Article>):void  $fn
