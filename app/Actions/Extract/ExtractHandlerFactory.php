@@ -20,9 +20,9 @@ class ExtractHandlerFactory
     {
         foreach ($siteNames as $siteName) {
             yield match ($siteName) {
-                SiteName::SimutransJapanWiki => app(JapanWikiExtractHandler::class),
-                SiteName::TwitransWiki => app(TwitransExtractHandler::class),
-                SiteName::SimutransAddonPortal => app(PortalExtractHandler::class),
+                SiteName::Japan => app(JapanWikiExtractHandler::class),
+                SiteName::Twitrans => app(TwitransExtractHandler::class),
+                SiteName::Portal => app(PortalExtractHandler::class),
             };
         }
     }

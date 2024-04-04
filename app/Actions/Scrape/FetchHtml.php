@@ -4,71 +4,35 @@ declare(strict_types=1);
 
 namespace App\Actions\Scrape;
 
-use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Symfony\Component\BrowserKit\AbstractBrowser;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\DomCrawler\Crawler;
 
-class FetchHtml extends AbstractBrowser
+class FetchHtml
 {
     public function __construct(
-        private int $retryTimes = 3,
-        private int $sleepMilliseconds = 100,
-        private bool $useCache = true,
-        private int $lifetimeSeconds = 3600,
+        private readonly Crawler $crawler,
+        private readonly int $retryTimes = 3,
+        private readonly int $sleepMilliseconds = 100,
+        private readonly bool $useCache = true,
+        private readonly int $lifetimeSeconds = 3600,
     ) {
-        parent::__construct();
     }
 
-    /**
-     * @param  \Symfony\Component\BrowserKit\Request  $request
-     */
-    protected function doRequest($request): Response
+    public function __invoke(string $url, ?string $fromEncoding = null): Crawler
     {
-        return new Response($this->fetch($request->getUri()));
-    }
-
-    public function setRetryTimes(int $retryTimes): void
-    {
-        $this->retryTimes = $retryTimes;
-    }
-
-    public function setSleepMilliseconds(int $sleepMilliseconds): void
-    {
-        $this->sleepMilliseconds = $sleepMilliseconds;
-    }
-
-    public function setUseCache(bool $useCache): void
-    {
-        $this->useCache = $useCache;
-    }
-
-    public function setLifetimeSeconds(int $lifetimeSeconds): void
-    {
-        $this->lifetimeSeconds = $lifetimeSeconds;
-    }
-
-    private function fetch(string $url): string
-    {
-        $key = 'html::'.$url;
+        $key = 'url:'.$url;
         if ($this->useCache && Cache::has($key)) {
             /** @var string */
-            $body = Cache::get($key);
+            $html = Cache::get($key);
         } else {
-            $response = Http::retry($this->retryTimes, $this->sleepMilliseconds)->get($url);
-            if ($status = $response->status() !== 200) {
-                throw new Exception(sprintf('%s returns status: %s', $url, $status), 1);
-            }
-
-            $body = $response->body();
-            if ($this->useCache) {
-                Cache::put($key, $body, $this->lifetimeSeconds);
-            }
-
-            usleep($this->sleepMilliseconds * 1000);
+            $result = retry($this->retryTimes, fn () => Http::get($url), $this->sleepMilliseconds);
+            $html = mb_convert_encoding((string) $result->body(), 'UTF-8', $fromEncoding);
+            Cache::put($key, $html, $this->lifetimeSeconds);
         }
 
-        return $body;
+        $this->crawler->addHtmlContent($html, 'UTF-8');
+
+        return $this->crawler;
     }
 }

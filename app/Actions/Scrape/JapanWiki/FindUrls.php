@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Scrape\JapanWiki;
 
-use App\Constants\JapanWikiPaks;
-use App\Services\FetchHtml;
+use App\Actions\Scrape\FetchHtml;
 use Illuminate\Support\Collection;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -13,28 +12,7 @@ class FindUrls
 {
     private const TOP_URL = 'https://japanese.simutrans.com';
 
-    // EUC-JPなのでUTF-8とは変換が異なる
-    /**
-     * アドオン/
-     */
-    private const PAK = 'https://japanese.simutrans.com/index.php?'.JapanWikiPaks::PAK;
-
-    /**
-     * Addon128/
-     */
-    private const PAK128 = 'https://japanese.simutrans.com/index.php?'.JapanWikiPaks::PAK128;
-
-    /**
-     * Addon128Japan/
-     */
-    private const PAK128JP = 'https://japanese.simutrans.com/index.php?'.JapanWikiPaks::PAK128JP;
-
     private const LIST_URL = 'https://japanese.simutrans.com?cmd=list';
-
-    /**
-     * 報告
-     */
-    private const REPORT = '%CA%F3%B9%F0';
 
     public function __construct(
         private readonly FetchHtml $fetchHtml,
@@ -46,7 +24,8 @@ class FindUrls
      */
     public function __invoke(): Collection
     {
-        return $this->getTargetUrls()->filter(fn ($url): bool => $this->filter($url));
+        return $this->getTargetUrls()
+            ->filter(fn ($url): bool => $this->filter($url));
     }
 
     /**
@@ -54,19 +33,24 @@ class FindUrls
      */
     private function getTargetUrls(): Collection
     {
-        return collect(
-            $this->fetchHtml
-                ->request('GET', self::LIST_URL)
-                ->filter('#body > ul li')
-                ->each(fn (Crawler $crawler): ?string => $crawler->filter('a')->attr('href'))
-        )->filter()->values();
+        $response = ($this->fetchHtml)(self::LIST_URL, 'EUC-JP');
+        $urls = $response
+            ->filter('#body > ul li')
+            ->each(fn (Crawler $crawler): ?string => $crawler->filter('a')->attr('href'));
+
+        return collect($urls);
     }
 
     private function filter(string $url): bool
     {
         $url = strtolower($url);
         // アドオンページ以外
-        if (! str_starts_with($url, self::PAK) && ! str_starts_with($url, self::PAK128) && ! str_starts_with($url, self::PAK128JP)) {
+        if (
+            ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addon128%2f')  // Addon128/
+            && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addon128japan%2f')  // Addon128/Japan/
+            && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addons%2f64%2f')  // Addons/
+            && ! str_starts_with($url, 'https://japanese.simutrans.com/index.php?%a5%a2%a5%c9%a5%aa%a5%f3%2f')  // アドオン/
+        ) {
             return false;
         }
 
@@ -76,6 +60,8 @@ class FindUrls
         }
 
         // 不要ページ
-        return ! (str_contains($url, 'MenuBar') || str_contains($url, 'header') || str_contains($url, self::REPORT));
+        return ! (str_contains($url, 'menubar')
+        || str_contains($url, 'header')
+        || str_contains($url, '%ca%f3%b9%f0'));
     }
 }

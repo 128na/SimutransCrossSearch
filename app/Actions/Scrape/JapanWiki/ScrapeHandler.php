@@ -8,6 +8,7 @@ use App\Actions\Scrape\FetchHtml;
 use App\Actions\Scrape\ScrapeHandlerInterface;
 use App\Actions\Scrape\UpdateOrCreateRawPage;
 use App\Enums\SiteName;
+use Illuminate\Support\Sleep;
 
 class ScrapeHandler implements ScrapeHandlerInterface
 {
@@ -21,16 +22,16 @@ class ScrapeHandler implements ScrapeHandlerInterface
     public function __invoke(): void
     {
         $urls = ($this->findUrls)();
-        dd($urls);
 
         foreach ($urls as $url) {
             try {
-                $html = $this->fetchHtml->request('GET', $url)->outerHtml();
+                $html = ($this->fetchHtml)($url, 'EUC-JP')->outerHtml();
                 ($this->updateOrCreateRawPage)(
                     $url,
-                    SiteName::SimutransJapanWiki,
+                    SiteName::Japan,
                     $html
                 );
+                Sleep::for(1)->second();
             } catch (\Throwable $th) {
                 report($th);
             }

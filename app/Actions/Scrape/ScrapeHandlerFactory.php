@@ -20,9 +20,9 @@ class ScrapeHandlerFactory
     {
         foreach ($siteNames as $siteName) {
             yield match ($siteName) {
-                SiteName::SimutransJapanWiki => app(JapanWikiScrapeHandler::class),
-                SiteName::TwitransWiki => app(TwitransScrapeHandler::class),
-                SiteName::SimutransAddonPortal => app(PortalScrapeHandler::class),
+                SiteName::Japan => app(JapanWikiScrapeHandler::class),
+                SiteName::Twitrans => app(TwitransScrapeHandler::class),
+                SiteName::Portal => app(PortalScrapeHandler::class),
             };
         }
     }

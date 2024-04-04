@@ -34,12 +34,12 @@ class FindUrls
      */
     private function getTargetUrls(): Collection
     {
-        return collect(
-            $this->fetchHtml
-                ->request('GET', self::LIST_URL)
-                ->filter('#content>ul li')
-                ->each(fn (Crawler $crawler): ?string => $crawler->filter('a')->attr('href'))
-        )->filter()->values();
+        $response = ($this->fetchHtml)(self::LIST_URL, 'UTF-8');
+        $urls = $response
+            ->filter('#content>ul li')
+            ->each(fn (Crawler $crawler): ?string => $crawler->filter('a')->attr('href'));
+
+        return collect($urls);
     }
 
     private function filter(string $url): bool
@@ -51,9 +51,7 @@ class FindUrls
         }
 
         // 不要ページ
-        $textCopy = urlencode('複製');
-
-        return ! (str_contains($url, 'test') || str_contains($url, 'index') || str_contains($url, 'menubar') || str_contains($url, $textCopy));
+        return ! (str_contains($url, 'test') || str_contains($url, 'index') || str_contains($url, 'menubar') || str_contains($url, '%e8%a4%87%e8%a3%bd'));
     }
 
     private function toFullUrl(string $url): string
