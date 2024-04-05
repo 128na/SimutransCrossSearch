@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Scrape\Japan;
 
 use App\Actions\Scrape\FetchHtml;
+use App\Enums\Encoding;
 use Illuminate\Support\Collection;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -33,7 +34,7 @@ class FindUrls
      */
     private function getTargetUrls(): Collection
     {
-        $response = ($this->fetchHtml)(self::LIST_URL, 'EUC-JP');
+        $response = ($this->fetchHtml)(self::LIST_URL, Encoding::EUC_JP);
         $urls = $response
             ->filter('#body > ul li')
             ->each(fn (Crawler $crawler): ?string => $crawler->filter('a')->attr('href'));

@@ -39,11 +39,8 @@ class Handler implements HandlerInterface
                     // pageがあって更新有り
                     if (! $rawPage->page || $this->needUpdate($rawPage->page, $lastModiefied)) {
                         $contents = ($this->extractContents)($rawPage);
-                        // dd($contents);
                         $page = ($this->updateOrCreatePage)(
-                            $rawPage->id,
-                            $rawPage->url,
-                            $rawPage->site_name,
+                            $rawPage,
                             $contents['title'],
                             $contents['text'],
                             $lastModiefied

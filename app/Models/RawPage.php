@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Encoding;
 use App\Enums\SiteName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,9 +39,14 @@ class RawPage extends Model
     {
         if (! $this->crawler instanceof \Symfony\Component\DomCrawler\Crawler) {
             $this->crawler = app(Crawler::class);
-            $this->crawler->addHtmlContent($this->html, 'UTF-8');
+            $this->crawler->addHtmlContent($this->stripScriptElement($this->html), Encoding::UTF_8->value);
         }
 
         return $this->crawler;
+    }
+
+    private function stripScriptElement(string $html): string
+    {
+        return preg_replace('/<script([\s\S]+?)script>/mi', '', $html) ?? '';
     }
 }

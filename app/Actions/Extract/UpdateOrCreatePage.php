@@ -4,22 +4,31 @@ declare(strict_types=1);
 
 namespace App\Actions\Extract;
 
-use App\Enums\SiteName;
 use App\Models\Page;
+use App\Models\RawPage;
 use Carbon\CarbonImmutable;
 
 class UpdateOrCreatePage
 {
-    public function __invoke(int $rawPageId, string $url, SiteName $siteName, string $title, string $text, CarbonImmutable $lastModified): Page
+    public function __invoke(RawPage $rawPage, string $title, string $text, CarbonImmutable $lastModified): Page
     {
-        return Page::updateOrCreate([
-            'raw_page_id' => $rawPageId,
-        ], [
-            'url' => $url,
-            'site_name' => $siteName,
-            'title' => $title,
-            'text' => $text,
-            'last_modified' => $lastModified,
-        ]);
+        $page = $rawPage->page;
+        if ($page) {
+            $page->fill([
+                'title' => $title,
+                'text' => $text,
+                'last_modified' => $lastModified,
+            ])->save();
+        } else {
+            $page = $rawPage->page()->create([
+                'url' => $rawPage->url,
+                'site_name' => $rawPage->site_name,
+                'title' => $title,
+                'text' => $text,
+                'last_modified' => $lastModified,
+            ]);
+        }
+
+        return $page;
     }
 }

@@ -21,8 +21,8 @@ class HandlerFactory
         foreach ($siteNames as $siteName) {
             yield match ($siteName) {
                 SiteName::Japan => app(JapanHandler::class),
-                SiteName::Twitrans => app(PortalHandler::class),
-                SiteName::Portal => app(TwitransHandler::class),
+                SiteName::Portal => app(PortalHandler::class),
+                SiteName::Twitrans => app(TwitransHandler::class),
             };
         }
     }

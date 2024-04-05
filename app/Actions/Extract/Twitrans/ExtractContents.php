@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Extract\Japan;
+namespace App\Actions\Extract\Twitrans;
 
 use App\Actions\Extract\FailedExtractExpection;
 use App\Enums\PakSlug;
@@ -33,34 +33,26 @@ class ExtractContents
     {
         $title = $crawler->filter('title')->text();
 
-        return str_replace(' - Simutrans日本語化･解説', '', $title);
+        return str_replace(' - Simutrans的な実験室 Wiki*', '', $title);
     }
 
     private function extractText(Crawler $crawler): string
     {
-        return $crawler->filter('div#body')->text();
+        return $crawler->filter('div#content')->text();
     }
 
     private function extractPak(string $url): PakSlug
     {
         $url = strtolower($url);
-        if (str_contains($url, '%a5%a2%a5%c9%a5%aa%a5%f3%2f')) {  // アドオン/
+        if (str_contains($url, 'pak64/')) {
             return PakSlug::Pak64;
         }
 
-        if (str_contains($url, 'addons%2f64%2f')) {  // Addons/64/
-            return PakSlug::Pak64;
-        }
-
-        if (str_contains($url, 'addon128%2f')) { // Addon128/
+        if (str_contains($url, 'pak128/')) {
             return PakSlug::Pak128;
         }
 
-        if (str_contains($url, 'addons%2f128%2f')) {  // Addons/128/
-            return PakSlug::Pak128;
-        }
-
-        if (str_contains($url, 'addon128japan%2f')) {   // Addon128/Japan/
+        if (str_contains($url, 'pak128.japan/')) {
             return PakSlug::Pak128Jp;
         }
 

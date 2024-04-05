@@ -7,6 +7,7 @@ namespace App\Actions\Scrape\Japan;
 use App\Actions\Scrape\FetchHtml;
 use App\Actions\Scrape\HandlerInterface;
 use App\Actions\Scrape\UpdateOrCreateRawPage;
+use App\Enums\Encoding;
 use App\Enums\SiteName;
 use Illuminate\Support\Sleep;
 use Psr\Log\LoggerInterface;
@@ -27,7 +28,7 @@ class Handler implements HandlerInterface
         foreach ($urls as $url) {
             try {
                 $logger->info('try', [$url]);
-                $html = ($this->fetchHtml)($url, 'EUC-JP')->outerHtml();
+                $html = ($this->fetchHtml)($url, Encoding::EUC_JP)->outerHtml();
                 ($this->updateOrCreateRawPage)(
                     $url,
                     SiteName::Japan,
