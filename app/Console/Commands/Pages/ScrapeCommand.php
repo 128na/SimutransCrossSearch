@@ -7,6 +7,7 @@ namespace App\Console\Commands\Pages;
 use App\Actions\Scrape\ScrapeAction;
 use App\Enums\SiteName;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class ScrapeCommand extends Command
 {
@@ -25,12 +26,15 @@ class ScrapeCommand extends Command
         try {
             $name = $this->argument('name');
             $siteName = is_string($name) ? SiteName::tryFrom($name) : null;
-            $scrapeAction($siteName);
+
+            $logger = Log::stack(['daily', 'stdout']);
+            $scrapeAction($siteName, $logger);
 
             return self::SUCCESS;
         } catch (\Throwable $throwable) {
             report($throwable);
             $this->error($throwable->getMessage());
+            $this->error($throwable->getTraceAsString());
 
             return self::FAILURE;
         }

@@ -11,7 +11,6 @@ use Symfony\Component\DomCrawler\Crawler;
 class FetchHtml
 {
     public function __construct(
-        private readonly Crawler $crawler,
         private readonly int $retryTimes = 3,
         private readonly int $sleepMilliseconds = 100,
         private readonly bool $useCache = true,
@@ -31,8 +30,10 @@ class FetchHtml
             Cache::put($key, $html, $this->lifetimeSeconds);
         }
 
-        $this->crawler->addHtmlContent($html, 'UTF-8');
+        $crawler = app(Crawler::class);
 
-        return $this->crawler;
+        $crawler->addHtmlContent($html, 'UTF-8');
+
+        return $crawler;
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Extract\Japan;
 
 use App\Actions\Extract\ChunkRawPages;
-use App\Actions\Extract\ExtractHandlerInterface;
+use App\Actions\Extract\HandlerInterface;
 use App\Actions\Extract\SyncPak;
 use App\Actions\Extract\UpdateOrCreatePage;
 use App\Enums\SiteName;
@@ -13,7 +13,7 @@ use App\Models\Page;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 
-class Handler implements ExtractHandlerInterface
+class Handler implements HandlerInterface
 {
     public function __construct(
         private readonly ChunkRawPages $chunkRawPages,
@@ -36,6 +36,7 @@ class Handler implements ExtractHandlerInterface
                 // pageがあって更新有り
                 if (! $rawPage->page || $this->needUpdate($rawPage->page, $lastModiefied)) {
                     $contents = ($this->extractContents)($rawPage);
+                    dd($contents);
                     $page = ($this->updateOrCreatePage)(
                         $rawPage->id,
                         $rawPage->url,

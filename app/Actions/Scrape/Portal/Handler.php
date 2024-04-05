@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Actions\Scrape\Portal;
 
-use App\Actions\Scrape\ScrapeHandlerInterface;
+use App\Actions\Scrape\HandlerInterface;
 use App\Actions\Scrape\UpdateOrCreateRawPage;
 use App\Enums\SiteName;
+use Illuminate\Log\Logger;
+use Illuminate\Support\Sleep;
 
-class Handler implements ScrapeHandlerInterface
+class Handler implements HandlerInterface
 {
     public function __construct(
         private readonly CursorUrl $cursorUrl,
@@ -17,14 +19,20 @@ class Handler implements ScrapeHandlerInterface
 
     }
 
-    public function __invoke(): void
+    public function __invoke(Logger $logger): void
     {
         foreach (($this->cursorUrl)() as $url) {
-            ($this->updateOrCreateRawPage)(
-                $url,
-                SiteName::Portal,
-                ''
-            );
+            try {
+                $logger->info('try', [$url]);
+                ($this->updateOrCreateRawPage)(
+                    $url,
+                    SiteName::Portal,
+                    ''
+                );
+                Sleep::for(100)->millisecond();
+            } catch (\Throwable $th) {
+                $logger->error('failed', [$url, $th]);
+            }
         }
     }
 }

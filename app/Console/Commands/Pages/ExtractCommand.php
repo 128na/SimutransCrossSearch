@@ -31,6 +31,7 @@ class ExtractCommand extends Command
         } catch (\Throwable $throwable) {
             report($throwable);
             $this->error($throwable->getMessage());
+            $this->error($throwable->getTraceAsString());
 
             return self::FAILURE;
         }

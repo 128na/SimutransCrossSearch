@@ -9,7 +9,7 @@ use App\Enums\SiteName;
 class ExtractAction
 {
     public function __construct(
-        private readonly ExtractHandlerFactory $extractHandlerFactory
+        private readonly HandlerFactory $handlerFactory
     ) {
     }
 
@@ -17,7 +17,7 @@ class ExtractAction
     {
         $siteNames = $siteName instanceof SiteName ? [$siteName] : SiteName::cases();
 
-        foreach ($this->extractHandlerFactory->create($siteNames) as $handler) {
+        foreach ($this->handlerFactory->create($siteNames) as $handler) {
             $handler();
         }
     }

@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace App\Actions\Scrape;
 
 use App\Enums\SiteName;
+use Illuminate\Log\Logger;
 
 class ScrapeAction
 {
     public function __construct(
-        private readonly ScrapeHandlerFactory $scrapeHandlerFactory
+        private readonly HandlerFactory $handlerFactory
     ) {
     }
 
-    public function __invoke(?SiteName $siteName = null): void
+    public function __invoke(?SiteName $siteName, Logger $logger): void
     {
         $siteNames = $siteName instanceof SiteName ? [$siteName] : SiteName::cases();
 
-        foreach ($this->scrapeHandlerFactory->create($siteNames) as $handler) {
-            $handler();
+        foreach ($this->handlerFactory->create($siteNames) as $handler) {
+            $handler($logger);
         }
     }
 }

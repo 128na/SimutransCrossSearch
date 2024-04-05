@@ -10,7 +10,7 @@ use App\Actions\Extract\Twitrans\Handler as TwitransHandler;
 use App\Enums\SiteName;
 use Generator;
 
-class ExtractHandlerFactory
+class HandlerFactory
 {
     /**
      * @param  array<int,SiteName>  $siteNames
