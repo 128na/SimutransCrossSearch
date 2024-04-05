@@ -19,7 +19,6 @@ class ExtractLastModified
             $text = str_replace('Last-modified:', '', $text);
             $text = trim($text);
             $text = str_replace([' (月)', ' (火)', ' (水)', ' (木)', ' (金)', ' (土)', ' (日)'], '', $text);
-            dump($text);
 
             $date = CarbonImmutable::createFromFormat('Y-m-d H:i:s', $text);
             if ($date instanceof CarbonImmutable) {

@@ -9,15 +9,28 @@ use App\Models\Scopes\Portal\OnlyPakCategory;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @see https://github.com/128na/simutrans-portal/blob/master/app/Models/Category.php
+ * @property int $id
+ * @property CategoryType $type 分類
+ * @property string $slug スラッグ
+ * @property int $need_admin 管理者専用カテゴリ
+ * @property int $order 表示順
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category query()
+ *
+ * @mixin \Eloquent
  */
 #[ScopedBy(OnlyPakCategory::class)]
 class Category extends Model
 {
     use HasFactory;
+
+    protected $connection = 'portal';
 
     protected $fillable = [
         'type',
@@ -27,12 +40,4 @@ class Category extends Model
     protected $casts = [
         'type' => CategoryType::class,
     ];
-
-    /**
-     * @return BelongsToMany<Article>
-     */
-    public function categories(): BelongsToMany
-    {
-        return $this->belongsToMany(Article::class);
-    }
 }

@@ -13,7 +13,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @see https://github.com/128na/simutrans-portal/blob/master/app/Models/Article.php
+ * @property int $id
+ * @property int $user_id
+ * @property string $title タイトル
+ * @property string $slug スラッグ
+ * @property ArticlePostType $post_type 投稿形式
+ * @property array $contents コンテンツ
+ * @property ArticleStatus $status 公開状態
+ * @property int $pr PR記事
+ * @property \Carbon\CarbonImmutable|null $published_at 投稿日時
+ * @property \Carbon\CarbonImmutable|null $modified_at 更新日時
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Portal\Category> $categories
+ * @property-read int|null $categories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Portal\Tag> $tags
+ * @property-read int|null $tags_count
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Article query()
+ *
+ * @mixin \Eloquent
  */
 #[ScopedBy([OnlyPublishAddon::class])]
 class Article extends Model
@@ -47,5 +69,13 @@ class Article extends Model
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    /**
+     * @return BelongsToMany<Tag>
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }

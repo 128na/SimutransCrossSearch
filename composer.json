@@ -11,6 +11,7 @@
         "symfony/browser-kit": "^7.0"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.0",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^2.9",
         "laravel/pint": "^1.15",
@@ -51,6 +52,8 @@
         ],
         "all": [
             "composer dump-autoload",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:models -WR",
             "@rector",
             "@stan",
             "@pint"
