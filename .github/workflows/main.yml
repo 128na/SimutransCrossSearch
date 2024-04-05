@@ -50,7 +50,6 @@ jobs:
         run: php -r "copy('.env.ci', '.env');"
 
       - uses: ./.github/actions/php
-      - uses: ./.github/actions/nodejs
       - uses: ./.github/actions/mysql
 
       - name: Test
@@ -71,13 +70,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: .env
-        run: php -r "copy('.env.deploy', '.env');"
-
-      - uses: ./.github/actions/nodejs
-        with:
-          asset-key: "deploy"
 
       - name: Install SSH key
         run: >
@@ -101,8 +93,3 @@ jobs:
           && php -c ~/www/php.ini artisan event:cache
           && php -c ~/www/php.ini artisan view:cache
           && php -c ~/www/php.ini artisan view:cache"
-
-      - name: rsync assets
-        run: >
-          rsync -ah -e "ssh -i /home/runner/.ssh/id_rsa" ./public/
-          ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.APP_DIR }}/public
