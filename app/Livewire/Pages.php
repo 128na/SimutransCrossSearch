@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Actions\SearchPage\SearchAction;
 use App\Enums\PakSlug;
 use App\Enums\SiteName;
-use App\Models\Page;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -38,32 +35,20 @@ class Pages extends Component
         SiteName::Portal->value => true,
     ];
 
-    public function render(): View
+    public function render(SearchAction $searchAction): View
     {
         return view('livewire.pages', [
-            'pages' => $this->paginatePages(),
+            'pages' => $searchAction([
+                'keyword' => $this->keyword,
+                'paks' => $this->selectedPaks(),
+                'sites' => $this->selectedSites(),
+            ]),
         ]);
     }
 
     public function clear(): void
     {
         $this->reset('keyword', 'paks', 'sites');
-    }
-
-    /**
-     * @return LengthAwarePaginator<Page>
-     */
-    private function paginatePages(): LengthAwarePaginator
-    {
-        /**
-         * @var LengthAwarePaginator<Page>
-         */
-        return Page::query()
-            ->withWhereHas('paks', fn (Builder|BelongsToMany $builder) => $builder->whereIn('slug', $this->selectedPaks()))
-            ->whereIn('site_name', $this->selectedSites())
-            ->when($this->keyword, fn (Builder $builder) => $builder->where('text', 'like', sprintf('%%%s%%', $this->keyword)))
-            ->orderBy('last_modified', 'desc')
-            ->paginate(50);
     }
 
     /**
