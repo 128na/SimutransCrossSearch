@@ -12,6 +12,7 @@ use App\Enums\SiteName;
 use App\Models\Page;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
+use Psr\Log\LoggerInterface;
 
 class Handler implements HandlerInterface
 {
@@ -24,29 +25,34 @@ class Handler implements HandlerInterface
     ) {
     }
 
-    public function __invoke(): void
+    public function __invoke(LoggerInterface $logger): void
     {
-        ($this->chunkRawPages)(SiteName::Japan, function (Collection $rawPages): void {
+        ($this->chunkRawPages)(SiteName::Japan, function (Collection $rawPages) use ($logger): void {
             /**
              * @var \Illuminate\Support\Collection<int,\App\Models\RawPage> $rawPages
              */
             foreach ($rawPages as $rawPage) {
-                $lastModiefied = ($this->extractLastModified)($rawPage);
-                // pageがない
-                // pageがあって更新有り
-                if (! $rawPage->page || $this->needUpdate($rawPage->page, $lastModiefied)) {
-                    $contents = ($this->extractContents)($rawPage);
-                    dd($contents);
-                    $page = ($this->updateOrCreatePage)(
-                        $rawPage->id,
-                        $rawPage->url,
-                        $rawPage->site_name,
-                        $contents['title'],
-                        $contents['text'],
-                        $lastModiefied
-                    );
+                try {
+                    $logger->info('try', [$rawPage->url]);
+                    $lastModiefied = ($this->extractLastModified)($rawPage);
+                    // pageがない
+                    // pageがあって更新有り
+                    if (! $rawPage->page || $this->needUpdate($rawPage->page, $lastModiefied)) {
+                        $contents = ($this->extractContents)($rawPage);
+                        // dd($contents);
+                        $page = ($this->updateOrCreatePage)(
+                            $rawPage->id,
+                            $rawPage->url,
+                            $rawPage->site_name,
+                            $contents['title'],
+                            $contents['text'],
+                            $lastModiefied
+                        );
 
-                    ($this->syncPak)($page, $contents['paks']);
+                        ($this->syncPak)($page, $contents['paks']);
+                    }
+                } catch (\Throwable $th) {
+                    $logger->error('failed', [$rawPage->url, $th]);
                 }
             }
         });

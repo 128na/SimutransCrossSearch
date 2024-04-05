@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Actions\Extract;
 
-use Illuminate\Log\Logger;
+use Psr\Log\LoggerInterface;
 
 interface HandlerInterface
 {
-    public function __invoke(Logger $logger): void;
+    public function __invoke(LoggerInterface $logger): void;
 }

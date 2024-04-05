@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Extract;
 
 use App\Enums\SiteName;
+use Psr\Log\LoggerInterface;
 
 class ExtractAction
 {
@@ -13,12 +14,12 @@ class ExtractAction
     ) {
     }
 
-    public function __invoke(?SiteName $siteName = null): void
+    public function __invoke(?SiteName $siteName, LoggerInterface $logger): void
     {
         $siteNames = $siteName instanceof SiteName ? [$siteName] : SiteName::cases();
 
         foreach ($this->handlerFactory->create($siteNames) as $handler) {
-            $handler();
+            $handler($logger);
         }
     }
 }

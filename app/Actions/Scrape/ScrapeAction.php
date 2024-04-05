@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Scrape;
 
 use App\Enums\SiteName;
-use Illuminate\Log\Logger;
+use Psr\Log\LoggerInterface;
 
 class ScrapeAction
 {
@@ -14,7 +14,7 @@ class ScrapeAction
     ) {
     }
 
-    public function __invoke(?SiteName $siteName, Logger $logger): void
+    public function __invoke(?SiteName $siteName, LoggerInterface $logger): void
     {
         $siteNames = $siteName instanceof SiteName ? [$siteName] : SiteName::cases();
 

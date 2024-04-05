@@ -14,7 +14,7 @@ class HandlerFactory
 {
     /**
      * @param  array<int,SiteName>  $siteNames
-     * @return Generator<int,\App\Actions\Scrape\ScrapeHandlerInterface>
+     * @return Generator<int,\App\Actions\Scrape\HandlerInterface>
      */
     public function create(array $siteNames): Generator
     {

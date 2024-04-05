@@ -7,6 +7,7 @@ namespace App\Console\Commands\Pages;
 use App\Actions\Extract\ExtractAction;
 use App\Enums\SiteName;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class ExtractCommand extends Command
 {
@@ -25,7 +26,9 @@ class ExtractCommand extends Command
         try {
             $name = $this->argument('name');
             $siteName = is_string($name) ? SiteName::tryFrom($name) : null;
-            $extractAction($siteName);
+
+            $logger = Log::stack(['daily', 'stdout']);
+            $extractAction($siteName, $logger);
 
             return self::SUCCESS;
         } catch (\Throwable $throwable) {

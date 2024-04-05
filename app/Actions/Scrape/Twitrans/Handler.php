@@ -8,8 +8,8 @@ use App\Actions\Scrape\FetchHtml;
 use App\Actions\Scrape\HandlerInterface;
 use App\Actions\Scrape\UpdateOrCreateRawPage;
 use App\Enums\SiteName;
-use Illuminate\Log\Logger;
 use Illuminate\Support\Sleep;
+use Psr\Log\LoggerInterface;
 
 class Handler implements HandlerInterface
 {
@@ -20,7 +20,7 @@ class Handler implements HandlerInterface
     ) {
     }
 
-    public function __invoke(Logger $logger): void
+    public function __invoke(LoggerInterface $logger): void
     {
         $urls = ($this->findUrls)();
 

@@ -14,7 +14,7 @@ class HandlerFactory
 {
     /**
      * @param  array<int,SiteName>  $siteNames
-     * @return Generator<int,ExtractHandlerInterface>
+     * @return Generator<int,HandlerInterface>
      */
     public function create(array $siteNames): Generator
     {
