@@ -14,6 +14,15 @@ return [
     | as the size rules. Feel free to tweak each of these messages here.
     |
     */
+    'present' => ':attributeが存在していません。',
+    'string' => ':attributeは文字列を指定してください。',
+    'max' => [
+        'numeric' => ':attributeには、:max以下の数字を指定してください。',
+        'file' => ':attributeには、:max kB以下のファイルを指定してください。',
+        'string' => ':attributeは、:max文字以下で指定してください。',
+        'array' => ':attributeは:max個以下指定してください。',
+    ],
+    'required' => ':attributeは必ず指定してください。',
 
     /*
     |--------------------------------------------------------------------------
