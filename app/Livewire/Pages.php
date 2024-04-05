@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Enums\PakSlug;
+use App\Enums\SiteName;
 use App\Models\Page;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,6 +25,12 @@ class Pages extends Component
         PakSlug::Pak128Jp->value => true,
     ];
 
+    public $sites = [
+        SiteName::Japan->value => true,
+        SiteName::Twitrans->value => true,
+        SiteName::Portal->value => true,
+    ];
+
     public function render()
     {
         return view('livewire.pages', [
@@ -33,13 +40,14 @@ class Pages extends Component
 
     public function clear(): void
     {
-        $this->reset('keyword', 'paks');
+        $this->reset('keyword', 'paks', 'sites');
     }
 
     private function paginatePages(): LengthAwarePaginator
     {
         return Page::query()
             ->withWhereHas('paks', fn (Builder|BelongsToMany $builder) => $builder->whereIn('slug', $this->selectedPaks()))
+            ->whereIn('site_name', $this->selectedSites())
             ->when($this->keyword, fn (Builder $builder) => $builder->where('text', 'like', "%{$this->keyword}%"))
             ->orderBy('last_modified', 'desc')
             ->paginate(50);
@@ -51,5 +59,13 @@ class Pages extends Component
     private function selectedPaks(): array
     {
         return array_keys(array_filter($this->paks));
+    }
+
+    /**
+     * @return array<int,string>
+     */
+    private function selectedSites(): array
+    {
+        return array_keys(array_filter($this->sites));
     }
 }
