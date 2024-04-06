@@ -8,10 +8,10 @@ use App\Enums\PakSlug;
 use App\Enums\Portal\ArticlePostType;
 use App\Models\Portal\Article;
 
-class ExtractContents
+final readonly class ExtractContents
 {
     public function __construct(
-        private readonly FindFileInfo $findFileInfo,
+        private FindFileInfo $findFileInfo,
     ) {
     }
 

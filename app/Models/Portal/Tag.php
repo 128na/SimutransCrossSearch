@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @mixin \Eloquent
  */
-class Tag extends Model
+final class Tag extends Model
 {
     use HasFactory;
 

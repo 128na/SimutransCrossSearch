@@ -26,7 +26,7 @@ use Symfony\Component\DomCrawler\Crawler;
  *
  * @mixin \Eloquent
  */
-class RawPage extends Model
+final class RawPage extends Model
 {
     use HasFactory;
 

@@ -10,11 +10,11 @@ use App\Enums\SiteName;
 use Illuminate\Support\Sleep;
 use Psr\Log\LoggerInterface;
 
-class Handler implements HandlerInterface
+final readonly class Handler implements HandlerInterface
 {
     public function __construct(
-        private readonly CursorUrl $cursorUrl,
-        private readonly UpdateOrCreateRawPage $updateOrCreateRawPage,
+        private CursorUrl $cursorUrl,
+        private UpdateOrCreateRawPage $updateOrCreateRawPage,
     ) {
 
     }

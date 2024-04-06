@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class OnlyPakCategory implements Scope
+final class OnlyPakCategory implements Scope
 {
     /**
      * @param  Builder<Model>  $builder

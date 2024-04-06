@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  */
 #[ScopedBy(OnlyPakCategory::class)]
-class Category extends Model
+final class Category extends Model
 {
     use HasFactory;
 

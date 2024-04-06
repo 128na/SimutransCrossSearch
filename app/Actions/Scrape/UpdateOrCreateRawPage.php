@@ -7,7 +7,7 @@ namespace App\Actions\Scrape;
 use App\Enums\SiteName;
 use App\Models\RawPage;
 
-class UpdateOrCreateRawPage
+final class UpdateOrCreateRawPage
 {
     public function __invoke(string $url, SiteName $siteName, string $html): RawPage
     {

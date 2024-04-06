@@ -14,14 +14,14 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Log\LoggerInterface;
 
-class Handler implements HandlerInterface
+final readonly class Handler implements HandlerInterface
 {
     public function __construct(
-        private readonly ChunkRawPages $chunkRawPages,
-        private readonly ExtractLastModified $extractLastModified,
-        private readonly ExtractContents $extractContents,
-        private readonly UpdateOrCreatePage $updateOrCreatePage,
-        private readonly SyncPak $syncPak,
+        private ChunkRawPages $chunkRawPages,
+        private ExtractLastModified $extractLastModified,
+        private ExtractContents $extractContents,
+        private UpdateOrCreatePage $updateOrCreatePage,
+        private SyncPak $syncPak,
     ) {
     }
 

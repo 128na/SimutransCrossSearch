@@ -7,10 +7,10 @@ namespace App\Actions\Scrape;
 use App\Enums\SiteName;
 use Psr\Log\LoggerInterface;
 
-class ScrapeAction
+final readonly class ScrapeAction
 {
     public function __construct(
-        private readonly HandlerFactory $handlerFactory
+        private HandlerFactory $handlerFactory
     ) {
     }
 

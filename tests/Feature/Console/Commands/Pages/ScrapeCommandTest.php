@@ -6,7 +6,7 @@ namespace Tests\Feature\Console\Commands\Pages;
 
 use Tests\TestCase;
 
-class ScrapeCommandTest extends TestCase
+final class ScrapeCommandTest extends TestCase
 {
     /**
      * A basic feature test example.

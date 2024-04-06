@@ -9,7 +9,7 @@ use App\Enums\PakSlug;
 use App\Models\RawPage;
 use Symfony\Component\DomCrawler\Crawler;
 
-class ExtractContents
+final class ExtractContents
 {
     /**
      * @return array{title:string,text:string,paks:PakSlug[]}

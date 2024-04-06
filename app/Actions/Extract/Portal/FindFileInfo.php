@@ -6,7 +6,7 @@ namespace App\Actions\Extract\Portal;
 
 use App\Models\Portal\FileInfo;
 
-class FindFileInfo
+final class FindFileInfo
 {
     public function __invoke(int $attachmentId): ?FileInfo
     {

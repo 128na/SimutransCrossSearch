@@ -9,7 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class SearchAction
+final class SearchAction
 {
     /**
      * @param  array{keyword:string,paks:array<int,int|string>,sites:array<int,string>}  $data

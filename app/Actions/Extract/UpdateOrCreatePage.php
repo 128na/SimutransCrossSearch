@@ -8,7 +8,7 @@ use App\Models\Page;
 use App\Models\RawPage;
 use Carbon\CarbonImmutable;
 
-class UpdateOrCreatePage
+final class UpdateOrCreatePage
 {
     public function __invoke(RawPage $rawPage, string $title, string $text, CarbonImmutable $lastModified): Page
     {

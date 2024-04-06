@@ -8,7 +8,7 @@ use App\Enums\SiteName;
 use App\Models\RawPage;
 use Closure;
 
-class ChunkRawPages
+final class ChunkRawPages
 {
     /**
      * @param  Closure(\Illuminate\Database\Eloquent\Collection<int,\App\Models\RawPage>):void  $fn

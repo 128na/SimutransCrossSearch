@@ -8,7 +8,7 @@ use App\Models\Page;
 use App\Models\Pak;
 use Illuminate\Support\Collection;
 
-class SyncPak
+final class SyncPak
 {
     /**
      * @var null|Collection<int|string,int>

@@ -11,7 +11,7 @@ use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class Pages extends Component
+final class Pages extends Component
 {
     use WithPagination;
 

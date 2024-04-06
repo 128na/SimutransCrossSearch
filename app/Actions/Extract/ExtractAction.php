@@ -7,10 +7,10 @@ namespace App\Actions\Extract;
 use App\Enums\SiteName;
 use Psr\Log\LoggerInterface;
 
-class ExtractAction
+final readonly class ExtractAction
 {
     public function __construct(
-        private readonly HandlerFactory $handlerFactory
+        private HandlerFactory $handlerFactory
     ) {
     }
 

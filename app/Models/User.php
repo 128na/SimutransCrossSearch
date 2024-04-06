@@ -28,7 +28,7 @@ use Illuminate\Notifications\Notifiable;
  *
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+final class User extends Authenticatable
 {
     use HasFactory;
     use Notifiable;

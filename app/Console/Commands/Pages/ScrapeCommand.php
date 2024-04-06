@@ -9,7 +9,7 @@ use App\Enums\SiteName;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-class ScrapeCommand extends Command
+final class ScrapeCommand extends Command
 {
     /**
      * @var string

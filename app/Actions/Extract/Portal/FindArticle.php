@@ -6,7 +6,7 @@ namespace App\Actions\Extract\Portal;
 
 use App\Models\Portal\Article;
 
-class FindArticle
+final class FindArticle
 {
     public function __invoke(string $id): Article
     {

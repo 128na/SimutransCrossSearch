@@ -9,14 +9,14 @@ use App\Enums\Encoding;
 use Illuminate\Support\Collection;
 use Symfony\Component\DomCrawler\Crawler;
 
-class FindUrls
+final readonly class FindUrls
 {
     private const TOP_URL = 'https://japanese.simutrans.com';
 
     private const LIST_URL = 'https://japanese.simutrans.com?cmd=list';
 
     public function __construct(
-        private readonly FetchHtml $fetchHtml,
+        private FetchHtml $fetchHtml,
     ) {
     }
 

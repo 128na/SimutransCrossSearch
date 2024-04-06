@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @mixin \Eloquent
  */
 #[ScopedBy([OnlyPublishAddon::class])]
-class Article extends Model
+final class Article extends Model
 {
     use HasFactory;
 

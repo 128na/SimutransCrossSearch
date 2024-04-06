@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @mixin \Eloquent
  */
-class Pak extends Model
+final class Pak extends Model
 {
     use HasFactory;
 

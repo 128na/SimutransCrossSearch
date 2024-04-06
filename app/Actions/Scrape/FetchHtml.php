@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\DomCrawler\Crawler;
 
-class FetchHtml
+final readonly class FetchHtml
 {
     public function __construct(
-        private readonly int $retryTimes = 3,
-        private readonly int $sleepMilliseconds = 100,
-        private readonly bool $useCache = true,
-        private readonly int $lifetimeSeconds = 3600,
+        private int $retryTimes = 3,
+        private int $sleepMilliseconds = 100,
+        private bool $useCache = true,
+        private int $lifetimeSeconds = 3600,
     ) {
     }
 

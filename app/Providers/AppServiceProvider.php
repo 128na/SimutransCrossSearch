@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use RateLimiter;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.

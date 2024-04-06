@@ -6,6 +6,6 @@ namespace App\Actions\Extract;
 
 use Exception;
 
-class FailedExtractExpection extends Exception
+final class FailedExtractExpection extends Exception
 {
 }

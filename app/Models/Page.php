@@ -30,7 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @mixin \Eloquent
  */
-class Page extends Model
+final class Page extends Model
 {
     use HasFactory;
 

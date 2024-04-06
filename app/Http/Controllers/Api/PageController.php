@@ -10,7 +10,7 @@ use App\Http\Requests\PageSearchRequest;
 use App\Http\Resources\PageResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class PageController extends Controller
+final class PageController extends Controller
 {
     public function index(PageSearchRequest $pageSearchRequest, SearchAction $searchAction): AnonymousResourceCollection
     {

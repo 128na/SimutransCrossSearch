@@ -9,7 +9,7 @@ use App\Enums\SiteName;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-class ExtractCommand extends Command
+final class ExtractCommand extends Command
 {
     /**
      * @var string

@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @mixin \Eloquent
  */
-class FileInfo extends Model
+final class FileInfo extends Model
 {
     use HasFactory;
 

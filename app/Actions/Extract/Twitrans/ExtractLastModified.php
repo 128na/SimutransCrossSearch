@@ -8,7 +8,7 @@ use App\Actions\Extract\FailedExtractExpection;
 use App\Models\RawPage;
 use Carbon\CarbonImmutable;
 
-class ExtractLastModified
+final class ExtractLastModified
 {
     public function __invoke(RawPage $rawPage): CarbonImmutable
     {

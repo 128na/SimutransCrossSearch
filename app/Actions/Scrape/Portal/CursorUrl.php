@@ -7,7 +7,7 @@ namespace App\Actions\Scrape\Portal;
 use App\Models\Portal\Article;
 use Illuminate\Support\LazyCollection;
 
-class CursorUrl
+final class CursorUrl
 {
     private const TOP_URL = 'https://simutrans-portal.128-bit.net';
 

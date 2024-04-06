@@ -8,7 +8,7 @@ use App\Models\Pak;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ProdSeeder extends Seeder
+final class ProdSeeder extends Seeder
 {
     use WithoutModelEvents;
 
