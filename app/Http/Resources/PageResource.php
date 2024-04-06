@@ -25,7 +25,7 @@ final class PageResource extends JsonResource
             'site' => __('misc.'.$this->resource->site_name->value),
             'paks' => $this->resource->paks->map(fn (Pak $pak) => __('misc.'.$pak->slug->value)),
             'url' => $this->resource->url,
-            'last_modified' => $this->resource->last_modified->toDateTimeString(),
+            'last_modified' => $this->resource->last_modified->toIso8601String(),
         ];
     }
 }
