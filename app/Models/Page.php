@@ -1,72 +1,65 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use App\Services\HTMLPurifyService;
+use App\Enums\SiteName;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Throwable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Page extends Model
+/**
+ * @property int $id
+ * @property int $raw_page_id
+ * @property SiteName $site_name
+ * @property string $url
+ * @property string $text
+ * @property string $title
+ * @property \Carbon\CarbonImmutable $last_modified 元記事の最終更新日時
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Pak> $paks
+ * @property-read int|null $paks_count
+ * @property-read \App\Models\RawPage $rawPage
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Page newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Page newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Page query()
+ *
+ * @mixin \Eloquent
+ */
+final class Page extends Model
 {
-    protected $fillable = ['site_name', 'url', 'title', 'text', 'last_modified'];
+    use HasFactory;
 
-    protected $casts = [
-        'last_modified' => 'datetime',
+    protected $fillable = [
+        'site_name',
+        'url',
+        'title',
+        'text',
+        'last_modified',
     ];
 
-    public function paks()
+    protected $casts = [
+        'site_name' => SiteName::class,
+        'last_modified' => 'immutable_datetime',
+    ];
+
+    /**
+     * @return BelongsToMany<Pak>
+     */
+    public function paks(): BelongsToMany
     {
         return $this->belongsToMany(Pak::class);
     }
 
-    public function rawPage()
+    /**
+     * @return BelongsTo<RawPage,Page>
+     */
+    public function rawPage(): BelongsTo
     {
         return $this->belongsTo(RawPage::class);
-    }
-
-    public function getDisplaySiteNameAttribute()
-    {
-        return config("sites.{$this->site_name}.display_name", '');
-    }
-
-    public function getSiteUrlAttribute()
-    {
-        return config("sites.{$this->site_name}.url", '');
-    }
-
-    public function highlightText($search_condition)
-    {
-        if (! implode('', $search_condition['words'])) {
-            return '';
-        }
-        $word = implode('|', $search_condition['words']);
-
-        try {
-            $reg = "/(.{0,20}({$word}).{0,20})/iu";
-            preg_match_all($reg, $this->text, $matches);
-
-            $texts = collect($matches[0]);
-            // テキストに該当なしの場合はブランク
-            if (count($texts) < 1) {
-                return '';
-            }
-
-            $texts->splice(10);
-            $highlighted = $texts->map(function ($text) use ($word) {
-                $reg = "/({$word})/iu";
-                $rep = '<span class="highlight">$1</span>';
-
-                return preg_replace($reg, $rep, $text);
-            });
-
-            $raw_html = '…'.$highlighted->implode('…, ').'…';
-
-            return app(HTMLPurifyService::class)->purifyHTML($raw_html);
-        } catch (Throwable $e) {
-            logger()->error('highlightText', request()->all());
-            report($e);
-
-            return '';
-        }
     }
 }

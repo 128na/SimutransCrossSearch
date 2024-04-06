@@ -1,12 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Console Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
-|
- */
+declare(strict_types=1);
+
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::command('app:page-scrape')->dailyAt('1:00')->withoutOverlapping()->onOneServer();
+Schedule::command('app:page-extract')->dailyAt('3:00')->withoutOverlapping()->onOneServer();
+
+Schedule::command('app:notion-sync')->dailyAt('7:00')->withoutOverlapping()->onOneServer();

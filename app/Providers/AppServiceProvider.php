@@ -1,32 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Notion\Notion;
+use RateLimiter;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->app->singleton(Notion::class, function (Application $app) {
-            return Notion::create(config('services.notion.secret'));
-        });
+        $this->app->singleton(Notion::class, fn (Application $application): Notion => Notion::create(Config::string('services.notion.secret', '')));
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        umask(000);
+        RateLimiter::for('api', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
     }
 }

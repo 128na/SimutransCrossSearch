@@ -1,0 +1,11 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "declare_strict_types": true,
+        "final_class":true,
+        "protected_to_private":true
+    },
+    "exclude": [
+        "old/"
+    ]
+}

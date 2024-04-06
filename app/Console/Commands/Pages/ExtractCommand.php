@@ -1,79 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands\Pages;
 
-use App\Factories\SiteServiceFactory;
-use App\Models\RawPage;
-use App\Services\SiteService\SiteService;
+use App\Actions\Extract\ExtractAction;
+use App\Enums\SiteName;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Throwable;
+use Illuminate\Support\Facades\Log;
 
-class ExtractCommand extends Command
+final class ExtractCommand extends Command
 {
     /**
-     * The name and signature of the console command.
-     *
      * @var string
      */
-    protected $signature = 'page:extract {name} {--all}';
+    protected $signature = 'app:extract {name?}';
 
     /**
-     * The console command description.
-     *
      * @var string
      */
-    protected $description = 'extract from raw pages to pages contents';
+    protected $description = 'RawPageから情報を取得してPageを更新する';
 
-    private SiteServiceFactory $site_service_factory;
-
-    private SiteService $site_service;
-
-    private ?Throwable $last_error = null;
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct(SiteServiceFactory $site_service_factory)
+    public function handle(ExtractAction $extractAction): int
     {
-        parent::__construct();
-        $this->site_service_factory = $site_service_factory;
-    }
+        try {
+            $name = $this->argument('name');
+            $siteName = is_string($name) ? SiteName::tryFrom($name) : null;
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        DB::beginTransaction();
-        $name = $this->argument('name');
-        $this->site_service = $this->site_service_factory->make($name);
+            $logger = Log::stack(['daily', 'stdout']);
+            $extractAction($siteName, $logger);
 
-        $raw_pages = $this->option('all')
-        ? $this->site_service->getAllRawPages()
-        : $this->site_service->getUpdatedRawPages();
+            return self::SUCCESS;
+        } catch (\Throwable $throwable) {
+            report($throwable);
+            $this->error($throwable->getMessage());
 
-        $result = $raw_pages->map(function (RawPage $raw_page) {
-            try {
-                $this->info($raw_page->id);
-
-                $data = $this->site_service->extractContents($raw_page);
-
-                return $this->site_service->saveOrUpdatePage($raw_page, $data);
-            } catch (Throwable $e) {
-                $this->last_error = $e;
-                logger()->error($e->getMessage());
-            }
-        });
-
-        DB::commit();
-        if ($this->last_error) {
-            throw $this->last_error;
+            return self::FAILURE;
         }
-        $this->info(sprintf('%d page updated', $result->count()));
     }
 }
