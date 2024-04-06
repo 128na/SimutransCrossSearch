@@ -48,7 +48,7 @@ final class Pages extends Component
         ]);
     }
 
-    public function onConditionUpdate(SearchAction $searchAction)
+    public function onConditionUpdate(SearchAction $searchAction): \Illuminate\Contracts\View\View
     {
 
         return $this->render($searchAction);
