@@ -17,15 +17,34 @@ final class SearchAction
      */
     public function __invoke(array $data): LengthAwarePaginator
     {
-        /**
-         * @var LengthAwarePaginator<Page>
-         */
-        return Page::query()
+        $query = Page::query()
             ->withWhereHas('paks', fn (Builder|BelongsToMany $builder) => $builder->whereIn('slug', $data['paks']))
-            ->whereIn('site_name', $data['sites'])
-            ->when($data['keyword'], fn (Builder $builder, $keyword) => $builder->where('text', 'like', sprintf('%%%s%%', $keyword)))
-            ->orderBy('last_modified', 'desc')
+            ->whereIn('site_name', $data['sites']);
+
+        $this->addKeywordQuery($query, $data['keyword']);
+
+        return $query->orderBy('last_modified', 'desc')
             ->paginate(50)
             ->withQueryString();
+    }
+
+    /**
+     * @param  Builder<Page>  $builder
+     */
+    private function addKeywordQuery(Builder $builder, string $keyword): void
+    {
+        foreach (explode(' ', $keyword) as $word) {
+            $word = trim($word);
+            if (str_starts_with($word, '-')) {
+                $word = trim(substr($word, 1));
+                if ($word !== '' && $word !== '0') {
+                    $builder->where('title', 'not like', sprintf('%%%s%%', $word));
+                    $builder->where('text', 'not like', sprintf('%%%s%%', $word));
+                }
+            } else {
+                $builder->where('title', 'like', sprintf('%%%s%%', $word));
+                $builder->where('text', 'like', sprintf('%%%s%%', $word));
+            }
+        }
     }
 }

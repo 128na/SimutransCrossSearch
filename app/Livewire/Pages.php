@@ -37,6 +37,8 @@ final class Pages extends Component
 
     public function render(SearchAction $searchAction): View
     {
+        $this->resetPage();
+
         return view('livewire.pages', [
             'pages' => $searchAction([
                 'keyword' => $this->keyword,
@@ -46,8 +48,15 @@ final class Pages extends Component
         ]);
     }
 
+    public function onConditionUpdate(SearchAction $searchAction): \Illuminate\Contracts\View\View
+    {
+
+        return $this->render($searchAction);
+    }
+
     public function clear(): void
     {
+        $this->resetPage();
         $this->reset('keyword', 'paks', 'sites');
     }
 

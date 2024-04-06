@@ -1,4 +1,8 @@
 {
+    "Showing": " ",
+    "to": "~",
+    "of": "件目/",
+    "results": "件",
     "(and :count more error)": "(その他、:countエラーあり)",
     "(and :count more errors)": "(その他、:countエラーあり)|(その他、:countエラーあり)|(その他、:countエラーあり)"
 }

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Feed\Feedable;
+use Spatie\Feed\FeedItem;
 
 /**
  * @property int $id
@@ -30,7 +32,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @mixin \Eloquent
  */
-final class Page extends Model
+final class Page extends Model implements Feedable
 {
     use HasFactory;
 
@@ -61,5 +63,21 @@ final class Page extends Model
     public function rawPage(): BelongsTo
     {
         return $this->belongsTo(RawPage::class);
+    }
+
+    public function getSummary(int $length = 100): string
+    {
+        return mb_strimwidth($this->text, 0, $length, '...');
+    }
+
+    public function toFeedItem(): FeedItem
+    {
+        return FeedItem::create()
+            ->id((string) $this->id)
+            ->title($this->title)
+            ->summary($this->getSummary())
+            ->updated($this->last_modified)
+            ->link($this->url)
+            ->authorName(__('misc.'.$this->site_name->value));
     }
 }

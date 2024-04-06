@@ -8,6 +8,14 @@
                 <ul class="flex flex-col mt-4 font-medium md:flex-row md:space-x-8 md:mt-0">
                     <li>
                         <a
+                            href="/feed"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="block p-2 text-gray-700"
+                        >Feed</a>
+                    </li>
+                    <li>
+                        <a
                             href="https://www.notion.so/simutrans-intro/API-2cbb6813417b4b2f80c27392b4d6b3d2?pvs=4#3a08260b0bdd4f9ab6f887123704332e"
                             target="_blank"
                             rel="noopener noreferrer"
