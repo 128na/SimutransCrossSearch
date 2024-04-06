@@ -9,6 +9,11 @@
     </head>
     <body>
         @include('header')
-        <livewire:pages />
+        <section class="px-4 lg:px-6 py-2.5 my-2.5">
+            <div class="mx-auto max-w-screen-md">
+                @include('greeting')
+                <livewire:pages />
+            </div>
+        </section>
     </body>
 </html>
