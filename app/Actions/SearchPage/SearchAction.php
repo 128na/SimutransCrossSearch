@@ -25,6 +25,7 @@ final class SearchAction
             ->whereIn('site_name', $data['sites'])
             ->when($data['keyword'], fn (Builder $builder, $keyword) => $builder->where('text', 'like', sprintf('%%%s%%', $keyword)))
             ->orderBy('last_modified', 'desc')
-            ->paginate(50);
+            ->paginate(50)
+            ->withQueryString();
     }
 }
