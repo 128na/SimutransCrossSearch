@@ -19,7 +19,7 @@ final class ExtractCommand extends Command
     /**
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'RawPageから情報を取得してPageを更新する';
 
     public function handle(ExtractAction $extractAction): int
     {
@@ -34,7 +34,6 @@ final class ExtractCommand extends Command
         } catch (\Throwable $throwable) {
             report($throwable);
             $this->error($throwable->getMessage());
-            $this->error($throwable->getTraceAsString());
 
             return self::FAILURE;
         }

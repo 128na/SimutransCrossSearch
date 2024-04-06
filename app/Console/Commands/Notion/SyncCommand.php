@@ -35,6 +35,7 @@ final class SyncCommand extends Command
             return self::SUCCESS;
         } catch (\Throwable $throwable) {
             report($throwable);
+            $this->error($throwable->getMessage());
 
             return self::FAILURE;
         }

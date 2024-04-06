@@ -19,7 +19,7 @@ final class ScrapeCommand extends Command
     /**
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'サイトからHTMLを取得してRawPageを更新する';
 
     public function handle(ScrapeAction $scrapeAction): int
     {
@@ -34,7 +34,6 @@ final class ScrapeCommand extends Command
         } catch (\Throwable $throwable) {
             report($throwable);
             $this->error($throwable->getMessage());
-            $this->error($throwable->getTraceAsString());
 
             return self::FAILURE;
         }
