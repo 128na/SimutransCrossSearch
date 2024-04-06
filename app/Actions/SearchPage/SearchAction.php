@@ -28,6 +28,9 @@ final class SearchAction
             ->withQueryString();
     }
 
+    /**
+     * @param  Builder<Page>  $builder
+     */
     private function addKeywordQuery(Builder $builder, string $keyword): void
     {
         foreach (explode(' ', $keyword) as $word) {

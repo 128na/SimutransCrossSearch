@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * 
- *
  * @property int $id
  * @property int $user_id
  * @property string $title タイトル
@@ -32,9 +30,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read int|null $categories_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Portal\Tag> $tags
  * @property-read int|null $tags_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article query()
+ *
  * @mixin \Eloquent
  */
 #[ScopedBy([OnlyPublishAddon::class])]

@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * 
- *
  * @property int $id
  * @property SiteName $site_name
  * @property string $url
@@ -21,9 +19,11 @@ use Symfony\Component\DomCrawler\Crawler;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Page|null $page
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|RawPage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RawPage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RawPage query()
+ *
  * @mixin \Eloquent
  */
 final class RawPage extends Model
