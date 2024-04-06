@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Console\Commands\Pages;
 
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 
 final class ScrapeCommandTest extends TestCase
 {
