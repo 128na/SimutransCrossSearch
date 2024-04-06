@@ -32,5 +32,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'notion' => [
+        'secret' => env('NOTION_SECRET'),
+        'database_id' => env('NOTION_DATABASE_ID'),
+    ],
 ];

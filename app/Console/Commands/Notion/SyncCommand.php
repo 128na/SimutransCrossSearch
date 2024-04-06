@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Console\Commands\Notion;
 
 use App\Actions\SyncNotion\SyncAction;
+use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 
 final class SyncCommand extends Command
 {
     /**
      * @var string
      */
-    protected $signature = 'app:notion-sync';
+    protected $signature = 'app:sync-notion';
 
     /**
      * @var string
@@ -23,12 +25,16 @@ final class SyncCommand extends Command
     {
         logger('[SyncNotionDatabaseCommand] running');
         try {
-            $databaseId = config('services.notion.database_id');
+            $databaseId = Config::string('services.notion.database_id', '');
+            if (! $databaseId) {
+                throw new Exception('databaseId not provided');
+            }
+
             $syncAction($databaseId, 100);
 
             return self::SUCCESS;
-        } catch (\Throwable $th) {
-            report($th);
+        } catch (\Throwable $throwable) {
+            report($throwable);
 
             return self::FAILURE;
         }

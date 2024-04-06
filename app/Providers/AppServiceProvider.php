@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use Notion\Notion;
 use RateLimiter;
 
 final class AppServiceProvider extends ServiceProvider
@@ -16,7 +19,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(Notion::class, fn (Application $application): Notion => Notion::create(Config::string('services.notion.secret', '')));
     }
 
     /**
