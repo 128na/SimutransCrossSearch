@@ -18,5 +18,6 @@
             rel="noopener noreferrer"
             class="text-blue-600 dark:text-blue-500 hover:underline"
         >Simutrans Addon Portal</a>
-    に投稿されているアドオンをまとめて検索できます
+    に投稿されているアドオンをまとめて検索できます。
+    半角スペース区切りでAND検索、ハイフン( - )から始まるキーワードは除外できます。 (例: JR -新幹線)
 </div>
