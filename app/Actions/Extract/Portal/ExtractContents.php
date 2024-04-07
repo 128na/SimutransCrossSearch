@@ -41,7 +41,7 @@ final readonly class ExtractContents
         $fields[] = $article->tags->pluck('description')->implode("\n");
 
         if ($article->post_type === ArticlePostType::AddonPost) {
-            $fileInfo = ($this->findFileInfo)($article->contents['file']);
+            $fileInfo = ($this->findFileInfo)((int) $article->contents['file']);
             if ($fileInfo instanceof \App\Models\Portal\FileInfo) {
                 $fields[] = $fileInfo->data ?? '';
             }
