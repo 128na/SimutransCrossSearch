@@ -7,6 +7,7 @@ namespace App\Console\Commands\Pages;
 use App\Actions\Extract\ExtractAction;
 use App\Enums\SiteName;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 final class ExtractCommand extends Command
@@ -29,6 +30,8 @@ final class ExtractCommand extends Command
 
             $logger = Log::stack(['daily', 'stdout']);
             $extractAction($siteName, $logger);
+
+            Cache::put('last_extract', now()->toDateTimeString());
 
             return self::SUCCESS;
         } catch (\Throwable $throwable) {

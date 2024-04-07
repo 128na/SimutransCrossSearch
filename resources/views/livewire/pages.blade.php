@@ -2,7 +2,7 @@
     <div class="mb-2">
     @foreach (App\Enums\PakSlug::cases() as $pak)
         <label
-            class="leading-6 text-gray-900 pr-3 font-medium"
+            class="leading-6 text-gray-900 pr-3 font-medium dark:text-white"
         >
         <input
             type="checkbox"
@@ -14,7 +14,7 @@
 
     @foreach (App\Enums\SiteName::cases() as $site)
         <label
-            class="leading-6 text-gray-900 pr-3 font-medium"
+            class="leading-6 text-gray-900 pr-3 font-medium dark:text-white"
         >
         <input
             type="checkbox"
@@ -44,7 +44,7 @@
     </div>
 
     <div class="my-4">
-        {{ $pages->links() }}
+        {{ $pages->onEachSide(1)->links('tailwind_custom') }}
     </div>
 
     <ul>
@@ -69,11 +69,11 @@
                     >{{ $page->title }}</a>
 
                     <span
-                        class="text-xs font-medium text-gray-600"
+                        class="text-xs font-medium text-gray-600 dark:text-gray-300"
                     >{{ $page->last_modified->toDateTimeString() }}</span>
                 </div>
                 <div
-                    class="text-gray-900 bg-white text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                    class="text-gray-900 text-sm px-5 py-2.5 dark:text-white"
                 >{{ $page->getSummary(300) }}</div>
             </li>
         @empty
@@ -81,6 +81,6 @@
         @endforelse
     </ul>
     <div class="my-4">
-        {{ $pages->links() }}
+        {{ $pages->onEachSide(1)->links('tailwind_custom') }}
     </div>
 </div>

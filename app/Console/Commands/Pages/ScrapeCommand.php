@@ -7,6 +7,7 @@ namespace App\Console\Commands\Pages;
 use App\Actions\Scrape\ScrapeAction;
 use App\Enums\SiteName;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 final class ScrapeCommand extends Command
@@ -29,6 +30,8 @@ final class ScrapeCommand extends Command
 
             $logger = Log::stack(['daily', 'stdout']);
             $scrapeAction($siteName, $logger);
+
+            Cache::put('last_crawl', now()->toDateTimeString());
 
             return self::SUCCESS;
         } catch (\Throwable $throwable) {
