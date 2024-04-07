@@ -14,7 +14,7 @@ final readonly class FetchHtml
     public function __construct(
         private int $retryTimes = 3,
         private int $sleepMilliseconds = 100,
-        private bool $useCache = true,
+        private bool $useCache = false,
         private int $lifetimeSeconds = 3600,
     ) {
     }
