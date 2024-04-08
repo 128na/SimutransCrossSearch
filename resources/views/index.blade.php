@@ -13,7 +13,7 @@
         <meta property="og:title" content="{{ config('app.name') }}">
         <meta property="og:type" content="website">
         <meta property="og:url" content="/">
-        <meta property="og:image" content="{{ config('app.image') }}">
+        <meta property="og:image" content="/icon.png">
         <meta property="og:site_name" content="{{ config('app.name') }}">
         <meta property="og:description" content="このサイトでは Simutrans Japan, Simutrans的な実験室, Simutrans Addon Portal に投稿されているアドオンをまとめて検索できます。">
 
