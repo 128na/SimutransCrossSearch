@@ -12,15 +12,15 @@
 
         <meta property="og:title" content="{{ config('app.name') }}">
         <meta property="og:type" content="website">
-        <meta property="og:url" content="/">
-        <meta property="og:image" content="/icon.png">
+        <meta property="og:url" content="{{ url('/') }}">
+        <meta property="og:image" content="{{ url('/icon.png') }}">
         <meta property="og:site_name" content="{{ config('app.name') }}">
         <meta property="og:description" content="このサイトでは Simutrans Japan, Simutrans的な実験室, Simutrans Addon Portal に投稿されているアドオンをまとめて検索できます。">
 
         <meta name="twitter:card" content="summary">
 
-        <link rel="canonical" href="/">
-        <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.ico" />
+        <link rel="canonical" href="{{ url('/') }}">
+        <link rel="shortcut icon" href="{{ url('/favicon.ico') }}" type="image/vnd.microsoft.ico" />
 
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
