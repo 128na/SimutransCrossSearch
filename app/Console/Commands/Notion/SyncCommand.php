@@ -14,7 +14,7 @@ final class SyncCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'app:sync-notion';
+    protected $signature = 'app:notion-sync';
 
     /**
      * @var string
