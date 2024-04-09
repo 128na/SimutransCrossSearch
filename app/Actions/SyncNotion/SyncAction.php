@@ -94,6 +94,8 @@ final readonly class SyncAction
                         ->filter(fn ($pak): bool => ! is_null($pak))
                     )
                 );
+
+            $this->notion->pages()->update($np);
         }
     }
 
