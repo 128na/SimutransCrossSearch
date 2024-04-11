@@ -2,7 +2,36 @@
     "preset": "laravel",
     "rules": {
         "declare_strict_types": true,
-        "final_class":true,
-        "protected_to_private":true
-    }
-}
+        "protected_to_private":true,
+        "modernize_strpos":true,
+        "encoding":true,
+        "class_reference_name_casing":true,
+        "final_public_method_for_abstract_class":true,
+        "ordered_class_elements":{"order": [
+          "use_trait",
+          "case",
+          "constant_public",
+          "constant_protected",
+          "constant_private",
+          "property_public",
+          "property_protected",
+          "property_private",
+          "construct",
+          "destruct",
+          "magic",
+          "phpunit",
+          "method_public",
+          "method_protected",
+          "method_private"
+        ]},
+        "ordered_interfaces":{"order": "alpha"},
+        "ordered_traits":{"case_sensitive": false},
+        "ordered_types":{"case_sensitive": false},
+        "self_accessor":true,
+        "self_static_accessor":true,
+        "visibility_required":{"elements": ["const","method","property"]},
+        "final_class":true
+    },
+    "exclude": [
+    ]
+  }
