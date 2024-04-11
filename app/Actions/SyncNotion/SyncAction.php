@@ -18,7 +18,7 @@ use Notion\Pages\Properties\Url;
 
 final readonly class SyncAction
 {
-    private const PAGE_PROP_MAPPING = [
+    private const array PAGE_PROP_MAPPING = [
         'title' => 'タイトル',
         'site_name' => 'サイト名',
         'last_modified' => '最終更新日時',

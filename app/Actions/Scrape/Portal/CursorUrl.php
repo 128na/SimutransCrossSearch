@@ -9,7 +9,7 @@ use Illuminate\Support\LazyCollection;
 
 final class CursorUrl
 {
-    private const TOP_URL = 'https://simutrans-portal.128-bit.net';
+    private const string TOP_URL = 'https://simutrans-portal.128-bit.net';
 
     /**
      * @return LazyCollection<int,string>

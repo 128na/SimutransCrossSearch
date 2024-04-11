@@ -26,6 +26,7 @@ final readonly class Handler implements HandlerInterface
     ) {
     }
 
+    #[\Override]
     public function __invoke(LoggerInterface $logger): void
     {
         ($this->chunkRawPages)(SiteName::Portal, function (Collection $rawPages) use ($logger): void {

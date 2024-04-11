@@ -30,8 +30,6 @@ final class RawPage extends Model
 {
     use HasFactory;
 
-    private ?Crawler $crawler = null;
-
     protected $fillable = [
         'site_name',
         'url',
@@ -41,6 +39,8 @@ final class RawPage extends Model
     protected $casts = [
         'site_name' => SiteName::class,
     ];
+
+    private ?Crawler $crawler = null;
 
     /**
      * @return HasOne<Page>

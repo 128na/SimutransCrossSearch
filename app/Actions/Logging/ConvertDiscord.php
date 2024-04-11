@@ -13,6 +13,7 @@ final class ConvertDiscord extends SimpleRecordConverter
     /**
      * @param  array{datetime:\DateTime,level_name:int,message:string,context:array<int|string,mixed>}  $record
      */
+    #[\Override]
     protected function addMessageContent(Message $message, array $record): void
     {
         try {

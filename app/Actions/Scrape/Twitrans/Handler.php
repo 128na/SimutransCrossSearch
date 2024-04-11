@@ -21,6 +21,7 @@ final readonly class Handler implements HandlerInterface
     ) {
     }
 
+    #[\Override]
     public function __invoke(LoggerInterface $logger): void
     {
         $urls = ($this->findUrls)();

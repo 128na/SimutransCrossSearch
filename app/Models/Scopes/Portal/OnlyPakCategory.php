@@ -15,6 +15,7 @@ final class OnlyPakCategory implements Scope
     /**
      * @param  Builder<Model>  $builder
      */
+    #[\Override]
     public function apply(Builder $builder, Model $model): void
     {
         assert($model instanceof Category);

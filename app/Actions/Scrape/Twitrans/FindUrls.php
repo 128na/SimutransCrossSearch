@@ -11,9 +11,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 final readonly class FindUrls
 {
-    private const DOMAIN = 'https://wikiwiki.jp';
+    private const string DOMAIN = 'https://wikiwiki.jp';
 
-    private const LIST_URL = 'https://wikiwiki.jp/twitrans?cmd=list';
+    private const string LIST_URL = 'https://wikiwiki.jp/twitrans?cmd=list';
 
     public function __construct(
         private FetchHtml $fetchHtml,

@@ -19,6 +19,7 @@ final readonly class Handler implements HandlerInterface
 
     }
 
+    #[\Override]
     public function __invoke(LoggerInterface $logger): void
     {
         foreach (($this->cursorUrl)() as $url) {

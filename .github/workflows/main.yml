@@ -53,7 +53,7 @@ jobs:
       - uses: ./.github/actions/mysql
 
       - name: Test
-        run: php artisan test --env=local --testsuite=${{matrix.test_suite}}
+        run: php artisan test --env=local --testsuite=${{ matrix.test_suite }}
 
       - name: Upload Laravel Logs
         if: failure()
@@ -74,9 +74,9 @@ jobs:
       - name: Install SSH key
         run: >
           mkdir -p ~/.ssh
-          && echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
+          && echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           && chmod 0600 ~/.ssh/id_rsa
-          && echo "${{secrets.KNOWN_HOSTS}}" >> ~/.ssh/known_hosts
+          && echo "${{ secrets.KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
 
       - name: Deploy
         run: >

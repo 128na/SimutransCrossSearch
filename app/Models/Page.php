@@ -70,6 +70,7 @@ final class Page extends Model implements Feedable
         return mb_strimwidth($this->text, 0, $length, '...');
     }
 
+    #[\Override]
     public function toFeedItem(): FeedItem
     {
         return FeedItem::create()
