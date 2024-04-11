@@ -11,9 +11,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 final readonly class FindUrls
 {
-    private const TOP_URL = 'https://japanese.simutrans.com';
+    private const string TOP_URL = 'https://japanese.simutrans.com';
 
-    private const LIST_URL = 'https://japanese.simutrans.com?cmd=list';
+    private const string LIST_URL = 'https://japanese.simutrans.com?cmd=list';
 
     public function __construct(
         private FetchHtml $fetchHtml,
