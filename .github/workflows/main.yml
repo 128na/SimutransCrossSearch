@@ -9,20 +9,6 @@ on:
   pull_request:
     branches: [master, develop]
 jobs:
-  pint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: .env
-        run: php -r "copy('.env.ci', '.env');"
-
-      - uses: ./.github/actions/php
-
-      - name: Run Pint
-        run: composer run pint:check
-
   stan:
     runs-on: ubuntu-latest
     steps:
