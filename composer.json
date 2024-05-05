@@ -6,24 +6,24 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "laravel/framework": "^11.5.0",
+        "laravel/framework": "^11.6.0",
         "laravel/tinker": "^2.9",
-        "livewire/livewire": "^3.4.11",
+        "livewire/livewire": "^3.4.12",
         "mariosimao/notion-sdk-php": "^1.14",
         "marvinlabs/laravel-discord-logger": "^1.4.2",
         "spatie/laravel-feed": "^4.4",
-        "symfony/browser-kit": "^7.0.3"
+        "symfony/browser-kit": "^7.0.7"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",
         "fakerphp/faker": "^1.23.1",
         "larastan/larastan": "^2.9.5",
-        "laravel/pint": "^1.15.2",
+        "laravel/pint": "^1.15.3",
         "mockery/mockery": "^1.6.11",
         "nunomaduro/collision": "^8.1.1",
         "phpunit/phpunit": "^10.5.20",
         "rector/rector": "^1.0.4",
-        "spatie/laravel-ignition": "^2.5.2"
+        "spatie/laravel-ignition": "^2.7.0"
     },
     "autoload": {
         "psr-4": {
