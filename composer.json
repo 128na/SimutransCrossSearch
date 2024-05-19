@@ -19,10 +19,10 @@
         "fakerphp/faker": "^1.23.1",
         "larastan/larastan": "^2.9.6",
         "laravel/pint": "^1.15.3",
-        "mockery/mockery": "^1.6.11",
+        "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": "^8.1.1",
         "phpunit/phpunit": "^10.5.20",
-        "rector/rector": "^1.0.5",
+        "rector/rector": "^1.1.0",
         "spatie/laravel-ignition": "^2.7.0"
     },
     "autoload": {
