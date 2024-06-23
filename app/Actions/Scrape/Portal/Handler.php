@@ -15,9 +15,7 @@ final readonly class Handler implements HandlerInterface
     public function __construct(
         private CursorUrl $cursorUrl,
         private UpdateOrCreateRawPage $updateOrCreateRawPage,
-    ) {
-
-    }
+    ) {}
 
     #[\Override]
     public function __invoke(LoggerInterface $logger): void

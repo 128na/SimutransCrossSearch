@@ -12,8 +12,7 @@ final readonly class ExtractContents
 {
     public function __construct(
         private FindFileInfo $findFileInfo,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array{title:string,text:string,paks:PakSlug[]}

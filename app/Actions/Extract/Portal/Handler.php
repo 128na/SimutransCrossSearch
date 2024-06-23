@@ -23,8 +23,7 @@ final readonly class Handler implements HandlerInterface
         private ExtractContents $extractContents,
         private UpdateOrCreatePage $updateOrCreatePage,
         private SyncPak $syncPak,
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function __invoke(LoggerInterface $logger): void

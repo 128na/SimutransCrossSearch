@@ -18,8 +18,7 @@ final readonly class Handler implements HandlerInterface
         private FetchHtml $fetchHtml,
         private FindUrls $findUrls,
         private UpdateOrCreateRawPage $updateOrCreateRawPage,
-    ) {
-    }
+    ) {}
 
     #[\Override]
     public function __invoke(LoggerInterface $logger): void

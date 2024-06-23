@@ -17,8 +17,7 @@ final readonly class FindUrls
 
     public function __construct(
         private FetchHtml $fetchHtml,
-    ) {
-    }
+    ) {}
 
     /**
      * @return Collection<int,string>

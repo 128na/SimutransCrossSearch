@@ -11,8 +11,7 @@ final readonly class ScrapeAction
 {
     public function __construct(
         private HandlerFactory $handlerFactory
-    ) {
-    }
+    ) {}
 
     public function __invoke(?SiteName $siteName, LoggerInterface $logger): void
     {

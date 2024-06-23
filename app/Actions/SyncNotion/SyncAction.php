@@ -26,9 +26,7 @@ final readonly class SyncAction
         'paks' => 'パックセット',
     ];
 
-    public function __construct(private Notion $notion)
-    {
-    }
+    public function __construct(private Notion $notion) {}
 
     public function __invoke(string $databaseId, int $limit): void
     {
@@ -67,7 +65,7 @@ final readonly class SyncAction
         foreach ($pages as $page) {
             $exists = true;
             $url = $page->url;
-            $np = $notionPages->first(fn (NotionPage $np): bool => $this->getUrlProp($np) === $url);
+            $np = $notionPages->first(fn (NotionPage $notionPage): bool => $this->getUrlProp($notionPage) === $url);
             if (! $np) {
                 $exists = false;
                 $np = NotionPage::create(PageParent::database($database->id));

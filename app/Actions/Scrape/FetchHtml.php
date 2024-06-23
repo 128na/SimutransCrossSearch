@@ -16,8 +16,7 @@ final readonly class FetchHtml
         private int $sleepMilliseconds = 100,
         private bool $useCache = false,
         private int $lifetimeSeconds = 3600,
-    ) {
-    }
+    ) {}
 
     public function __invoke(string $url, Encoding $fromEncoding): Crawler
     {

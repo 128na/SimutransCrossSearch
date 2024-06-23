@@ -13,7 +13,7 @@ final class SyncPak
     /**
      * @var null|Collection<int|string,int>
      */
-    private ?Collection $paks = null;
+    private ?Collection $collection = null;
 
     /**
      * @param  array<int,\App\Enums\PakSlug>  $paks
@@ -46,10 +46,10 @@ final class SyncPak
      */
     private function getPaks(): Collection
     {
-        if (! $this->paks instanceof \Illuminate\Support\Collection) {
-            $this->paks = Pak::pluck('id', 'slug');
+        if (! $this->collection instanceof \Illuminate\Support\Collection) {
+            $this->collection = Pak::pluck('id', 'slug');
         }
 
-        return $this->paks;
+        return $this->collection;
     }
 }
