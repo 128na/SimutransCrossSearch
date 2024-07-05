@@ -32,6 +32,13 @@ final class PageSearchRequest extends FormRequest
             'paks.*' => ['required', Rule::enum(PakSlug::class)],
             'sites' => 'present|array|min:0',
             'sites.*' => ['required', Rule::enum(SiteName::class)],
+            'page' => 'nullable|integer',
         ];
+    }
+
+    #[\Override]
+    public function wantsJson(): bool
+    {
+        return true;
     }
 }
