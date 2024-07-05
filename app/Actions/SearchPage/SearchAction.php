@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 final class SearchAction
 {
     /**
-     * @param  array{keyword:string,paks:array<int,int|string>,sites:array<int,string>}  $data
+     * @param  array{keyword:string,paks:array<int,int|string>,sites:array<int,string>,page?:int|numeric-string|null}  $data
      * @return LengthAwarePaginator<Page>
      */
     public function __invoke(array $data): LengthAwarePaginator
@@ -24,7 +24,7 @@ final class SearchAction
         $this->addKeywordQuery($query, $data['keyword']);
 
         return $query->orderBy('last_modified', 'desc')
-            ->paginate(50)
+            ->paginate(perPage: 50, page: (int) ($data['page'] ?? 1))
             ->withQueryString();
     }
 

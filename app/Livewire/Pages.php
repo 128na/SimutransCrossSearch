@@ -8,6 +8,7 @@ use App\Actions\SearchPage\SearchAction;
 use App\Enums\PakSlug;
 use App\Enums\SiteName;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,6 +17,12 @@ final class Pages extends Component
     use WithPagination;
 
     public string $keyword = '';
+
+    /**
+     * @var int|string|null
+     */
+    #[Url]
+    public $page = 1;
 
     /**
      * @var array<string|int,bool>
@@ -38,12 +45,16 @@ final class Pages extends Component
     public function render(SearchAction $searchAction): View
     {
         $this->resetPage();
+        if (! is_numeric($this->page)) {
+            $this->page = 1;
+        }
 
         return view('livewire.pages', [
             'pages' => $searchAction([
                 'keyword' => $this->keyword,
                 'paks' => $this->selectedPaks(),
                 'sites' => $this->selectedSites(),
+                'page' => $this->page,
             ]),
         ]);
     }
