@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "laravel/framework": "^11.18.1",
+        "laravel/framework": "^11.19.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5.4",
         "mariosimao/notion-sdk-php": "^1.14",
@@ -18,10 +18,10 @@
         "barryvdh/laravel-ide-helper": "^3.1",
         "fakerphp/faker": "^1.23.1",
         "larastan/larastan": "^2.9.8",
-        "laravel/pint": "^1.17.0",
+        "laravel/pint": "^1.17.1",
         "mockery/mockery": "^1.6.12",
-        "nunomaduro/collision": "^8.3.0",
-        "phpunit/phpunit": "^10.5.28",
+        "nunomaduro/collision": "^8.4.0",
+        "phpunit/phpunit": "^10.5.29",
         "rector/rector": "^1.2.2",
         "spatie/laravel-ignition": "^2.8.0"
     },
