@@ -6,14 +6,14 @@ namespace App\Actions\Extract;
 
 use App\Enums\SiteName;
 use App\Models\RawPage;
-use Closure;
+use Illuminate\Support\Collection;
 
 final class ChunkRawPages
 {
     /**
-     * @param  Closure(\Illuminate\Database\Eloquent\Collection<int,\App\Models\RawPage>):void  $fn
+     * @param  callable(Collection<int, RawPage>): mixed  $fn
      */
-    public function __invoke(SiteName $siteName, Closure $fn): void
+    public function __invoke(SiteName $siteName, callable $fn): void
     {
         RawPage::query()
             ->where('site_name', $siteName)

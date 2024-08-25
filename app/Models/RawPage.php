@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Enums\Encoding;
 use App\Enums\SiteName;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Symfony\Component\DomCrawler\Crawler;
@@ -28,8 +27,6 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 final class RawPage extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'site_name',
         'url',

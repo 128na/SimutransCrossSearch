@@ -47,7 +47,9 @@ final class SyncPak
     private function getPaks(): Collection
     {
         if (! $this->collection instanceof \Illuminate\Support\Collection) {
-            $this->collection = Pak::pluck('id', 'slug');
+            /** @var Collection<int|string,int> */
+            $collection = Pak::pluck('id', 'slug');
+            $this->collection = $collection;
         }
 
         return $this->collection;

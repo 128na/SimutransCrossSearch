@@ -7,7 +7,6 @@ namespace App\Models\Portal;
 use App\Enums\Portal\CategoryType;
 use App\Models\Scopes\Portal\OnlyPakCategory;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -28,8 +27,6 @@ use Illuminate\Database\Eloquent\Model;
 #[ScopedBy(OnlyPakCategory::class)]
 final class Category extends Model
 {
-    use HasFactory;
-
     protected $connection = 'portal';
 
     protected $fillable = [
