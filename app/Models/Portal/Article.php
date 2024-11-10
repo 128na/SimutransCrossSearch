@@ -30,9 +30,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Portal\Tag> $tags
  * @property-read int|null $tags_count
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Article query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Article query()
  *
  * @mixin \Eloquent
  */
@@ -61,7 +61,7 @@ final class Article extends Model
     ];
 
     /**
-     * @return BelongsToMany<Category>
+     * @return BelongsToMany<Category,$this>
      */
     public function categories(): BelongsToMany
     {
@@ -69,7 +69,7 @@ final class Article extends Model
     }
 
     /**
-     * @return BelongsToMany<Tag>
+     * @return BelongsToMany<Tag,$this>
      */
     public function tags(): BelongsToMany
     {

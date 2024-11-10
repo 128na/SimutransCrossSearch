@@ -17,9 +17,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Page> $pages
  * @property-read int|null $pages_count
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Pak newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Pak newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Pak query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pak newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pak newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Pak query()
  *
  * @mixin \Eloquent
  */
@@ -35,7 +35,7 @@ final class Pak extends Model
     ];
 
     /**
-     * @return HasMany<Page>
+     * @return HasMany<Page,$this>
      */
     public function pages(): HasMany
     {

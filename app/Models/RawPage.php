@@ -19,9 +19,9 @@ use Symfony\Component\DomCrawler\Crawler;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Page|null $page
  *
- * @method static \Illuminate\Database\Eloquent\Builder|RawPage newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RawPage newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RawPage query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage query()
  *
  * @mixin \Eloquent
  */
@@ -40,7 +40,7 @@ final class RawPage extends Model
     private ?Crawler $crawler = null;
 
     /**
-     * @return HasOne<Page>
+     * @return HasOne<Page,$this>
      */
     public function page(): HasOne
     {

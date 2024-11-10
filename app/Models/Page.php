@@ -25,9 +25,9 @@ use Spatie\Feed\FeedItem;
  * @property-read int|null $paks_count
  * @property-read \App\Models\RawPage $rawPage
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Page newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Page newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Page query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Page newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Page newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Page query()
  *
  * @mixin \Eloquent
  */
@@ -47,7 +47,7 @@ final class Page extends Model implements Feedable
     ];
 
     /**
-     * @return BelongsToMany<Pak>
+     * @return BelongsToMany<Pak,$this>
      */
     public function paks(): BelongsToMany
     {
@@ -55,7 +55,7 @@ final class Page extends Model implements Feedable
     }
 
     /**
-     * @return BelongsTo<RawPage,Page>
+     * @return BelongsTo<RawPage,$this>
      */
     public function rawPage(): BelongsTo
     {
