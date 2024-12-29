@@ -8,7 +8,7 @@
         "php": "^8.3",
         "laravel/framework": "^11.36.1",
         "laravel/tinker": "^2.10",
-        "livewire/livewire": "^3.5.17",
+        "livewire/livewire": "^3.5.18",
         "mariosimao/notion-sdk-php": "^1.14",
         "marvinlabs/laravel-discord-logger": "^1.4.2",
         "spatie/laravel-feed": "^4.4",
