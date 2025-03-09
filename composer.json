@@ -6,11 +6,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "laravel/framework": "^11.44.0",
+        "laravel/framework": "^11.44.1",
         "laravel/tinker": "^2.10.1",
-        "livewire/livewire": "^3.6.0",
+        "livewire/livewire": "^3.6.1",
         "mariosimao/notion-sdk-php": "^1.14",
-        "marvinlabs/laravel-discord-logger": "^1.4.2",
+        "marvinlabs/laravel-discord-logger": "^1.4.3",
         "spatie/laravel-feed": "^4.4.1",
         "symfony/browser-kit": "^7.2.4"
     },
