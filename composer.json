@@ -12,7 +12,7 @@
         "mariosimao/notion-sdk-php": "^1.14",
         "marvinlabs/laravel-discord-logger": "^1.4.3",
         "spatie/laravel-feed": "^4.4.2",
-        "symfony/browser-kit": "^7.3.0"
+        "symfony/browser-kit": "^7.3.2"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6.0",
