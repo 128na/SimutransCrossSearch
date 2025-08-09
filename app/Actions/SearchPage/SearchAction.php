@@ -7,18 +7,18 @@ namespace App\Actions\SearchPage;
 use App\Models\Page;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 final class SearchAction
 {
     /**
      * @param  array{keyword:string,paks:array<int,int|string>,sites:array<int,string>,page?:int|numeric-string|null}  $data
-     * @return LengthAwarePaginator<Page>
+     * @return LengthAwarePaginator<int,Page>
      */
     public function __invoke(array $data): LengthAwarePaginator
     {
         $query = Page::query()
-            ->withWhereHas('paks', fn (BelongsToMany|Builder $builder) => $builder->whereIn('slug', $data['paks']))
+            ->withWhereHas('paks', fn (Builder|Relation $builder) => $builder->whereIn('slug', $data['paks']))
             ->whereIn('site_name', $data['sites']);
 
         $this->addKeywordQuery($query, $data['keyword']);

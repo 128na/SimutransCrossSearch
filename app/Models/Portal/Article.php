@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $title タイトル
  * @property string $slug スラッグ
  * @property ArticlePostType $post_type 投稿形式
- * @property array $contents コンテンツ
+ * @property array<array-key, mixed> $contents コンテンツ
  * @property ArticleStatus $status 公開状態
  * @property int $pr PR記事
  * @property \Carbon\CarbonImmutable|null $published_at 投稿日時

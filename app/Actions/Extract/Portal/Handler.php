@@ -60,10 +60,6 @@ final readonly class Handler implements HandlerInterface
 
     private function needUpdate(Page $page, CarbonImmutable $lastModiefied): bool
     {
-        if (! $page->last_modified instanceof CarbonImmutable) {
-            return true;
-        }
-
         return $lastModiefied->greaterThan($page->last_modified);
     }
 
