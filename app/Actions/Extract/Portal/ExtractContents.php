@@ -40,9 +40,12 @@ final readonly class ExtractContents
         $fields[] = $article->tags->pluck('description')->implode("\n");
 
         if ($article->post_type === ArticlePostType::AddonPost) {
-            $fileInfo = ($this->findFileInfo)((int) $article->contents['file']);
-            if ($fileInfo instanceof \App\Models\Portal\FileInfo) {
-                $fields[] = $fileInfo->data ?? '';
+            $fileId = $article->contents['file'] ?? null;
+            if (is_string($fileId) && is_numeric($fileId)) {
+                $fileInfo = ($this->findFileInfo)(intval($fileId));
+                if ($fileInfo instanceof \App\Models\Portal\FileInfo) {
+                    $fields[] = $fileInfo->data ?? '';
+                }
             }
         }
 
@@ -69,7 +72,6 @@ final readonly class ExtractContents
             if ($category->slug === '128-japan') {
                 $result[] = PakSlug::Pak128Jp;
             }
-
         }
 
         return $result;

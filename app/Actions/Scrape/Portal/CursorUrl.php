@@ -12,7 +12,7 @@ final class CursorUrl
     private const string TOP_URL = 'https://simutrans-portal.128-bit.net';
 
     /**
-     * @return LazyCollection<int,string>
+     * @return LazyCollection<int,lowercase-string&non-falsy-string>
      */
     public function __invoke(): LazyCollection
     {
