@@ -9,7 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "laravel/framework": "^12.24.0",
+        "laravel/framework": "^12.25.0",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6.4",
         "mariosimao/notion-sdk-php": "^1.14",
@@ -24,7 +24,7 @@
         "laravel/pint": "^1.24.0",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": ">=8.8.2",
-        "phpunit/phpunit": "^11.5.33",
+        "phpunit/phpunit": "^11.5.34",
         "rector/rector": "^2.1.4",
         "spatie/laravel-ignition": "^2.9.1"
     },
