@@ -20,12 +20,12 @@
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6.0",
         "fakerphp/faker": "^1.24.1",
-        "larastan/larastan": "^3.6.1",
+        "larastan/larastan": "^3.7.1",
         "laravel/pint": "^1.24.0",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": ">=8.8.2",
-        "phpunit/phpunit": "^11.5.36",
-        "rector/rector": "^2.1.6",
+        "phpunit/phpunit": "^11.5.38",
+        "rector/rector": "^2.1.7",
         "spatie/laravel-ignition": "^2.9.1"
     },
     "autoload": {
