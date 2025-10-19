@@ -9,7 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "laravel/framework": "^12.33.0",
+        "laravel/framework": "^12.34.0",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6.4",
         "mariosimao/notion-sdk-php": "^1.15",
