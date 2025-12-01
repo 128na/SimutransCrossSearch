@@ -86,11 +86,13 @@ final readonly class SyncAction
                 )
                 ->addProperty(
                     self::PAGE_PROP_MAPPING['paks'],
-                    MultiSelect::fromOptions(...$page
-                        ->paks
-                        ->map(fn (Pak $pak) => __('misc.'.$pak->slug->value))
-                        ->map(fn (string $name) => $options->first(fn ($opt): bool => $name === $opt->name))
-                        ->filter(fn ($pak): bool => ! is_null($pak))
+                    MultiSelect::fromOptions(
+                        ...$page
+                            ->paks
+                            ->map(fn (Pak $pak): array|string => __('misc.'.$pak->slug->value))
+                            ->filter(fn (array|string $name): bool => is_string($name))
+                            ->map(fn (string $name) => $options->first(fn ($opt): bool => $name === $opt->name))
+                            ->filter(fn ($pak): bool => ! is_null($pak))
                     )
                 );
 

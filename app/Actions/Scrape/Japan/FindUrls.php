@@ -25,7 +25,7 @@ final readonly class FindUrls
     public function __invoke(): Collection
     {
         return $this->getTargetUrls()
-            ->filter(fn ($url): bool => $this->filter($url));
+            ->filter(fn (string $url): bool => $this->filter($url));
     }
 
     /**
@@ -38,7 +38,7 @@ final readonly class FindUrls
             ->filter('#body > ul li')
             ->each(fn (Crawler $crawler): ?string => $crawler->filter('a')->attr('href'));
 
-        return collect($urls);
+        return collect($urls)->filter(fn ($url): bool => is_string($url));
     }
 
     private function filter(string $url): bool
@@ -61,7 +61,7 @@ final readonly class FindUrls
 
         // 不要ページ
         return ! (str_contains($url, 'menubar')
-        || str_contains($url, 'header')
-        || str_contains($url, '%ca%f3%b9%f0'));
+            || str_contains($url, 'header')
+            || str_contains($url, '%ca%f3%b9%f0'));
     }
 }

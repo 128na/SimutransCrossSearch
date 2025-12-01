@@ -18,7 +18,7 @@ final class ConvertDiscord extends SimpleRecordConverter
     {
         try {
             $stacktrace = $this->getStacktrace($record);
-            if ($stacktrace !== null && $stacktrace !== '' && $stacktrace !== '0') {
+            if (! in_array($stacktrace, [null, '', '0'], true)) {
                 $this->makeErrorMessage($message, $record, $stacktrace);
             } else {
                 $this->makeInfoMesage($message, $record);

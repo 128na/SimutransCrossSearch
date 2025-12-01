@@ -24,7 +24,7 @@ final class PageResource extends JsonResource
         return [
             'title' => $this->resource->title,
             'site' => __('misc.'.$this->resource->site_name->value),
-            'paks' => $this->resource->paks->map(fn (Pak $pak) => __('misc.'.$pak->slug->value)),
+            'paks' => $this->resource->paks->map(fn (Pak $pak): array|string => __('misc.'.$pak->slug->value)),
             'url' => $this->resource->url,
             'last_modified' => $this->resource->last_modified->toIso8601String(),
         ];

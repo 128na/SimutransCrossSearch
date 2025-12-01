@@ -13,6 +13,7 @@ enum ArticlePostType: string
      * アドオン投稿
      */
     case AddonPost = 'addon-post';
+
     /**
      * アドオン紹介
      */

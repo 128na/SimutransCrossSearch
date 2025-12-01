@@ -25,8 +25,8 @@ final readonly class FindUrls
     public function __invoke(): Collection
     {
         return $this->getTargetUrls()
-            ->filter(fn ($url): bool => $this->filter($url))
-            ->map(fn ($url): string => $this->toFullUrl($url));
+            ->filter(fn (string $url): bool => $this->filter($url))
+            ->map(fn (string $url): string => $this->toFullUrl($url));
     }
 
     /**
@@ -39,7 +39,7 @@ final readonly class FindUrls
             ->filter('#content>ul li')
             ->each(fn (Crawler $crawler): ?string => $crawler->filter('a')->attr('href'));
 
-        return collect($urls);
+        return collect($urls)->filter(fn ($url): bool => is_string($url));
     }
 
     private function filter(string $url): bool
