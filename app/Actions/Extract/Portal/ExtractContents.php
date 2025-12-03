@@ -7,6 +7,7 @@ namespace App\Actions\Extract\Portal;
 use App\Enums\PakSlug;
 use App\Enums\Portal\ArticlePostType;
 use App\Models\Portal\Article;
+use App\Models\Portal\FileInfo;
 
 final readonly class ExtractContents
 {
@@ -43,7 +44,7 @@ final readonly class ExtractContents
             $fileId = $article->contents['file'] ?? null;
             if (is_numeric($fileId)) {
                 $fileInfo = ($this->findFileInfo)(intval($fileId));
-                if ($fileInfo instanceof \App\Models\Portal\FileInfo) {
+                if ($fileInfo instanceof FileInfo) {
                     $fields[] = $fileInfo->data ?? '';
                 }
             }
