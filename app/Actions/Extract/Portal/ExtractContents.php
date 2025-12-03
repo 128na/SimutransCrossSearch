@@ -41,7 +41,7 @@ final readonly class ExtractContents
 
         if ($article->post_type === ArticlePostType::AddonPost) {
             $fileId = $article->contents['file'] ?? null;
-            if (is_string($fileId) && is_numeric($fileId)) {
+            if (is_numeric($fileId)) {
                 $fileInfo = ($this->findFileInfo)(intval($fileId));
                 if ($fileInfo instanceof \App\Models\Portal\FileInfo) {
                     $fields[] = $fileInfo->data ?? '';
