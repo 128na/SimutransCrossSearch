@@ -53,6 +53,7 @@ final readonly class Handler implements HandlerInterface
                     }
                 } catch (\Throwable $th) {
                     $logger->error('failed', [$rawPage->url, $th]);
+                    $rawPage->delete();
                 }
             }
         });
