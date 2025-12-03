@@ -18,11 +18,9 @@ use Symfony\Component\DomCrawler\Crawler;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Page|null $page
- *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage query()
- *
  * @mixin \Eloquent
  */
 final class RawPage extends Model

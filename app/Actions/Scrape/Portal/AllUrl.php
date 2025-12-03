@@ -11,7 +11,7 @@ final class AllUrl
     private const string TOP_URL = 'https://simutrans-portal.128-bit.net';
 
     /**
-     * @return \Illuminate\Support\Collection<int,array<int,lowercase-string&non-falsy-string>>
+     * @return \Illuminate\Support\Collection<int,lowercase-string&non-falsy-string>
      */
     public function __invoke(): \Illuminate\Support\Collection
     {

@@ -24,11 +24,9 @@ use Spatie\Feed\FeedItem;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Pak> $paks
  * @property-read int|null $paks_count
  * @property-read \App\Models\RawPage $rawPage
- *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Page newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Page newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Page query()
- *
  * @mixin \Eloquent
  */
 final class Page extends Model implements Feedable

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Scrape\Portal;
 
 use App\Actions\Scrape\HandlerInterface;
-use App\Actions\Scrape\UpdateOrCreateRawPage;
+use App\Actions\Scrape\BulkUpdateOrCreateRawPage;
 use App\Enums\SiteName;
 use Illuminate\Support\Sleep;
 use Psr\Log\LoggerInterface;
@@ -14,7 +14,7 @@ final readonly class Handler implements HandlerInterface
 {
     public function __construct(
         private AllUrl $allUrl,
-        private UpdateOrCreateRawPage $updateOrCreateRawPage,
+        private BulkUpdateOrCreateRawPage $bulkUpdateOrCreateRawPage,
     ) {}
 
     #[\Override]
@@ -24,7 +24,8 @@ final readonly class Handler implements HandlerInterface
             $logger->info('Processing chunk', ['count' => count($urls)]);
 
             try {
-                ($this->updateOrCreateRawPage)(
+                /** @var \Illuminate\Support\Collection<int,string> $urls */
+                ($this->bulkUpdateOrCreateRawPage)(
                     $urls,
                     SiteName::Portal,
                     ''

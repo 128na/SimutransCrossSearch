@@ -10,24 +10,13 @@ use Illuminate\Support\Collection;
 
 final class UpdateOrCreateRawPage
 {
-    /**
-     * @param Collection<int,string> $urls
-     */
-    public function __invoke(Collection $urls, SiteName $siteName, string $html): void
+    public function __invoke(string $url, SiteName $siteName, string $html): RawPage
     {
-        $now = now();
-        $data = $urls->map(fn(string $url): array => [
+        return RawPage::updateOrCreate([
             'url' => $url,
-            'site_name' => $siteName->value,
+        ], [
+            'site_name' => $siteName,
             'html' => $html,
-            'updated_at' => $now,
-            'created_at' => $now,
-        ])->all();
-
-        RawPage::upsert(
-            $data,
-            ['url'],
-            ['site_name', 'html', 'updated_at']
-        );
+        ]);
     }
 }
