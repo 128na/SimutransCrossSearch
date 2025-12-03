@@ -13,25 +13,32 @@ use Psr\Log\LoggerInterface;
 final readonly class Handler implements HandlerInterface
 {
     public function __construct(
-        private CursorUrl $cursorUrl,
+        private AllUrl $allUrl,
         private UpdateOrCreateRawPage $updateOrCreateRawPage,
     ) {}
 
     #[\Override]
     public function __invoke(LoggerInterface $logger): void
     {
-        foreach (($this->cursorUrl)() as $url) {
-            try {
-                $logger->info('try', [$url]);
-                ($this->updateOrCreateRawPage)(
-                    $url,
-                    SiteName::Portal,
-                    ''
-                );
-                Sleep::for(100)->millisecond();
-            } catch (\Throwable $th) {
-                $logger->error('failed', [$url, $th]);
+        $urlChunks = ($this->allUrl)()->chunk(100);
+        foreach ($urlChunks as $urls) {
+            $logger->info('Processing chunk', ['count' => count($urls)]);
+
+            foreach ($urls as $url) {
+                try {
+                    $logger->info('try', [$url]);
+                    ($this->updateOrCreateRawPage)(
+                        $url,
+                        SiteName::Portal,
+                        ''
+                    );
+                    Sleep::for(100)->millisecond();
+                } catch (\Throwable $th) {
+                    $logger->error('failed', [$url, $th]);
+                }
             }
+
+            $logger->info('Chunk completed', ['count' => count($urls)]);
         }
     }
 }
