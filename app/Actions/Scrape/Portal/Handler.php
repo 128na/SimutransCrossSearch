@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Actions\Scrape\Portal;
 
-use App\Actions\Scrape\HandlerInterface;
 use App\Actions\Scrape\BulkUpdateOrCreateRawPage;
+use App\Actions\Scrape\HandlerInterface;
 use App\Enums\SiteName;
 use Illuminate\Support\Sleep;
 use Psr\Log\LoggerInterface;

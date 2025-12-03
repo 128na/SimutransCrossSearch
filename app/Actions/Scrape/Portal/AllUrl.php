@@ -17,6 +17,6 @@ final class AllUrl
     {
         return Article::select('id')
             ->get()
-            ->map(fn(Article $article): string => sprintf('%s/articles/%s', self::TOP_URL, $article->id));
+            ->map(fn (Article $article): string => sprintf('%s/articles/%s', self::TOP_URL, $article->id));
     }
 }

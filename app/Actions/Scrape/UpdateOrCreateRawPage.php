@@ -6,7 +6,6 @@ namespace App\Actions\Scrape;
 
 use App\Enums\SiteName;
 use App\Models\RawPage;
-use Illuminate\Support\Collection;
 
 final class UpdateOrCreateRawPage
 {

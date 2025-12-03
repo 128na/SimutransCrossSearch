@@ -16,9 +16,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $last_modified_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Tag query()
+ *
  * @mixin \Eloquent
  */
 final class Tag extends Model
