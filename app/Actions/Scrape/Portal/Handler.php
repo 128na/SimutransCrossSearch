@@ -20,25 +20,21 @@ final readonly class Handler implements HandlerInterface
     #[\Override]
     public function __invoke(LoggerInterface $logger): void
     {
-        $urlChunks = ($this->allUrl)()->chunk(100);
-        foreach ($urlChunks as $urls) {
+        foreach (($this->allUrl)()->chunk(100) as $urls) {
             $logger->info('Processing chunk', ['count' => count($urls)]);
 
-            foreach ($urls as $url) {
-                try {
-                    $logger->info('try', [$url]);
-                    ($this->updateOrCreateRawPage)(
-                        $url,
-                        SiteName::Portal,
-                        ''
-                    );
-                    Sleep::for(100)->millisecond();
-                } catch (\Throwable $th) {
-                    $logger->error('failed', [$url, $th]);
-                }
+            try {
+                ($this->updateOrCreateRawPage)(
+                    $urls,
+                    SiteName::Portal,
+                    ''
+                );
+                $logger->info('Chunk completed', ['count' => count($urls)]);
+            } catch (\Throwable $th) {
+                $logger->error('Chunk failed', ['count' => count($urls), 'error' => $th->getMessage()]);
             }
 
-            $logger->info('Chunk completed', ['count' => count($urls)]);
+            Sleep::for(100)->millisecond();
         }
     }
 }
