@@ -13,8 +13,6 @@
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property int $raw_page_id
  * @property SiteName $site_name
@@ -37,8 +35,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property string $name
  * @property PakSlug $slug
@@ -56,14 +52,12 @@ namespace App\Models{
 
 namespace App\Models\Portal{
 /**
- * 
- *
  * @property int $id
  * @property int $user_id
  * @property string $title タイトル
  * @property string $slug スラッグ
  * @property ArticlePostType $post_type 投稿形式
- * @property array $contents コンテンツ
+ * @property array<array-key, mixed> $contents コンテンツ
  * @property ArticleStatus $status 公開状態
  * @property int $pr PR記事
  * @property \Carbon\CarbonImmutable|null $published_at 投稿日時
@@ -85,8 +79,6 @@ namespace App\Models\Portal{
 
 namespace App\Models\Portal{
 /**
- * 
- *
  * @property int $id
  * @property CategoryType $type 分類
  * @property string $slug スラッグ
@@ -104,8 +96,6 @@ namespace App\Models\Portal{
 
 namespace App\Models\Portal{
 /**
- * 
- *
  * @property int $id
  * @property int $attachment_id
  * @property string $data
@@ -121,8 +111,6 @@ namespace App\Models\Portal{
 
 namespace App\Models\Portal{
 /**
- * 
- *
  * @property int $id
  * @property string $name タグ名
  * @property string|null $description 説明
@@ -142,8 +130,6 @@ namespace App\Models\Portal{
 
 namespace App\Models{
 /**
- * 
- *
  * @property int $id
  * @property SiteName $site_name
  * @property string $url

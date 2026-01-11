@@ -6,6 +6,7 @@ namespace App\Actions\Scrape;
 
 use App\Enums\SiteName;
 use App\Models\RawPage;
+use App\Support\HtmlCompression;
 use Illuminate\Support\Collection;
 
 final class BulkUpdateOrCreateRawPage
@@ -16,10 +17,12 @@ final class BulkUpdateOrCreateRawPage
     public function __invoke(Collection $urls, SiteName $siteName, string $html): void
     {
         $now = now();
-        $data = $urls->map(fn (string $url): array => [
+        // Ensure compression since Eloquent's upsert bypasses attribute casts.
+        $compressed = HtmlCompression::encode($html);
+        $data = $urls->map(fn(string $url): array => [
             'url' => $url,
             'site_name' => $siteName->value,
-            'html' => $html,
+            'html' => $compressed,
             'updated_at' => $now,
             'created_at' => $now,
         ])->all();

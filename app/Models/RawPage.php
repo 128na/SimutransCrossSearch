@@ -35,6 +35,7 @@ final class RawPage extends Model
 
     protected $casts = [
         'site_name' => SiteName::class,
+        'html' => \App\Casts\CompressedHtml::class,
     ];
 
     private ?Crawler $crawler = null;
