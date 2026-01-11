@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Casts;
 
+use App\Support\HtmlCompression;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
-use App\Support\HtmlCompression;
 
+/**
+ * @implements CastsAttributes<string, string>
+ */
 final class CompressedHtml implements CastsAttributes
 {
     /**
@@ -18,6 +21,7 @@ final class CompressedHtml implements CastsAttributes
         if (! is_string($value)) {
             return '';
         }
+
         return HtmlCompression::decode($value);
     }
 
@@ -27,6 +31,7 @@ final class CompressedHtml implements CastsAttributes
     public function set(Model $model, string $key, mixed $value, array $attributes): string
     {
         $input = is_string($value) ? $value : '';
+
         return HtmlCompression::encode($input);
     }
 }

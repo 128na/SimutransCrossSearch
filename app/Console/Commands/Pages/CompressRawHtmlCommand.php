@@ -37,34 +37,36 @@ final class CompressRawHtmlCommand extends Command
             RawPage::query()
                 ->select(['id', 'html'])
                 ->orderBy('id')
-                ->chunkById($chunk, function ($chunkRows) use (&$processed, &$skipped, $dryRun, $force) {
-                    foreach ($chunkRows as $rp) {
-                        $raw = $rp->getAttributes()['html'] ?? '';
+                ->chunkById($chunk, function ($chunkRows) use (&$processed, &$skipped, $dryRun, $force): void {
+                    foreach ($chunkRows as $chunkRow) {
+                        $raw = $chunkRow->getAttributes()['html'] ?? '';
                         // Skip already gzip data unless --force is specified
                         if (! $force && is_string($raw) && HtmlCompression::isGzip($raw)) {
                             $skipped++;
+
                             continue;
                         }
 
                         if ($dryRun) {
                             $processed++;
+
                             continue;
                         }
 
                         // Reassign to trigger cast compression
                         // For already compressed data with --force, decode first then re-encode
                         if ($force && is_string($raw) && HtmlCompression::isGzip($raw)) {
-                            $rp->html = HtmlCompression::decode($raw);
+                            $chunkRow->html = HtmlCompression::decode($raw);
                         } else {
-                            $rp->html = $rp->html;
                         }
-                        $rp->saveQuietly();
+
+                        $chunkRow->saveQuietly();
                         $processed++;
                     }
                 });
 
             $logger->info('Finish backfill: compress raw_pages.html', ['processed' => $processed, 'skipped' => $skipped, 'dry' => $dryRun, 'force' => $force]);
-            $this->info("processed={$processed} skipped={$skipped} dryRun=" . ($dryRun ? 'yes' : 'no') . ' force=' . ($force ? 'yes' : 'no'));
+            $this->info(sprintf('processed=%d skipped=%d dryRun=', $processed, $skipped).($dryRun ? 'yes' : 'no').' force='.($force ? 'yes' : 'no'));
 
             return self::SUCCESS;
         } catch (\Throwable $throwable) {

@@ -19,7 +19,7 @@ final class BulkUpdateOrCreateRawPage
         $now = now();
         // Ensure compression since Eloquent's upsert bypasses attribute casts.
         $compressed = HtmlCompression::encode($html);
-        $data = $urls->map(fn(string $url): array => [
+        $data = $urls->map(fn (string $url): array => [
             'url' => $url,
             'site_name' => $siteName->value,
             'html' => $compressed,

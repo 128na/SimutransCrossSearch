@@ -6,7 +6,7 @@ namespace App\Support;
 
 final class HtmlCompression
 {
-    private const GZIP_MAGIC = "\x1f\x8b";
+    private const string GZIP_MAGIC = "\x1f\x8b";
 
     public static function isGzip(string $data): bool
     {
@@ -28,6 +28,7 @@ final class HtmlCompression
         }
 
         $compressed = gzencode($plain, $level);
+
         return $compressed !== false ? $compressed : $plain;
     }
 
