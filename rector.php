@@ -24,7 +24,6 @@ return RectorConfig::configure()
         naming: true,
         instanceOf: true,
         earlyReturn: true,
-        strictBooleans: true,
     )
     ->withSkip([
         IssetOnPropertyObjectToPropertyExistsRector::class, // property_exists($model, 'hoge') return false
