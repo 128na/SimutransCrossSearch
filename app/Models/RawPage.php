@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\CompressedHtml;
 use App\Enums\Encoding;
 use App\Enums\SiteName;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -15,9 +17,9 @@ use Symfony\Component\DomCrawler\Crawler;
  * @property SiteName $site_name
  * @property string $url
  * @property string $html
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Page|null $page
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Page|null $page
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage newQuery()
@@ -35,7 +37,7 @@ final class RawPage extends Model
 
     protected $casts = [
         'site_name' => SiteName::class,
-        'html' => \App\Casts\CompressedHtml::class,
+        'html' => CompressedHtml::class,
     ];
 
     private ?Crawler $crawler = null;
@@ -50,7 +52,7 @@ final class RawPage extends Model
 
     public function getCrawler(): Crawler
     {
-        if (! $this->crawler instanceof \Symfony\Component\DomCrawler\Crawler) {
+        if (! $this->crawler instanceof Crawler) {
             $this->crawler = app(Crawler::class);
             $this->crawler->addHtmlContent($this->stripScriptElement($this->html), Encoding::UTF_8->value);
         }

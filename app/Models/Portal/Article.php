@@ -7,9 +7,12 @@ namespace App\Models\Portal;
 use App\Enums\Portal\ArticlePostType;
 use App\Enums\Portal\ArticleStatus;
 use App\Models\Scopes\Portal\OnlyPublishAddon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -20,14 +23,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property array<array-key, mixed> $contents コンテンツ
  * @property ArticleStatus $status 公開状態
  * @property int $pr PR記事
- * @property \Carbon\CarbonImmutable|null $published_at 投稿日時
- * @property \Carbon\CarbonImmutable|null $modified_at 更新日時
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property CarbonImmutable|null $published_at 投稿日時
+ * @property CarbonImmutable|null $modified_at 更新日時
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Portal\Category> $categories
+ * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Portal\Tag> $tags
+ * @property-read Collection<int, Tag> $tags
  * @property-read int|null $tags_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article newModelQuery()

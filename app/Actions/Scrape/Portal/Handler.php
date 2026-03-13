@@ -7,6 +7,7 @@ namespace App\Actions\Scrape\Portal;
 use App\Actions\Scrape\BulkUpdateOrCreateRawPage;
 use App\Actions\Scrape\HandlerInterface;
 use App\Enums\SiteName;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Sleep;
 use Psr\Log\LoggerInterface;
 
@@ -24,7 +25,7 @@ final readonly class Handler implements HandlerInterface
             $logger->info('Processing chunk', ['count' => count($urls)]);
 
             try {
-                /** @var \Illuminate\Support\Collection<int,string> $urls */
+                /** @var Collection<int,string> $urls */
                 ($this->bulkUpdateOrCreateRawPage)(
                     $urls,
                     SiteName::Portal,

@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SiteName;
+use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
 
@@ -18,12 +21,12 @@ use Spatie\Feed\FeedItem;
  * @property string $url
  * @property string $text
  * @property string $title
- * @property \Carbon\CarbonImmutable $last_modified 元記事の最終更新日時
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Pak> $paks
+ * @property CarbonImmutable $last_modified 元記事の最終更新日時
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Pak> $paks
  * @property-read int|null $paks_count
- * @property-read \App\Models\RawPage $rawPage
+ * @property-read RawPage $rawPage
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Page newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Page newQuery()

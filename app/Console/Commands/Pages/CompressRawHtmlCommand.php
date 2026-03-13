@@ -57,7 +57,6 @@ final class CompressRawHtmlCommand extends Command
                         // For already compressed data with --force, decode first then re-encode
                         if ($force && is_string($raw) && HtmlCompression::isGzip($raw)) {
                             $chunkRow->html = HtmlCompression::decode($raw);
-                        } else {
                         }
 
                         $chunkRow->saveQuietly();

@@ -8,6 +8,7 @@ use App\Enums\Portal\CategoryType;
 use App\Models\Scopes\Portal\OnlyPakCategory;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -15,8 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $slug スラッグ
  * @property int $need_admin 管理者専用カテゴリ
  * @property int $order 表示順
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category newQuery()

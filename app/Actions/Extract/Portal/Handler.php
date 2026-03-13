@@ -30,7 +30,7 @@ final readonly class Handler implements HandlerInterface
     {
         ($this->chunkRawPages)(SiteName::Portal, function (Collection $rawPages) use ($logger): void {
             /**
-             * @var \Illuminate\Support\Collection<int,\App\Models\RawPage> $rawPages
+             * @var Collection<int,RawPage> $rawPages
              */
             foreach ($rawPages as $rawPage) {
                 try {

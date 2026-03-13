@@ -8,6 +8,7 @@ use App\Models\Page;
 use App\Models\Pak;
 use Illuminate\Support\Collection;
 use Notion\Databases\Database;
+use Notion\Databases\Properties\SelectOption;
 use Notion\Notion;
 use Notion\Pages\Page as NotionPage;
 use Notion\Pages\PageParent;
@@ -109,13 +110,13 @@ final readonly class SyncAction
     private function getUrlProp(NotionPage $notionPage): ?string
     {
         $property = $notionPage->getProperty(self::PAGE_PROP_MAPPING['url']);
-        assert($property instanceof \Notion\Pages\Properties\Url);
+        assert($property instanceof Url);
 
         return $property->url;
     }
 
     /**
-     * @return Collection<int,\Notion\Databases\Properties\SelectOption>
+     * @return Collection<int,SelectOption>
      */
     private function getOptions(Database $database): Collection
     {

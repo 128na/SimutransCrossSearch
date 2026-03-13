@@ -10,6 +10,7 @@ use App\Actions\Extract\SyncPak;
 use App\Actions\Extract\UpdateOrCreatePage;
 use App\Enums\SiteName;
 use App\Models\Page;
+use App\Models\RawPage;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
@@ -29,7 +30,7 @@ final readonly class Handler implements HandlerInterface
     {
         ($this->chunkRawPages)(SiteName::Twitrans, function (Collection $rawPages) use ($logger): void {
             /**
-             * @var \Illuminate\Support\Collection<int,\App\Models\RawPage> $rawPages
+             * @var Collection<int,RawPage> $rawPages
              */
             foreach ($rawPages as $rawPage) {
                 try {

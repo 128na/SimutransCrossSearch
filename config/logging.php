@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use MarvinLabs\DiscordLogger\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
 
@@ -83,7 +84,7 @@ return [
 
         'discord' => [
             'driver' => 'custom',
-            'via' => MarvinLabs\DiscordLogger\Logger::class,
+            'via' => Logger::class,
             'level' => 'error',
             'url' => env('LOG_DISCORD_WEBHOOK_URL'),
         ],

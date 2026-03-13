@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Extract;
 
+use App\Enums\PakSlug;
 use App\Models\Page;
 use App\Models\Pak;
 use Illuminate\Support\Collection;
@@ -16,7 +17,7 @@ final class SyncPak
     private ?Collection $collection = null;
 
     /**
-     * @param  array<int,\App\Enums\PakSlug>  $paks
+     * @param  array<int,PakSlug>  $paks
      */
     public function __invoke(Page $page, array $paks): void
     {
@@ -25,7 +26,7 @@ final class SyncPak
     }
 
     /**
-     * @param  array<int,\App\Enums\PakSlug>  $paks
+     * @param  array<int,PakSlug>  $paks
      * @return array<int,int>
      */
     private function resolvePakIds(array $paks): array
@@ -46,7 +47,7 @@ final class SyncPak
      */
     private function getPaks(): Collection
     {
-        if (! $this->collection instanceof \Illuminate\Support\Collection) {
+        if (! $this->collection instanceof Collection) {
             /** @var Collection<int|string,int> */
             $collection = Pak::pluck('id', 'slug');
             $this->collection = $collection;
