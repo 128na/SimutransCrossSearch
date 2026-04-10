@@ -33,19 +33,22 @@ final readonly class ExtractContents
 
     private function extractText(Article $article): string
     {
+        /** @var array<string, mixed> $contents */
+        $contents = $article->contents ?? [];
+
         $fields = [];
-        $fields[] = $article->contents['description'] ?? '';
-        $fields[] = $article->contents['thanks'] ?? '';
-        $fields[] = $article->contents['license'] ?? '';
-        $fields[] = $article->tags->pluck('name')->implode("\n");
-        $fields[] = $article->tags->pluck('description')->implode("\n");
+        $fields[] = isset($contents['description']) && is_string($contents['description']) ? $contents['description'] : '';
+        $fields[] = isset($contents['thanks']) && is_string($contents['thanks']) ? $contents['thanks'] : '';
+        $fields[] = isset($contents['license']) && is_string($contents['license']) ? $contents['license'] : '';
+        $fields[] = (string) $article->tags->pluck('name')->implode("\n");
+        $fields[] = (string) $article->tags->pluck('description')->implode("\n");
 
         if ($article->post_type === ArticlePostType::AddonPost) {
-            $fileId = $article->contents['file'] ?? null;
+            $fileId = $contents['file'] ?? null;
             if (is_numeric($fileId)) {
                 $fileInfo = ($this->findFileInfo)(intval($fileId));
                 if ($fileInfo instanceof FileInfo) {
-                    $fields[] = $fileInfo->data ?? '';
+                    $fields[] = is_string($fileInfo->data ?? null) ? $fileInfo->data : '';
                 }
             }
         }
