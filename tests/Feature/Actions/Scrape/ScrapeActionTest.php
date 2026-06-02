@@ -25,9 +25,9 @@ final class ScrapeActionTest extends TestCase
         $scrapeAction(null, new NullLogger);
 
         // Verify JapanHandler was invoked by checking its specific HTTP request
-        Http::assertSent(fn ($request): bool => str_contains($request->url(), 'japanese.simutrans.com'));
+        Http::assertSent(fn ($request): bool => str_contains((string) $request->url(), 'japanese.simutrans.com'));
         // Verify TwitransHandler was invoked
-        Http::assertSent(fn ($request): bool => str_contains($request->url(), 'wikiwiki.jp/twitrans'));
+        Http::assertSent(fn ($request): bool => str_contains((string) $request->url(), 'wikiwiki.jp/twitrans'));
     }
 
     public function test_invokes_specific_handler_when_site_provided(): void
@@ -39,7 +39,7 @@ final class ScrapeActionTest extends TestCase
         $scrapeAction = app(ScrapeAction::class);
         $scrapeAction(SiteName::Japan, new NullLogger);
 
-        Http::assertSent(fn ($request): bool => str_contains($request->url(), 'japanese.simutrans.com'));
-        Http::assertNotSent(fn ($request): bool => str_contains($request->url(), 'wikiwiki.jp/twitrans'));
+        Http::assertSent(fn ($request): bool => str_contains((string) $request->url(), 'japanese.simutrans.com'));
+        Http::assertNotSent(fn ($request): bool => str_contains((string) $request->url(), 'wikiwiki.jp/twitrans'));
     }
 }
