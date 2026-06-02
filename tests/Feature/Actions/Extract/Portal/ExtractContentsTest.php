@@ -40,7 +40,7 @@ final class ExtractContentsTest extends TestCase
 
     public function test_extracts_title_text_and_pak(): void
     {
-        $fileInfo = new FileInfo();
+        $fileInfo = new FileInfo;
         $fileInfo->attachment_id = 123;
         $fileInfo->data = 'file content info';
         $fileInfo->save();
