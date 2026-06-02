@@ -12,26 +12,29 @@ use App\Models\Portal\Article;
 use App\Models\Portal\Category;
 use App\Models\Portal\FileInfo;
 use App\Models\Portal\Tag;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Tests\Feature\TestCase;
 
 final class ExtractContentsTest extends TestCase
 {
-    use \Illuminate\Foundation\Testing\RefreshDatabase;
+    use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         config(['database.connections.portal' => [
             'driver' => 'sqlite',
             'database' => ':memory:',
             'prefix' => '',
         ]]);
-        \Illuminate\Support\Facades\Schema::connection('portal')->create('file_infos', function (\Illuminate\Database\Schema\Blueprint $table) {
-            $table->id();
-            $table->integer('attachment_id');
-            $table->text('data')->nullable();
-            $table->timestamps();
+        Schema::connection('portal')->create('file_infos', function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->integer('attachment_id');
+            $blueprint->text('data')->nullable();
+            $blueprint->timestamps();
         });
     }
 
@@ -50,7 +53,7 @@ final class ExtractContentsTest extends TestCase
                 'thanks' => 'Thanks to the author.',
                 'license' => 'MIT',
                 'file' => 123,
-            ]
+            ],
         ]);
 
         $tag = new Tag(['name' => 'Train', 'description' => 'A train addon']);
@@ -59,8 +62,8 @@ final class ExtractContentsTest extends TestCase
         $category = new Category(['slug' => '128-japan']);
         $article->setRelation('categories', collect([$category]));
 
-        $action = new ExtractContents(new FindFileInfo());
-        $result = $action($article);
+        $extractContents = new ExtractContents(new FindFileInfo);
+        $result = $extractContents($article);
 
         $this->assertSame('Portal Addon Title', $result['title']);
         $this->assertStringContainsString('A nice addon.', $result['text']);

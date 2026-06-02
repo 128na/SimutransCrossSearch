@@ -17,8 +17,8 @@ final class ExtractLastModifiedTest extends TestCase
             'html' => '<html><body><div id="lastmodified">Last-modified: 2023-11-20 10:00:00 (月)</div></body></html>',
         ]);
 
-        $action = new ExtractLastModified;
-        $date = $action($rawPage);
+        $extractLastModified = new ExtractLastModified;
+        $date = $extractLastModified($rawPage);
 
         $this->assertInstanceOf(CarbonImmutable::class, $date);
         $this->assertSame('2023-11-20 10:00:00', $date->format('Y-m-d H:i:s'));

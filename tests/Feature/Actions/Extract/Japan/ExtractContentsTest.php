@@ -18,8 +18,8 @@ final class ExtractContentsTest extends TestCase
             'html' => '<html><head><title>Awesome Addon - Simutrans日本語化･解説</title></head><body><div id="body">This is an awesome addon description.</div></body></html>',
         ]);
 
-        $action = new ExtractContents;
-        $result = $action($rawPage);
+        $extractContents = new ExtractContents;
+        $result = $extractContents($rawPage);
 
         $this->assertSame('Awesome Addon', $result['title']);
         $this->assertSame('This is an awesome addon description.', $result['text']);

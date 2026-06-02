@@ -18,44 +18,38 @@ final class ExtractActionTest extends TestCase
     {
         $state = (object) ['japan' => false, 'portal' => false, 'twitrans' => false];
 
-        $this->app->bind(Handler::class, function () use ($state) {
-            return new class($state) implements HandlerInterface
-            {
-                public function __construct(private object $state) {}
+        $this->app->bind(Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        {
+            public function __construct(private object $state) {}
 
-                public function __invoke(LoggerInterface $logger): void
-                {
-                    $this->state->japan = true;
-                }
-            };
+            public function __invoke(LoggerInterface $logger): void
+            {
+                $this->state->japan = true;
+            }
         });
 
-        $this->app->bind(\App\Actions\Extract\Portal\Handler::class, function () use ($state) {
-            return new class($state) implements HandlerInterface
-            {
-                public function __construct(private object $state) {}
+        $this->app->bind(\App\Actions\Extract\Portal\Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        {
+            public function __construct(private object $state) {}
 
-                public function __invoke(LoggerInterface $logger): void
-                {
-                    $this->state->portal = true;
-                }
-            };
+            public function __invoke(LoggerInterface $logger): void
+            {
+                $this->state->portal = true;
+            }
         });
 
-        $this->app->bind(\App\Actions\Extract\Twitrans\Handler::class, function () use ($state) {
-            return new class($state) implements HandlerInterface
-            {
-                public function __construct(private object $state) {}
+        $this->app->bind(\App\Actions\Extract\Twitrans\Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        {
+            public function __construct(private object $state) {}
 
-                public function __invoke(LoggerInterface $logger): void
-                {
-                    $this->state->twitrans = true;
-                }
-            };
+            public function __invoke(LoggerInterface $logger): void
+            {
+                $this->state->twitrans = true;
+            }
         });
 
-        $action = app(ExtractAction::class);
-        $action(null, new NullLogger);
+        $extractAction = app(ExtractAction::class);
+        $extractAction(null, new NullLogger);
 
         $this->assertTrue($state->japan);
         $this->assertTrue($state->portal);
@@ -66,44 +60,38 @@ final class ExtractActionTest extends TestCase
     {
         $state = (object) ['japan' => false, 'portal' => false, 'twitrans' => false];
 
-        $this->app->bind(Handler::class, function () use ($state) {
-            return new class($state) implements HandlerInterface
-            {
-                public function __construct(private object $state) {}
+        $this->app->bind(Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        {
+            public function __construct(private object $state) {}
 
-                public function __invoke(LoggerInterface $logger): void
-                {
-                    $this->state->japan = true;
-                }
-            };
+            public function __invoke(LoggerInterface $logger): void
+            {
+                $this->state->japan = true;
+            }
         });
 
-        $this->app->bind(\App\Actions\Extract\Portal\Handler::class, function () use ($state) {
-            return new class($state) implements HandlerInterface
-            {
-                public function __construct(private object $state) {}
+        $this->app->bind(\App\Actions\Extract\Portal\Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        {
+            public function __construct(private object $state) {}
 
-                public function __invoke(LoggerInterface $logger): void
-                {
-                    $this->state->portal = true;
-                }
-            };
+            public function __invoke(LoggerInterface $logger): void
+            {
+                $this->state->portal = true;
+            }
         });
 
-        $this->app->bind(\App\Actions\Extract\Twitrans\Handler::class, function () use ($state) {
-            return new class($state) implements HandlerInterface
-            {
-                public function __construct(private object $state) {}
+        $this->app->bind(\App\Actions\Extract\Twitrans\Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        {
+            public function __construct(private object $state) {}
 
-                public function __invoke(LoggerInterface $logger): void
-                {
-                    $this->state->twitrans = true;
-                }
-            };
+            public function __invoke(LoggerInterface $logger): void
+            {
+                $this->state->twitrans = true;
+            }
         });
 
-        $action = app(ExtractAction::class);
-        $action(SiteName::Japan, new NullLogger);
+        $extractAction = app(ExtractAction::class);
+        $extractAction(SiteName::Japan, new NullLogger);
 
         $this->assertTrue($state->japan);
         $this->assertFalse($state->portal);

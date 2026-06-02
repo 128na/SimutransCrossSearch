@@ -18,8 +18,8 @@ final class ExtractContentsTest extends TestCase
             'html' => '<html><head><title>Twitrans Addon - Simutrans的な実験室 Wiki*</title></head><body><div id="content">This is a twitrans addon description.</div></body></html>',
         ]);
 
-        $action = new ExtractContents;
-        $result = $action($rawPage);
+        $extractContents = new ExtractContents;
+        $result = $extractContents($rawPage);
 
         $this->assertSame('Twitrans Addon', $result['title']);
         $this->assertSame('This is a twitrans addon description.', $result['text']);
