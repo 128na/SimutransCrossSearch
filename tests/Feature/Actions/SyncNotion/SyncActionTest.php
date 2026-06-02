@@ -86,9 +86,9 @@ final class SyncActionTest extends TestCase
 
         $mock->shouldReceive('pages->delete')->once()->with($notionPageToDelete);
 
-        $mock->shouldReceive('pages->update')->once()->with(Mockery::on(fn (NotionPage $page) => $page->getProperty('URL')->url === 'https://example.com/update'));
+        $mock->shouldReceive('pages->update')->once()->with(Mockery::on(fn (NotionPage $notionPage): bool => $notionPage->getProperty('URL')->url === 'https://example.com/update'));
 
-        $mock->shouldReceive('pages->create')->once()->with(Mockery::on(fn (NotionPage $page) => $page->getProperty('URL')->url === 'https://example.com/new'));
+        $mock->shouldReceive('pages->create')->once()->with(Mockery::on(fn (NotionPage $notionPage): bool => $notionPage->getProperty('URL')->url === 'https://example.com/new'));
 
         $syncAction = new SyncAction($mock);
         $syncAction('test_database_id', 10);
