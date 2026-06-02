@@ -21,13 +21,13 @@ final class ScrapeActionTest extends TestCase
             '*' => Http::response('<html><body></body></html>', 200),
         ]);
 
-        $action = app(ScrapeAction::class);
-        $action(null, new NullLogger);
+        $scrapeAction = app(ScrapeAction::class);
+        $scrapeAction(null, new NullLogger);
 
         // Verify JapanHandler was invoked by checking its specific HTTP request
-        Http::assertSent(fn ($request) => $request->url() === 'https://japanese.simutrans.com?cmd=list');
+        Http::assertSent(fn ($request): bool => $request->url() === 'https://japanese.simutrans.com?cmd=list');
         // Verify TwitransHandler was invoked
-        Http::assertSent(fn ($request) => $request->url() === 'https://wikiwiki.jp/twitrans?cmd=list');
+        Http::assertSent(fn ($request): bool => $request->url() === 'https://wikiwiki.jp/twitrans?cmd=list');
     }
 
     public function test_invokes_specific_handler_when_site_provided(): void
@@ -36,10 +36,10 @@ final class ScrapeActionTest extends TestCase
             '*' => Http::response('<html><body></body></html>', 200),
         ]);
 
-        $action = app(ScrapeAction::class);
-        $action(SiteName::Japan, new NullLogger);
+        $scrapeAction = app(ScrapeAction::class);
+        $scrapeAction(SiteName::Japan, new NullLogger);
 
-        Http::assertSent(fn ($request) => $request->url() === 'https://japanese.simutrans.com?cmd=list');
-        Http::assertNotSent(fn ($request) => $request->url() === 'https://wikiwiki.jp/twitrans?cmd=list');
+        Http::assertSent(fn ($request): bool => $request->url() === 'https://japanese.simutrans.com?cmd=list');
+        Http::assertNotSent(fn ($request): bool => $request->url() === 'https://wikiwiki.jp/twitrans?cmd=list');
     }
 }
