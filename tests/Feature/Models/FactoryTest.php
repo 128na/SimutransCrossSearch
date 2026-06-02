@@ -19,7 +19,8 @@ final class FactoryTest extends TestCase
         $pak = Pak::factory()->create();
         $this->assertDatabaseHas('paks', [
             'id' => $pak->id,
-            'name' => 'Pak128',
+            'name' => $pak->name,
+            'slug' => $pak->slug->value,
         ]);
     }
 
@@ -28,7 +29,8 @@ final class FactoryTest extends TestCase
         $rawPage = RawPage::factory()->create();
         $this->assertDatabaseHas('raw_pages', [
             'id' => $rawPage->id,
-            'site_name' => 'japan',
+            'site_name' => $rawPage->site_name->value,
+            'url' => $rawPage->url,
         ]);
     }
 
@@ -37,7 +39,9 @@ final class FactoryTest extends TestCase
         $page = Page::factory()->create();
         $this->assertDatabaseHas('pages', [
             'id' => $page->id,
-            'site_name' => 'japan',
+            'site_name' => $page->site_name->value,
+            'url' => $page->url,
+            'title' => $page->title,
         ]);
     }
 }

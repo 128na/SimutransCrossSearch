@@ -18,8 +18,8 @@ final class PakFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Pak128',
-            'slug' => PakSlug::Pak128,
+            'name' => $this->faker->word(),
+            'slug' => $this->faker->randomElement(PakSlug::cases()),
         ];
     }
 }

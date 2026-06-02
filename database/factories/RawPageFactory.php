@@ -18,7 +18,7 @@ final class RawPageFactory extends Factory
     public function definition(): array
     {
         return [
-            'site_name' => SiteName::Japan,
+            'site_name' => $this->faker->randomElement(SiteName::cases()),
             'url' => $this->faker->url(),
             'html' => '<html><body>Example HTML</body></html>',
         ];
