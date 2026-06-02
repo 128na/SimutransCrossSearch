@@ -12,9 +12,6 @@ use App\Models\Pak;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Notion\Databases\Database;
-use Notion\Databases\Properties\MultiSelect;
-use Notion\Databases\Properties\PropertyCollection;
-use Notion\Databases\Properties\SelectOption;
 use Notion\Notion;
 use Notion\Pages\Page as NotionPage;
 use Notion\Pages\PageParent;
@@ -46,16 +43,36 @@ final class SyncActionTest extends TestCase
             'last_modified' => now(),
         ]);
 
-        $mockDatabase = Mockery::mock(Database::class);
-        $this->setReadonlyProperty($mockDatabase, 'id', 'test_database_id');
-
-        $multiSelect = MultiSelect::create('パックセット', [
-            SelectOption::fromName('128'),
+        $database = Database::fromArray([
+            'id' => 'test_database_id',
+            'created_time' => '2023-01-01T00:00:00.000Z',
+            'last_edited_time' => '2023-01-01T00:00:00.000Z',
+            'title' => [],
+            'description' => [],
+            'icon' => null,
+            'cover' => null,
+            'properties' => [
+                'Title' => [
+                    'id' => 'title',
+                    'type' => 'title',
+                    'name' => 'Title',
+                    'title' => [],
+                ],
+                'パックセット' => [
+                    'id' => 'prop_id',
+                    'type' => 'multi_select',
+                    'name' => 'パックセット',
+                    'multi_select' => [
+                        'options' => [
+                            ['name' => '128', 'id' => 'opt_128', 'color' => 'default'],
+                        ],
+                    ],
+                ],
+            ],
+            'parent' => ['type' => 'workspace', 'workspace' => true],
+            'url' => 'https://notion.so',
+            'is_inline' => false,
         ]);
-        $propertyCollection = (new \ReflectionClass(PropertyCollection::class))->newInstanceWithoutConstructor();
-        $this->setReadonlyProperty($propertyCollection, 'properties', ['パックセット' => $multiSelect]);
-
-        $mockDatabase->shouldReceive('properties')->andReturn($propertyCollection);
 
         $notionPageToUpdate = NotionPage::create(PageParent::database('test_database_id'));
         $notionPageToUpdate = $notionPageToUpdate->addProperty('URL', Url::create('https://example.com/update'));
@@ -64,8 +81,8 @@ final class SyncActionTest extends TestCase
         $notionPageToDelete = $notionPageToDelete->addProperty('URL', Url::create('https://example.com/delete'));
 
         $notion = Mockery::mock(Notion::class);
-        $notion->shouldReceive('databases->find')->with('test_database_id')->andReturn($mockDatabase);
-        $notion->shouldReceive('databases->queryAllPages')->with($mockDatabase)->andReturn([$notionPageToUpdate, $notionPageToDelete]);
+        $notion->shouldReceive('databases->find')->with('test_database_id')->andReturn($database);
+        $notion->shouldReceive('databases->queryAllPages')->with($database)->andReturn([$notionPageToUpdate, $notionPageToDelete]);
 
         $notion->shouldReceive('pages->delete')->once()->with($notionPageToDelete);
 
@@ -79,12 +96,5 @@ final class SyncActionTest extends TestCase
 
         $action = new SyncAction($notion);
         $action('test_database_id', 10);
-    }
-
-    private function setReadonlyProperty(object $object, string $property, mixed $value): void
-    {
-        $reflection = new \ReflectionProperty($object, $property);
-        $reflection->setAccessible(true);
-        $reflection->setValue($object, $value);
     }
 }

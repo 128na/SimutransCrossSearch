@@ -36,6 +36,10 @@ final class SearchAction
         $builder->where(function (Builder $builder) use ($keyword): void {
             foreach (explode(' ', $keyword) as $word) {
                 $word = trim($word);
+                if ($word === '') {
+                    continue;
+                }
+
                 if (str_starts_with($word, '-')) {
                     $word = trim(substr($word, 1));
                     if ($word !== '' && $word !== '0') {
