@@ -22,7 +22,7 @@ final class ScrapeActionTest extends TestCase
         ]);
 
         $action = app(ScrapeAction::class);
-        $action(null, new NullLogger());
+        $action(null, new NullLogger);
 
         // Verify JapanHandler was invoked by checking its specific HTTP request
         Http::assertSent(fn ($request) => $request->url() === 'https://japanese.simutrans.com?cmd=list');
@@ -37,7 +37,7 @@ final class ScrapeActionTest extends TestCase
         ]);
 
         $action = app(ScrapeAction::class);
-        $action(SiteName::Japan, new NullLogger());
+        $action(SiteName::Japan, new NullLogger);
 
         Http::assertSent(fn ($request) => $request->url() === 'https://japanese.simutrans.com?cmd=list');
         Http::assertNotSent(fn ($request) => $request->url() === 'https://wikiwiki.jp/twitrans?cmd=list');
