@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\PakSlug;
+use Database\Factories\PakFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +29,7 @@ use Illuminate\Support\Carbon;
  */
 final class Pak extends Model
 {
-    /** @use HasFactory<\Database\Factories\PakFactory> */
+    /** @use HasFactory<PakFactory> */
     use HasFactory;
 
     protected $fillable = [
