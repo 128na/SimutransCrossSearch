@@ -12,13 +12,36 @@ use App\Models\Portal\Article;
 use App\Models\Portal\Category;
 use App\Models\Portal\FileInfo;
 use App\Models\Portal\Tag;
-use Mockery;
 use Tests\Feature\TestCase;
 
 final class ExtractContentsTest extends TestCase
 {
+    use \Illuminate\Foundation\Testing\RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        
+        config(['database.connections.portal' => [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ]]);
+        \Illuminate\Support\Facades\Schema::connection('portal')->create('file_infos', function (\Illuminate\Database\Schema\Blueprint $table) {
+            $table->id();
+            $table->integer('attachment_id');
+            $table->text('data')->nullable();
+            $table->timestamps();
+        });
+    }
+
     public function test_extracts_title_text_and_pak(): void
     {
+        FileInfo::create([
+            'attachment_id' => 123,
+            'data' => 'file content info',
+        ]);
+
         $article = new Article([
             'title' => 'Portal Addon Title',
             'post_type' => ArticlePostType::AddonPost,
@@ -27,7 +50,7 @@ final class ExtractContentsTest extends TestCase
                 'thanks' => 'Thanks to the author.',
                 'license' => 'MIT',
                 'file' => 123,
-            ],
+            ]
         ]);
 
         $tag = new Tag(['name' => 'Train', 'description' => 'A train addon']);
@@ -36,12 +59,7 @@ final class ExtractContentsTest extends TestCase
         $category = new Category(['slug' => '128-japan']);
         $article->setRelation('categories', collect([$category]));
 
-        $mockFindFileInfo = Mockery::mock(FindFileInfo::class);
-        $mockFindFileInfo->shouldReceive('__invoke')
-            ->with(123)
-            ->andReturn(new FileInfo(['data' => 'file content info']));
-
-        $action = new ExtractContents($mockFindFileInfo);
+        $action = new ExtractContents(new FindFileInfo());
         $result = $action($article);
 
         $this->assertSame('Portal Addon Title', $result['title']);
