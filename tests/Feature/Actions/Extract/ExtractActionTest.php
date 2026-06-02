@@ -18,7 +18,7 @@ final class ExtractActionTest extends TestCase
     {
         $state = (object) ['japan' => false, 'portal' => false, 'twitrans' => false];
 
-        $this->app->bind(Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        $this->app->bind(Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
         {
             public function __construct(private object $state) {}
 
@@ -28,7 +28,7 @@ final class ExtractActionTest extends TestCase
             }
         });
 
-        $this->app->bind(\App\Actions\Extract\Portal\Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        $this->app->bind(\App\Actions\Extract\Portal\Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
         {
             public function __construct(private object $state) {}
 
@@ -38,7 +38,7 @@ final class ExtractActionTest extends TestCase
             }
         });
 
-        $this->app->bind(\App\Actions\Extract\Twitrans\Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        $this->app->bind(\App\Actions\Extract\Twitrans\Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
         {
             public function __construct(private object $state) {}
 
@@ -60,7 +60,7 @@ final class ExtractActionTest extends TestCase
     {
         $state = (object) ['japan' => false, 'portal' => false, 'twitrans' => false];
 
-        $this->app->bind(Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        $this->app->bind(Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
         {
             public function __construct(private object $state) {}
 
@@ -70,7 +70,7 @@ final class ExtractActionTest extends TestCase
             }
         });
 
-        $this->app->bind(\App\Actions\Extract\Portal\Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        $this->app->bind(\App\Actions\Extract\Portal\Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
         {
             public function __construct(private object $state) {}
 
@@ -80,7 +80,7 @@ final class ExtractActionTest extends TestCase
             }
         });
 
-        $this->app->bind(\App\Actions\Extract\Twitrans\Handler::class, fn () => new readonly class($state) implements HandlerInterface
+        $this->app->bind(\App\Actions\Extract\Twitrans\Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
         {
             public function __construct(private object $state) {}
 
