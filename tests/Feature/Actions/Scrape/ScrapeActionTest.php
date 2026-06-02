@@ -25,11 +25,9 @@ final class ScrapeActionTest extends TestCase
         ]);
 
         // Mock PortalHandler to avoid database queries in CI where the portal connection is unmigrated
-        $this->app->bind(Handler::class, function () {
-            return new class implements HandlerInterface
-            {
-                public function __invoke(LoggerInterface $logger): void {}
-            };
+        $this->app->bind(Handler::class, fn () => new class implements HandlerInterface
+        {
+            public function __invoke(LoggerInterface $logger): void {}
         });
 
         $scrapeAction = app(ScrapeAction::class);
