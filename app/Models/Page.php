@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\SiteName;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -36,6 +37,9 @@ use Spatie\Feed\FeedItem;
  */
 final class Page extends Model implements Feedable
 {
+    /** @use HasFactory<\Database\Factories\PageFactory> */
+    use HasFactory;
+
     protected $fillable = [
         'site_name',
         'url',
