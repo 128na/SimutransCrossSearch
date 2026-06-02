@@ -36,15 +36,23 @@ final class SearchAction
         $builder->where(function (Builder $builder) use ($keyword): void {
             foreach (explode(' ', $keyword) as $word) {
                 $word = trim($word);
+                if ($word === '') {
+                    continue;
+                }
+
                 if (str_starts_with($word, '-')) {
                     $word = trim(substr($word, 1));
                     if ($word !== '' && $word !== '0') {
-                        $builder->where('title', 'not like', sprintf('%%%s%%', $word));
-                        $builder->orWhere('text', 'not like', sprintf('%%%s%%', $word));
+                        $builder->where(function (Builder $builder) use ($word): void {
+                            $builder->where('title', 'not like', sprintf('%%%s%%', $word));
+                            $builder->where('text', 'not like', sprintf('%%%s%%', $word));
+                        });
                     }
                 } else {
-                    $builder->where('title', 'like', sprintf('%%%s%%', $word));
-                    $builder->orWhere('text', 'like', sprintf('%%%s%%', $word));
+                    $builder->where(function (Builder $builder) use ($word): void {
+                        $builder->where('title', 'like', sprintf('%%%s%%', $word));
+                        $builder->orWhere('text', 'like', sprintf('%%%s%%', $word));
+                    });
                 }
             }
         });
