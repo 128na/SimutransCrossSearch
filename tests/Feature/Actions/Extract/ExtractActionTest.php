@@ -15,9 +15,9 @@ final class ExtractActionTest extends TestCase
 {
     public function test_invokes_handlers_for_all_sites_when_null_provided(): void
     {
-        $japanHandler = \Mockery::mock(HandlerInterface::class);
-        $japanHandler->shouldReceive('__invoke')->once();
-        $this->app->instance(Handler::class, $japanHandler);
+        $mock = \Mockery::mock(HandlerInterface::class);
+        $mock->shouldReceive('__invoke')->once();
+        $this->app->instance(Handler::class, $mock);
 
         $portalHandler = \Mockery::mock(HandlerInterface::class);
         $portalHandler->shouldReceive('__invoke')->once();
@@ -27,15 +27,15 @@ final class ExtractActionTest extends TestCase
         $twitransHandler->shouldReceive('__invoke')->once();
         $this->app->instance(\App\Actions\Extract\Twitrans\Handler::class, $twitransHandler);
 
-        $action = app(ExtractAction::class);
-        $action(null, new NullLogger);
+        $extractAction = app(ExtractAction::class);
+        $extractAction(null, new NullLogger);
     }
 
     public function test_invokes_specific_handler_when_site_provided(): void
     {
-        $japanHandler = \Mockery::mock(HandlerInterface::class);
-        $japanHandler->shouldReceive('__invoke')->once();
-        $this->app->instance(Handler::class, $japanHandler);
+        $mock = \Mockery::mock(HandlerInterface::class);
+        $mock->shouldReceive('__invoke')->once();
+        $this->app->instance(Handler::class, $mock);
 
         $portalHandler = \Mockery::mock(HandlerInterface::class);
         $portalHandler->shouldReceive('__invoke')->never();
@@ -45,7 +45,7 @@ final class ExtractActionTest extends TestCase
         $twitransHandler->shouldReceive('__invoke')->never();
         $this->app->instance(\App\Actions\Extract\Twitrans\Handler::class, $twitransHandler);
 
-        $action = app(ExtractAction::class);
-        $action(SiteName::Japan, new NullLogger);
+        $extractAction = app(ExtractAction::class);
+        $extractAction(SiteName::Japan, new NullLogger);
     }
 }
