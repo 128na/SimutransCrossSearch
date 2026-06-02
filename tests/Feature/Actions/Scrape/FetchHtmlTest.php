@@ -22,13 +22,13 @@ final class FetchHtmlTest extends TestCase
             $url => Http::response($htmlContent, 200),
         ]);
 
-        $action = new FetchHtml(
+        $fetchHtml = new FetchHtml(
             retryTimes: 1,
             sleepMilliseconds: 10,
             useCache: false
         );
 
-        $crawler = $action($url, Encoding::UTF_8);
+        $crawler = $fetchHtml($url, Encoding::UTF_8);
 
         $this->assertInstanceOf(Crawler::class, $crawler);
         $this->assertStringContainsString('Test Content', $crawler->html());
@@ -45,13 +45,13 @@ final class FetchHtmlTest extends TestCase
 
         Http::fake();
 
-        $action = new FetchHtml(
+        $fetchHtml = new FetchHtml(
             retryTimes: 1,
             sleepMilliseconds: 10,
             useCache: true
         );
 
-        $crawler = $action($url, Encoding::UTF_8);
+        $crawler = $fetchHtml($url, Encoding::UTF_8);
 
         $this->assertInstanceOf(Crawler::class, $crawler);
         $this->assertStringContainsString('Cached Content', $crawler->html());
@@ -69,13 +69,13 @@ final class FetchHtmlTest extends TestCase
             $url => Http::response($eucJpHtml, 200),
         ]);
 
-        $action = new FetchHtml(
+        $fetchHtml = new FetchHtml(
             retryTimes: 1,
             sleepMilliseconds: 10,
             useCache: false
         );
 
-        $crawler = $action($url, Encoding::EUC_JP);
+        $crawler = $fetchHtml($url, Encoding::EUC_JP);
 
         $this->assertInstanceOf(Crawler::class, $crawler);
         // After conversion, it should be readable as UTF-8

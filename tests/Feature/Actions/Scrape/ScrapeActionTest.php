@@ -18,8 +18,8 @@ final class ScrapeActionTest extends TestCase
             '*' => Http::response('<html><body></body></html>', 200),
         ]);
 
-        $action = app(ScrapeAction::class);
-        $action(null, new NullLogger);
+        $scrapeAction = app(ScrapeAction::class);
+        $scrapeAction(null, new NullLogger);
 
         // Just ensure no exceptions were thrown
         $this->assertTrue(true);
@@ -31,8 +31,8 @@ final class ScrapeActionTest extends TestCase
             '*' => Http::response('<html><body></body></html>', 200),
         ]);
 
-        $action = app(ScrapeAction::class);
-        $action(SiteName::Japan, new NullLogger);
+        $scrapeAction = app(ScrapeAction::class);
+        $scrapeAction(SiteName::Japan, new NullLogger);
 
         $this->assertTrue(true);
     }
