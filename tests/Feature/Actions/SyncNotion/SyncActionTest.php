@@ -1,0 +1,90 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Actions\SyncNotion;
+
+use App\Actions\SyncNotion\SyncAction;
+use App\Enums\PakSlug;
+use App\Enums\SiteName;
+use App\Models\Page;
+use App\Models\Pak;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
+use Notion\Databases\Database;
+use Notion\Databases\Properties\MultiSelect;
+use Notion\Databases\Properties\PropertyCollection;
+use Notion\Databases\Properties\SelectOption;
+use Notion\Notion;
+use Notion\Pages\Page as NotionPage;
+use Notion\Pages\PageParent;
+use Notion\Pages\Properties\Url;
+use Tests\Feature\TestCase;
+
+final class SyncActionTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_sync_action_creates_updates_and_deletes_pages(): void
+    {
+        $pak = Pak::factory()->create(['slug' => PakSlug::Pak128]);
+
+        // This page should be created in Notion
+        $pageToCreate = Page::factory()->create([
+            'title' => 'New Addon',
+            'site_name' => SiteName::Japan,
+            'url' => 'https://example.com/new',
+            'last_modified' => now(),
+        ]);
+        $pageToCreate->paks()->attach($pak);
+
+        // This page exists in both DB and Notion, should be updated
+        $pageToUpdate = Page::factory()->create([
+            'title' => 'Updated Addon',
+            'site_name' => SiteName::Japan,
+            'url' => 'https://example.com/update',
+            'last_modified' => now(),
+        ]);
+
+        $mockDatabase = Mockery::mock(Database::class);
+        $this->setReadonlyProperty($mockDatabase, 'id', 'test_database_id');
+
+        $multiSelect = MultiSelect::create('パックセット', [
+            SelectOption::fromName('128'),
+        ]);
+        $propertyCollection = (new \ReflectionClass(PropertyCollection::class))->newInstanceWithoutConstructor();
+        $this->setReadonlyProperty($propertyCollection, 'properties', ['パックセット' => $multiSelect]);
+
+        $mockDatabase->shouldReceive('properties')->andReturn($propertyCollection);
+
+        $notionPageToUpdate = NotionPage::create(PageParent::database('test_database_id'));
+        $notionPageToUpdate = $notionPageToUpdate->addProperty('URL', Url::create('https://example.com/update'));
+
+        $notionPageToDelete = NotionPage::create(PageParent::database('test_database_id'));
+        $notionPageToDelete = $notionPageToDelete->addProperty('URL', Url::create('https://example.com/delete'));
+
+        $notion = Mockery::mock(Notion::class);
+        $notion->shouldReceive('databases->find')->with('test_database_id')->andReturn($mockDatabase);
+        $notion->shouldReceive('databases->queryAllPages')->with($mockDatabase)->andReturn([$notionPageToUpdate, $notionPageToDelete]);
+
+        $notion->shouldReceive('pages->delete')->once()->with($notionPageToDelete);
+
+        $notion->shouldReceive('pages->update')->once()->with(Mockery::on(function (NotionPage $page) {
+            return $page->getProperty('URL')->url === 'https://example.com/update';
+        }));
+
+        $notion->shouldReceive('pages->create')->once()->with(Mockery::on(function (NotionPage $page) {
+            return $page->getProperty('URL')->url === 'https://example.com/new';
+        }));
+
+        $action = new SyncAction($notion);
+        $action('test_database_id', 10);
+    }
+
+    private function setReadonlyProperty(object $object, string $property, mixed $value): void
+    {
+        $reflection = new \ReflectionProperty($object, $property);
+        $reflection->setAccessible(true);
+        $reflection->setValue($object, $value);
+    }
+}

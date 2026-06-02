@@ -39,12 +39,16 @@ final class SearchAction
                 if (str_starts_with($word, '-')) {
                     $word = trim(substr($word, 1));
                     if ($word !== '' && $word !== '0') {
-                        $builder->where('title', 'not like', sprintf('%%%s%%', $word));
-                        $builder->orWhere('text', 'not like', sprintf('%%%s%%', $word));
+                        $builder->where(function (Builder $q) use ($word): void {
+                            $q->where('title', 'not like', sprintf('%%%s%%', $word));
+                            $q->where('text', 'not like', sprintf('%%%s%%', $word));
+                        });
                     }
                 } else {
-                    $builder->where('title', 'like', sprintf('%%%s%%', $word));
-                    $builder->orWhere('text', 'like', sprintf('%%%s%%', $word));
+                    $builder->where(function (Builder $q) use ($word): void {
+                        $q->where('title', 'like', sprintf('%%%s%%', $word));
+                        $q->orWhere('text', 'like', sprintf('%%%s%%', $word));
+                    });
                 }
             }
         });
