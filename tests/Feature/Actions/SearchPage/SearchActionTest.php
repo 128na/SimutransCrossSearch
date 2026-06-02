@@ -39,9 +39,9 @@ final class SearchActionTest extends TestCase
         $page3 = Page::factory()->create(['site_name' => SiteName::Japan]);
         $page3->paks()->attach($this->pak64);
 
-        $action = new SearchAction;
+        $searchAction = new SearchAction;
 
-        $result = $action([
+        $result = $searchAction([
             'keyword' => '',
             'sites' => [SiteName::Japan->value],
             'paks' => [PakSlug::Pak128->value],
@@ -74,7 +74,7 @@ final class SearchActionTest extends TestCase
         ]);
         $page3->paks()->attach($this->pak128);
 
-        $action = new SearchAction;
+        $searchAction = new SearchAction;
 
         $baseQuery = [
             'sites' => [SiteName::Japan->value],
@@ -82,15 +82,15 @@ final class SearchActionTest extends TestCase
         ];
 
         // Search for 'Train'
-        $result = $action(array_merge($baseQuery, ['keyword' => 'Train']));
+        $result = $searchAction(array_merge($baseQuery, ['keyword' => 'Train']));
         $this->assertCount(2, $result); // page1, page3
 
         // Search for 'Train -Electric'
-        $result = $action(array_merge($baseQuery, ['keyword' => 'Train -Electric']));
+        $result = $searchAction(array_merge($baseQuery, ['keyword' => 'Train -Electric']));
         $this->assertCount(1, $result); // page1 only
 
         // Search for 'Bus'
-        $result = $action(array_merge($baseQuery, ['keyword' => 'Bus']));
+        $result = $searchAction(array_merge($baseQuery, ['keyword' => 'Bus']));
         $this->assertCount(1, $result); // page2
         $this->assertSame($page2->id, $result->first()->id);
     }
@@ -115,9 +115,9 @@ final class SearchActionTest extends TestCase
         ]);
         $page3->paks()->attach($this->pak128);
 
-        $action = new SearchAction;
+        $searchAction = new SearchAction;
 
-        $result = $action([
+        $result = $searchAction([
             'keyword' => '',
             'sites' => [SiteName::Japan->value],
             'paks' => [PakSlug::Pak128->value],

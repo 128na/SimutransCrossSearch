@@ -36,7 +36,7 @@ final class SyncActionTest extends TestCase
         $pageToCreate->paks()->attach($pak);
 
         // This page exists in both DB and Notion, should be updated
-        $pageToUpdate = Page::factory()->create([
+        Page::factory()->create([
             'title' => 'Updated Addon',
             'site_name' => SiteName::Japan,
             'url' => 'https://example.com/update',
@@ -80,21 +80,17 @@ final class SyncActionTest extends TestCase
         $notionPageToDelete = NotionPage::create(PageParent::database('test_database_id'));
         $notionPageToDelete = $notionPageToDelete->addProperty('URL', Url::create('https://example.com/delete'));
 
-        $notion = Mockery::mock(Notion::class);
-        $notion->shouldReceive('databases->find')->with('test_database_id')->andReturn($database);
-        $notion->shouldReceive('databases->queryAllPages')->with($database)->andReturn([$notionPageToUpdate, $notionPageToDelete]);
+        $mock = Mockery::mock(Notion::class);
+        $mock->shouldReceive('databases->find')->with('test_database_id')->andReturn($database);
+        $mock->shouldReceive('databases->queryAllPages')->with($database)->andReturn([$notionPageToUpdate, $notionPageToDelete]);
 
-        $notion->shouldReceive('pages->delete')->once()->with($notionPageToDelete);
+        $mock->shouldReceive('pages->delete')->once()->with($notionPageToDelete);
 
-        $notion->shouldReceive('pages->update')->once()->with(Mockery::on(function (NotionPage $page) {
-            return $page->getProperty('URL')->url === 'https://example.com/update';
-        }));
+        $mock->shouldReceive('pages->update')->once()->with(Mockery::on(fn (NotionPage $page) => $page->getProperty('URL')->url === 'https://example.com/update'));
 
-        $notion->shouldReceive('pages->create')->once()->with(Mockery::on(function (NotionPage $page) {
-            return $page->getProperty('URL')->url === 'https://example.com/new';
-        }));
+        $mock->shouldReceive('pages->create')->once()->with(Mockery::on(fn (NotionPage $page) => $page->getProperty('URL')->url === 'https://example.com/new'));
 
-        $action = new SyncAction($notion);
-        $action('test_database_id', 10);
+        $syncAction = new SyncAction($mock);
+        $syncAction('test_database_id', 10);
     }
 }
