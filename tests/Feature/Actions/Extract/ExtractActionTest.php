@@ -8,7 +8,6 @@ use App\Actions\Extract\ExtractAction;
 use App\Actions\Extract\HandlerInterface;
 use App\Actions\Extract\Japan\Handler;
 use App\Enums\SiteName;
-use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Tests\Feature\TestCase;
 
@@ -16,85 +15,37 @@ final class ExtractActionTest extends TestCase
 {
     public function test_invokes_handlers_for_all_sites_when_null_provided(): void
     {
-        $state = (object) ['japan' => false, 'portal' => false, 'twitrans' => false];
+        $japanHandler = \Mockery::mock(HandlerInterface::class);
+        $japanHandler->shouldReceive('__invoke')->once();
+        $this->app->instance(Handler::class, $japanHandler);
 
-        $this->app->bind(Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
-        {
-            public function __construct(private object $state) {}
+        $portalHandler = \Mockery::mock(HandlerInterface::class);
+        $portalHandler->shouldReceive('__invoke')->once();
+        $this->app->instance(\App\Actions\Extract\Portal\Handler::class, $portalHandler);
 
-            public function __invoke(LoggerInterface $logger): void
-            {
-                $this->state->japan = true;
-            }
-        });
+        $twitransHandler = \Mockery::mock(HandlerInterface::class);
+        $twitransHandler->shouldReceive('__invoke')->once();
+        $this->app->instance(\App\Actions\Extract\Twitrans\Handler::class, $twitransHandler);
 
-        $this->app->bind(\App\Actions\Extract\Portal\Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
-        {
-            public function __construct(private object $state) {}
-
-            public function __invoke(LoggerInterface $logger): void
-            {
-                $this->state->portal = true;
-            }
-        });
-
-        $this->app->bind(\App\Actions\Extract\Twitrans\Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
-        {
-            public function __construct(private object $state) {}
-
-            public function __invoke(LoggerInterface $logger): void
-            {
-                $this->state->twitrans = true;
-            }
-        });
-
-        $extractAction = app(ExtractAction::class);
-        $extractAction(null, new NullLogger);
-
-        $this->assertTrue($state->japan);
-        $this->assertTrue($state->portal);
-        $this->assertTrue($state->twitrans);
+        $action = app(ExtractAction::class);
+        $action(null, new NullLogger);
     }
 
     public function test_invokes_specific_handler_when_site_provided(): void
     {
-        $state = (object) ['japan' => false, 'portal' => false, 'twitrans' => false];
+        $japanHandler = \Mockery::mock(HandlerInterface::class);
+        $japanHandler->shouldReceive('__invoke')->once();
+        $this->app->instance(Handler::class, $japanHandler);
 
-        $this->app->bind(Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
-        {
-            public function __construct(private object $state) {}
+        $portalHandler = \Mockery::mock(HandlerInterface::class);
+        $portalHandler->shouldReceive('__invoke')->never();
+        $this->app->instance(\App\Actions\Extract\Portal\Handler::class, $portalHandler);
 
-            public function __invoke(LoggerInterface $logger): void
-            {
-                $this->state->japan = true;
-            }
-        });
+        $twitransHandler = \Mockery::mock(HandlerInterface::class);
+        $twitransHandler->shouldReceive('__invoke')->never();
+        $this->app->instance(\App\Actions\Extract\Twitrans\Handler::class, $twitransHandler);
 
-        $this->app->bind(\App\Actions\Extract\Portal\Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
-        {
-            public function __construct(private object $state) {}
-
-            public function __invoke(LoggerInterface $logger): void
-            {
-                $this->state->portal = true;
-            }
-        });
-
-        $this->app->bind(\App\Actions\Extract\Twitrans\Handler::class, fn (): HandlerInterface => new readonly class($state) implements HandlerInterface
-        {
-            public function __construct(private object $state) {}
-
-            public function __invoke(LoggerInterface $logger): void
-            {
-                $this->state->twitrans = true;
-            }
-        });
-
-        $extractAction = app(ExtractAction::class);
-        $extractAction(SiteName::Japan, new NullLogger);
-
-        $this->assertTrue($state->japan);
-        $this->assertFalse($state->portal);
-        $this->assertFalse($state->twitrans);
+        $action = app(ExtractAction::class);
+        $action(SiteName::Japan, new NullLogger);
     }
 }
