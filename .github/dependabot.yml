@@ -1,0 +1,12 @@
+version: 2
+updates:
+  # Composer is handled by auto-package-update.yml (weekly, Sunday)
+  # Dependabot covers GitHub Actions only to avoid duplicate PRs
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "00:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
