@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.head_ref }}
           # Must be used to trigger workflow after push
@@ -25,7 +25,7 @@ jobs:
         run: composer update && composer bump && composer update
 
       - # commit only to core contributors who have repository access
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "[ci] package-updates"
           commit_author: "GitHub Action <actions@github.com>"
