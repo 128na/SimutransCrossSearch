@@ -93,4 +93,64 @@ final class SyncActionTest extends TestCase
         $syncAction = new SyncAction($mock);
         $syncAction('test_database_id', 10);
     }
+
+    /**
+     * B2: 1 件の Notion API エラーでバッチ全体が止まらず、残り項目が処理されること。
+     */
+    public function test_continues_syncing_when_one_item_fails(): void
+    {
+        Page::factory()->create([
+            'title' => 'Fails',
+            'site_name' => SiteName::Japan,
+            'url' => 'https://example.com/fail',
+            'last_modified' => now()->subDay(),
+        ]);
+        Page::factory()->create([
+            'title' => 'Succeeds',
+            'site_name' => SiteName::Japan,
+            'url' => 'https://example.com/ok',
+            'last_modified' => now(),
+        ]);
+
+        $database = Database::fromArray([
+            'id' => 'test_database_id',
+            'created_time' => '2023-01-01T00:00:00.000Z',
+            'last_edited_time' => '2023-01-01T00:00:00.000Z',
+            'title' => [],
+            'description' => [],
+            'icon' => null,
+            'cover' => null,
+            'properties' => [
+                'Title' => ['id' => 'title', 'type' => 'title', 'name' => 'Title', 'title' => []],
+                'パックセット' => [
+                    'id' => 'prop_id',
+                    'type' => 'multi_select',
+                    'name' => 'パックセット',
+                    'multi_select' => ['options' => []],
+                ],
+            ],
+            'parent' => ['type' => 'workspace', 'workspace' => true],
+            'url' => 'https://notion.so',
+            'is_inline' => false,
+        ]);
+
+        $mock = Mockery::mock(Notion::class);
+        $mock->shouldReceive('databases->find')->with('test_database_id')->andReturn($database);
+        $mock->shouldReceive('databases->queryAllPages')->with($database)->andReturn([]);
+
+        // 1 件目（fail）は Notion API がエラーを投げる。
+        $mock->shouldReceive('pages->create')
+            ->with(Mockery::on(fn (NotionPage $notionPage): bool => $notionPage->getProperty('URL')->url === 'https://example.com/fail'))
+            ->andThrow(new \RuntimeException('rate limited'));
+
+        // 2 件目（ok）は 1 件目の失敗後も必ず処理される。
+        $mock->shouldReceive('pages->create')
+            ->once()
+            ->with(Mockery::on(fn (NotionPage $notionPage): bool => $notionPage->getProperty('URL')->url === 'https://example.com/ok'));
+
+        $syncAction = new SyncAction($mock);
+
+        // バッチ全体が中断せず正常終了すること（例外が伝播しない）。
+        $syncAction('test_database_id', 10);
+    }
 }
