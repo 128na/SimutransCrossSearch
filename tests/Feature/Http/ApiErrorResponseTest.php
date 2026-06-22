@@ -31,4 +31,27 @@ final class ApiErrorResponseTest extends TestCase
         $this->assertSame('Server Error', $testResponse->json('message'));
         $this->assertStringNotContainsString('super-secret-detail-xyz', $testResponse->getContent() ?: '');
     }
+
+    /**
+     * 例外メッセージに実際の機密値（DB 接続情報）が含まれているケースでも
+     * 本番モードでは API 応答に出ないこと。
+     */
+    public function test_api_response_does_not_leak_secret_embedded_in_exception_message(): void
+    {
+        Config::set('app.debug', false);
+        Config::set('database.connections.mysql.password', 'super-db-password');
+
+        Route::get('/__test/throw-with-secret', function (): never {
+            $password = Config::string('database.connections.mysql.password');
+            throw new \RuntimeException('connection refused for password='.$password);
+        });
+
+        $testResponse = $this->getJson('/__test/throw-with-secret');
+
+        $testResponse->assertStatus(500);
+        $testResponse->assertJsonMissingPath('trace');
+        $testResponse->assertJsonMissingPath('exception');
+        $this->assertSame('Server Error', $testResponse->json('message'));
+        $this->assertStringNotContainsString('super-db-password', $testResponse->getContent() ?: '');
+    }
 }

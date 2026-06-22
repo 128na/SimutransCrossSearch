@@ -57,4 +57,23 @@ final class PageResourceTest extends TestCase
         // 生 HTML を持つ rawPage リレーションがロードされていないこと。
         $this->assertFalse($result->items()[0]->relationLoaded('rawPage'));
     }
+
+    /**
+     * D3: RSS Feed（Page::toFeedItem）も内部フィールド・生 HTML を含めないこと。
+     */
+    public function test_feed_item_does_not_expose_internal_fields_or_raw_html(): void
+    {
+        $rawPage = RawPage::factory()->create(['html' => '<html>secret-internal-html</html>']);
+        $page = Page::factory()->create([
+            'raw_page_id' => $rawPage->id,
+            'site_name' => SiteName::Japan,
+            'title' => 'Addon Title',
+            'text' => 'Addon body text',
+        ]);
+
+        $feedItem = $page->toFeedItem();
+        $encoded = (string) json_encode($feedItem);
+
+        $this->assertStringNotContainsString('secret-internal-html', $encoded);
+    }
 }
