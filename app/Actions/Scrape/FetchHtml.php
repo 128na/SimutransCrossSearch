@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Scrape;
 
 use App\Enums\Encoding;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\DomCrawler\Crawler;
@@ -26,7 +27,13 @@ final readonly class FetchHtml
             $html = Cache::get($key);
         } else {
             // 非2xx も失敗として扱い、RawPage にエラーページの内容を書き込まないようにする。
-            $result = retry($this->retryTimes, fn () => Http::get($url)->throw(), $this->sleepMilliseconds);
+            // 4xx は再試行しても解消しないため、接続エラー/5xx のみリトライ対象にする。
+            $result = retry(
+                $this->retryTimes,
+                fn () => Http::get($url)->throw(),
+                $this->sleepMilliseconds,
+                fn (\Throwable $th): bool => ! $th instanceof RequestException || $th->response->serverError(),
+            );
             $html = $fromEncoding === Encoding::UTF_8
                 ? $result->body()
                 : mb_convert_encoding((string) $result->body(), Encoding::UTF_8->value, $fromEncoding->value);

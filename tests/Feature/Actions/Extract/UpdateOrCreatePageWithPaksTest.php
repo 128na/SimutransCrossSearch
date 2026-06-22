@@ -24,8 +24,11 @@ final class UpdateOrCreatePageWithPaksTest extends TestCase
 
         // SyncPak は final のため Mockery では型ヒント越しに差し替えできない。
         // 代わりに DB::transaction が実際に呼ばれていること（両操作が原子的にまとめられていること）
-        // を直接検証する。
-        DB::shouldReceive('transaction')
+        // を直接検証する。partialMock を使い、transaction 以外の実 DB 操作（UpdateOrCreatePage/SyncPak
+        // 内部のクエリ）はそのまま実行されるようにする（shouldReceive だと DB 全体が差し替わり、
+        // それらのクエリが解決できなくなって壊れる）。
+        DB::partialMock()
+            ->shouldReceive('transaction')
             ->once()
             ->andReturnUsing(fn (\Closure $callback) => $callback());
 

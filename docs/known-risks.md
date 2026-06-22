@@ -13,7 +13,7 @@
 | ID | 保護すべき挙動 / Expected Outcome | 制御 | テスト | Status | 是正条件 | 記録日 |
 |----|----------------------------------|------|--------|--------|----------|--------|
 | A1 | 1 サイト/1URL の失敗で他サイト・他 URL の処理が止まらない | Preventive（ハンドラ毎の try/catch） | 2（`Extract/Japan/HandlerIsolationTest` + `Scrape/Japan/HandlerIsolationTest`） | 🟢 OK | — | 2026-06-22 |
-| A2 | HTTP 失敗時に RawPage を空/部分 HTML で上書きしない | Preventive（`FetchHtml` で `Http::get()->throw()`。非2xx も例外として扱い `retry()` 経由で失敗、upsert に到達しない） | 3（`FetchHtmlTest::test_throws_on_non_2xx...` + `Scrape/Japan/HandlerFailureTest`×2） | 🟢 OK | — | 2026-06-22 |
+| A2 | HTTP 失敗時に RawPage を空/部分 HTML で上書きしない | Preventive（`FetchHtml` で `Http::get()->throw()`。非2xx も例外として扱い upsert に到達しない。4xx は解消しないため即失敗、5xx/接続エラーのみ `retry()` で再試行） | 5（`FetchHtmlTest::test_throws_on_non_2xx...` + `test_does_not_retry_on_4xx...` + `test_retries_on_5xx...` + `Scrape/Japan/HandlerFailureTest`×2） | 🟢 OK | — | 2026-06-22 |
 | A3 | 同一 RawPage に extract を再実行しても Page 重複が出ない（冪等） | Preventive（`pages_url_unique` + HasOne） | 2（`Extract/UpdateOrCreatePageTest`） | 🟢 OK | — | 2026-06-22 |
 | A4 | 抽出失敗時にスクレイプ済データ（RawPage）を破壊しない | Preventive（`MarkExtractFailed`：削除せず `extract_failed_at` で隔離、成功時にクリア。`extract_failed_at` に index 追加済み） | 4（`MarkExtractFailedTest`×3 + `HandlerIsolationTest`） | 🟢 OK | — | 2026-06-22 |
 | A5 | 同一 URL の重複行を作らない | Preventive（DB 一意制約） | 2（`Models/UrlUniqueConstraintTest`） | 🟢 OK | — | 2026-06-22 |

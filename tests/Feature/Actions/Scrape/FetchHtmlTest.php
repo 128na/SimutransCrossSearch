@@ -78,6 +78,54 @@ final class FetchHtmlTest extends TestCase
         $fetchHtml($url, Encoding::UTF_8);
     }
 
+    public function test_does_not_retry_on_4xx_client_error(): void
+    {
+        $url = 'https://example.com/forbidden';
+
+        Http::fake([
+            $url => Http::response('forbidden', 403),
+        ]);
+
+        $fetchHtml = new FetchHtml(
+            retryTimes: 3,
+            sleepMilliseconds: 1,
+            useCache: false
+        );
+
+        try {
+            $fetchHtml($url, Encoding::UTF_8);
+            $this->fail('exception expected');
+        } catch (RequestException) {
+            // 4xx は解消しないため即失敗し、リトライしない。
+        }
+
+        Http::assertSentCount(1);
+    }
+
+    public function test_retries_on_5xx_server_error(): void
+    {
+        $url = 'https://example.com/server-error';
+
+        Http::fake([
+            $url => Http::response('server error', 500),
+        ]);
+
+        $fetchHtml = new FetchHtml(
+            retryTimes: 3,
+            sleepMilliseconds: 1,
+            useCache: false
+        );
+
+        try {
+            $fetchHtml($url, Encoding::UTF_8);
+            $this->fail('exception expected');
+        } catch (RequestException) {
+            // 5xx は一過性の可能性があるため retryTimes 回まで再試行する。
+        }
+
+        Http::assertSentCount(3);
+    }
+
     public function test_converts_encoding(): void
     {
         $url = 'https://example.com/euc-jp';
