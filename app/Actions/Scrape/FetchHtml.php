@@ -32,7 +32,7 @@ final readonly class FetchHtml
                 $this->retryTimes,
                 fn () => Http::get($url)->throw(),
                 $this->sleepMilliseconds,
-                fn (\Throwable $th): bool => ! $th instanceof RequestException || $th->response->serverError(),
+                fn (\Throwable $throwable): bool => ! $throwable instanceof RequestException || $throwable->response->serverError(),
             );
             $html = $fromEncoding === Encoding::UTF_8
                 ? $result->body()
