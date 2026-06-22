@@ -20,10 +20,10 @@ final class ConvertDiscordTest extends TestCase
     {
         Config::set('services.notion.secret', 'ntn_supersecret');
 
-        $converter = new ConvertDiscord(app('config'), new SecretScrubber);
+        $convertDiscord = new ConvertDiscord(app('config'), new SecretScrubber);
         $message = Message::make();
 
-        $this->callProtected($converter, 'addMessageContent', [$message, $this->record()]);
+        $this->callProtected($convertDiscord, 'addMessageContent', [$message, $this->record()]);
 
         // スタックトレースが取得・添付されていること（先に scrub していたら null になっていたはず）。
         $this->assertNotNull($message->file);
@@ -32,12 +32,12 @@ final class ConvertDiscordTest extends TestCase
 
     public function test_inherited_add_message_stacktrace_does_not_overwrite_with_raw_trace(): void
     {
-        $converter = new ConvertDiscord(app('config'), new SecretScrubber);
+        $convertDiscord = new ConvertDiscord(app('config'), new SecretScrubber);
         $message = Message::make();
         $message->file('[REDACTED-SENTINEL]', 'f.txt');
 
         // 親クラスの addMessageStacktrace が未伏字化の生トレースで上書きしないこと（no-op であること）。
-        $this->callProtected($converter, 'addMessageStacktrace', [$message, $this->record()]);
+        $this->callProtected($convertDiscord, 'addMessageStacktrace', [$message, $this->record()]);
 
         $this->assertSame('[REDACTED-SENTINEL]', $message->file['contents']);
     }
@@ -56,8 +56,8 @@ final class ConvertDiscordTest extends TestCase
 
     private function callProtected(object $object, string $method, array $args): mixed
     {
-        $reflection = new \ReflectionMethod($object, $method);
+        $reflectionMethod = new \ReflectionMethod($object, $method);
 
-        return $reflection->invoke($object, ...$args);
+        return $reflectionMethod->invoke($object, ...$args);
     }
 }
