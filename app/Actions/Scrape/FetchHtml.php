@@ -25,7 +25,8 @@ final readonly class FetchHtml
             /** @var string */
             $html = Cache::get($key);
         } else {
-            $result = retry($this->retryTimes, fn () => Http::get($url), $this->sleepMilliseconds);
+            // 非2xx も失敗として扱い、RawPage にエラーページの内容を書き込まないようにする。
+            $result = retry($this->retryTimes, fn () => Http::get($url)->throw(), $this->sleepMilliseconds);
             $html = $fromEncoding === Encoding::UTF_8
                 ? $result->body()
                 : mb_convert_encoding((string) $result->body(), Encoding::UTF_8->value, $fromEncoding->value);

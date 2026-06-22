@@ -45,4 +45,28 @@ final class HandlerFailureTest extends TestCase
 
         $this->assertSame(0, RawPage::query()->count());
     }
+
+    public function test_does_not_write_raw_page_when_response_is_non_2xx(): void
+    {
+        Http::preventStrayRequests();
+
+        $listHtml = '<html><body><div id="body"><ul><li>'
+            .'<a href="https://japanese.simutrans.com:443/index.php?Addon128%2FTest">test</a>'
+            .'</li></ul></div></body></html>';
+
+        Http::fake([
+            'https://japanese.simutrans.com?cmd=list' => Http::response($listHtml, 200),
+            'https://japanese.simutrans.com/index.php?Addon128%2FTest' => Http::response('<html><body>error page</body></html>', 500),
+        ]);
+
+        $handler = new Handler(
+            new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false),
+            new FindUrls(new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false)),
+            new UpdateOrCreateRawPage,
+        );
+
+        $handler(new NullLogger);
+
+        $this->assertSame(0, RawPage::query()->count());
+    }
 }

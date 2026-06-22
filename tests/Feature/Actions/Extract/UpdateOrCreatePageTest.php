@@ -28,4 +28,18 @@ final class UpdateOrCreatePageTest extends TestCase
         $this->assertSame($page->id, $second->id);
         $this->assertSame('タイトル更新', $second->fresh()?->title);
     }
+
+    public function test_running_three_times_from_separate_instances_keeps_a_single_page(): void
+    {
+        $rawPage = RawPage::factory()->create();
+
+        // 同一インスタンスの再利用に依存していないことを確認するため、毎回新しいインスタンスで実行する
+        // （別プロセス/別ジョブ実行からの再実行を模す）。
+        (new UpdateOrCreatePage)($rawPage, '1回目', '本文1', CarbonImmutable::now());
+        (new UpdateOrCreatePage)($rawPage->fresh(), '2回目', '本文2', CarbonImmutable::now());
+        $third = (new UpdateOrCreatePage)($rawPage->fresh(), '3回目', '本文3', CarbonImmutable::now());
+
+        $this->assertSame(1, Page::query()->where('raw_page_id', $rawPage->id)->count());
+        $this->assertSame('3回目', $third->fresh()?->title);
+    }
 }

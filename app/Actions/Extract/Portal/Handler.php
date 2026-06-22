@@ -7,8 +7,7 @@ namespace App\Actions\Extract\Portal;
 use App\Actions\Extract\ChunkRawPages;
 use App\Actions\Extract\HandlerInterface;
 use App\Actions\Extract\MarkExtractFailed;
-use App\Actions\Extract\SyncPak;
-use App\Actions\Extract\UpdateOrCreatePage;
+use App\Actions\Extract\UpdateOrCreatePageWithPaks;
 use App\Enums\SiteName;
 use App\Models\Page;
 use App\Models\RawPage;
@@ -22,8 +21,7 @@ final readonly class Handler implements HandlerInterface
         private ChunkRawPages $chunkRawPages,
         private FindArticle $findArticle,
         private ExtractContents $extractContents,
-        private UpdateOrCreatePage $updateOrCreatePage,
-        private SyncPak $syncPak,
+        private UpdateOrCreatePageWithPaks $updateOrCreatePageWithPaks,
         private MarkExtractFailed $markExtractFailed,
     ) {}
 
@@ -44,14 +42,13 @@ final readonly class Handler implements HandlerInterface
                     // pageがあって更新有り
                     if (! $rawPage->page || $this->needUpdate($rawPage->page, $lastModiefied)) {
                         $contents = ($this->extractContents)($article);
-                        $page = ($this->updateOrCreatePage)(
+                        ($this->updateOrCreatePageWithPaks)(
                             $rawPage,
                             $contents['title'],
                             $contents['text'],
                             $lastModiefied,
+                            $contents['paks']
                         );
-
-                        ($this->syncPak)($page, $contents['paks']);
                     }
 
                     $this->markExtractFailed->clear($rawPage);

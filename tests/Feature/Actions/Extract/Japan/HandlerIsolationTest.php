@@ -11,6 +11,7 @@ use App\Actions\Extract\Japan\Handler;
 use App\Actions\Extract\MarkExtractFailed;
 use App\Actions\Extract\SyncPak;
 use App\Actions\Extract\UpdateOrCreatePage;
+use App\Actions\Extract\UpdateOrCreatePageWithPaks;
 use App\Enums\SiteName;
 use App\Models\RawPage;
 use Psr\Log\NullLogger;
@@ -43,8 +44,7 @@ final class HandlerIsolationTest extends TestCase
             new ChunkRawPages,
             new ExtractLastModified,
             new ExtractContents,
-            new UpdateOrCreatePage,
-            new SyncPak,
+            new UpdateOrCreatePageWithPaks(new UpdateOrCreatePage, new SyncPak),
             new MarkExtractFailed,
         );
 

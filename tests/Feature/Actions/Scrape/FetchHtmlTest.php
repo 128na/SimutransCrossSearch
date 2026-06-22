@@ -6,6 +6,7 @@ namespace Tests\Feature\Actions\Scrape;
 
 use App\Actions\Scrape\FetchHtml;
 use App\Enums\Encoding;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\DomCrawler\Crawler;
@@ -57,6 +58,24 @@ final class FetchHtmlTest extends TestCase
         $this->assertStringContainsString('Cached Content', $crawler->html());
 
         Http::assertNothingSent();
+    }
+
+    public function test_throws_on_non_2xx_response_instead_of_returning_error_body(): void
+    {
+        $url = 'https://example.com/not-found';
+
+        Http::fake([
+            $url => Http::response('<html><body>404 Not Found</body></html>', 404),
+        ]);
+
+        $fetchHtml = new FetchHtml(
+            retryTimes: 1,
+            sleepMilliseconds: 1,
+            useCache: false
+        );
+
+        $this->expectException(RequestException::class);
+        $fetchHtml($url, Encoding::UTF_8);
     }
 
     public function test_converts_encoding(): void
