@@ -53,12 +53,12 @@ final readonly class SyncAction
     private function deleteOldNotionPages(Collection $pages, Collection $notionPages): int
     {
         $failed = 0;
+        $pagesByUrl = $pages->keyBy('url');
         foreach ($notionPages as $notionPage) {
             $url = null;
             try {
                 $url = $this->getUrlProp($notionPage);
-                $page = $pages->first(fn (Page $page): bool => $page->url === $url);
-                if (! $page) {
+                if ($url === null || ! $pagesByUrl->has($url)) {
                     logger('[NotionService]delete', ['url' => $url]);
                     $this->notion->pages()->delete($notionPage);
                 }

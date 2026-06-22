@@ -23,11 +23,14 @@ final class ConvertDiscord extends SimpleRecordConverter
     protected function addMessageContent(Message $message, array $record): void
     {
         try {
+            // context['exception'] が Throwable のままの状態で先に取得する。
+            // scrubArray() は Throwable を文字列化してしまうため、先に呼ぶと取得できなくなる。
+            $stacktrace = $this->getStacktrace($record);
+
             // Discord は外部サービスへ送出されるため、組み立て前に機密値を伏字化する。
             $record['message'] = $this->secretScrubber->scrub($record['message']);
             $record['context'] = $this->secretScrubber->scrubArray($record['context']);
 
-            $stacktrace = $this->getStacktrace($record);
             if ($stacktrace !== null) {
                 $stacktrace = $this->secretScrubber->scrub($stacktrace);
             }
@@ -40,6 +43,19 @@ final class ConvertDiscord extends SimpleRecordConverter
         } catch (\Throwable $throwable) {
             report($throwable);
         }
+    }
+
+    /**
+     * 親クラスの addMessageStacktrace は未伏字化の生スタックトレースで
+     * $message->file を上書きしてしまうため、何もしないようにする
+     * （伏字化済みのスタックトレースは addMessageContent 内で既に添付済み）。
+     *
+     * @param  array{datetime:\DateTime,level_name:int,message:string,context:array<int|string,mixed>}  $record
+     */
+    #[\Override]
+    protected function addMessageStacktrace(Message $message, array $record): void
+    {
+        // no-op: see method docblock.
     }
 
     /**

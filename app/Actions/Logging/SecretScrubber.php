@@ -17,6 +17,11 @@ final class SecretScrubber
 {
     private const string MASK = '[REDACTED]';
 
+    /**
+     * @var list<string>|null
+     */
+    private ?array $cachedSecrets = null;
+
     public function scrub(string $value): string
     {
         $secrets = $this->secrets();
@@ -67,11 +72,17 @@ final class SecretScrubber
 
     /**
      * 伏字化対象の機密値一覧（短すぎる値・空値は誤爆防止のため対象から除外する）。
+     * リクエスト中に変わらない値なのでインスタンス単位でキャッシュする
+     * （静的キャッシュにすると PHPUnit のテスト間で Config 変更が反映されなくなるため避ける）。
      *
      * @return list<string>
      */
     private function secrets(): array
     {
+        if ($this->cachedSecrets !== null) {
+            return $this->cachedSecrets;
+        }
+
         $candidates = [
             Config::get('services.notion.secret'),
             Config::get('logging.channels.discord.url'),
@@ -79,7 +90,7 @@ final class SecretScrubber
             Config::get('database.connections.portal.password'),
         ];
 
-        return array_values(array_unique(array_filter(
+        return $this->cachedSecrets = array_values(array_unique(array_filter(
             $candidates,
             // 未設定(null)や開発環境の "root" 等の短い値まで伏字化すると
             // ログ本文を無関係な部分まで壊してしまうため、4文字未満は対象外にする。
