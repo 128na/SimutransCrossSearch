@@ -6,6 +6,7 @@ namespace App\Actions\Extract\Twitrans;
 
 use App\Actions\Extract\ChunkRawPages;
 use App\Actions\Extract\HandlerInterface;
+use App\Actions\Extract\MarkExtractFailed;
 use App\Actions\Extract\SyncPak;
 use App\Actions\Extract\UpdateOrCreatePage;
 use App\Enums\SiteName;
@@ -23,6 +24,7 @@ final readonly class Handler implements HandlerInterface
         private ExtractContents $extractContents,
         private UpdateOrCreatePage $updateOrCreatePage,
         private SyncPak $syncPak,
+        private MarkExtractFailed $markExtractFailed,
     ) {}
 
     #[\Override]
@@ -49,9 +51,10 @@ final readonly class Handler implements HandlerInterface
 
                         ($this->syncPak)($page, $contents['paks']);
                     }
+
+                    $this->markExtractFailed->clear($rawPage);
                 } catch (\Throwable $th) {
-                    $logger->error('failed', [$rawPage->url, $th]);
-                    $rawPage->delete();
+                    ($this->markExtractFailed)($logger, $rawPage, $th);
                 }
             }
         });

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Logging\RedactSecretsTap;
 use MarvinLabs\DiscordLogger\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
@@ -64,6 +65,7 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
+            'tap' => [RedactSecretsTap::class],
         ],
 
         'api' => [
@@ -71,6 +73,7 @@ return [
             'path' => storage_path('logs/api.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
+            'tap' => [RedactSecretsTap::class],
         ],
 
         'slack' => [

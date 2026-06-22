@@ -19,10 +19,12 @@ use Symfony\Component\DomCrawler\Crawler;
  * @property SiteName $site_name
  * @property string $url
  * @property string $html
+ * @property Carbon|null $extract_failed_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Page|null $page
  *
+ * @method static \Database\Factories\RawPageFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RawPage query()
@@ -38,11 +40,13 @@ final class RawPage extends Model
         'site_name',
         'url',
         'html',
+        'extract_failed_at',
     ];
 
     protected $casts = [
         'site_name' => SiteName::class,
         'html' => CompressedHtml::class,
+        'extract_failed_at' => 'datetime',
     ];
 
     private ?Crawler $crawler = null;
