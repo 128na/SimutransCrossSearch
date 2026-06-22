@@ -66,22 +66,24 @@ final class SecretScrubber
     }
 
     /**
-     * 伏字化対象の機密値一覧（空値は対象から除外する）。
+     * 伏字化対象の機密値一覧（短すぎる値・空値は誤爆防止のため対象から除外する）。
      *
      * @return list<string>
      */
     private function secrets(): array
     {
         $candidates = [
-            (string) Config::string('services.notion.secret', ''),
-            (string) Config::string('logging.channels.discord.url', ''),
-            (string) Config::string('database.connections.mysql.password', ''),
-            (string) Config::string('database.connections.portal.password', ''),
+            Config::get('services.notion.secret'),
+            Config::get('logging.channels.discord.url'),
+            Config::get('database.connections.mysql.password'),
+            Config::get('database.connections.portal.password'),
         ];
 
         return array_values(array_unique(array_filter(
             $candidates,
-            fn (string $value): bool => $value !== '',
+            // 未設定(null)や開発環境の "root" 等の短い値まで伏字化すると
+            // ログ本文を無関係な部分まで壊してしまうため、4文字未満は対象外にする。
+            fn (mixed $value): bool => is_string($value) && mb_strlen($value) >= 4,
         )));
     }
 }

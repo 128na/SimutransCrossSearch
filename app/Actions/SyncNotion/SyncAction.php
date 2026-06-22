@@ -54,6 +54,7 @@ final readonly class SyncAction
     {
         $failed = 0;
         foreach ($notionPages as $notionPage) {
+            $url = null;
             try {
                 $url = $this->getUrlProp($notionPage);
                 $page = $pages->first(fn (Page $page): bool => $page->url === $url);
@@ -63,7 +64,7 @@ final readonly class SyncAction
                 }
             } catch (\Throwable $th) {
                 $failed++;
-                logger()->error('[NotionService] delete failed', ['url' => $url ?? null, $th]);
+                logger()->error('[NotionService] delete failed', ['url' => $url, $th]);
             }
         }
 
