@@ -58,7 +58,8 @@ final readonly class SyncAction
             $url = null;
             try {
                 $url = $this->getUrlProp($notionPage);
-                if ($url === null || ! $pagesByUrl->has($url)) {
+                // url が無い Notion ページ（手動作成の下書き等）は削除対象にしない。
+                if ($url !== null && ! $pagesByUrl->has($url)) {
                     logger('[NotionService]delete', ['url' => $url]);
                     $this->notion->pages()->delete($notionPage);
                 }
@@ -80,11 +81,13 @@ final readonly class SyncAction
     {
         $options = $this->getOptions($database);
         $failed = 0;
+        $notionPagesByUrl = $this->keyNotionPagesByUrl($notionPages);
+
         foreach ($pages as $page) {
             try {
                 $exists = true;
                 $url = $page->url;
-                $np = $notionPages->first(fn (NotionPage $notionPage): bool => $this->getUrlProp($notionPage) === $url);
+                $np = $notionPagesByUrl->get($url);
                 if (! $np) {
                     $exists = false;
                     $np = NotionPage::create(PageParent::database($database->id));
@@ -129,6 +132,30 @@ final readonly class SyncAction
         }
 
         return $failed;
+    }
+
+    /**
+     * url 取得に失敗した Notion ページ（プロパティ欠落等）が 1 件あっても
+     * 残りのページの同期を止めないよう、ここで隔離してマップ化する。
+     *
+     * @param  Collection<int,NotionPage>  $notionPages
+     * @return Collection<string,NotionPage>
+     */
+    private function keyNotionPagesByUrl(Collection $notionPages): Collection
+    {
+        $byUrl = collect();
+        foreach ($notionPages as $notionPage) {
+            try {
+                $url = $this->getUrlProp($notionPage);
+                if ($url !== null) {
+                    $byUrl->put($url, $notionPage);
+                }
+            } catch (\Throwable $th) {
+                logger()->error('[NotionService] failed to read url property', [$th]);
+            }
+        }
+
+        return $byUrl;
     }
 
     private function getUrlProp(NotionPage $notionPage): ?string

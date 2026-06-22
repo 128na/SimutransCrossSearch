@@ -64,6 +64,9 @@ final class SecretScrubber
 
         if ($value instanceof \Throwable) {
             // 例外オブジェクトはメッセージ + トレース文字列に展開してから伏字化する。
+            // 注意: これにより context['exception'] は Throwable から string に変わる。
+            // Sentry 等、Throwable のままであることを期待する Monolog processor/handler を
+            // 将来追加する場合は、本プロセッサより前段に置くこと。
             return str_replace($secrets, self::MASK, (string) $value);
         }
 
@@ -92,9 +95,9 @@ final class SecretScrubber
 
         return $this->cachedSecrets = array_values(array_unique(array_filter(
             $candidates,
-            // 未設定(null)や開発環境の "root" 等の短い値まで伏字化すると
-            // ログ本文を無関係な部分まで壊してしまうため、4文字未満は対象外にする。
-            fn (mixed $value): bool => is_string($value) && mb_strlen($value) >= 4,
+            // 未設定(null)や開発環境の "root"(4文字) 等の短い値まで伏字化すると
+            // chroot/uproot 等の無関係な単語まで壊してしまうため、5文字未満は対象外にする。
+            fn (mixed $value): bool => is_string($value) && mb_strlen($value) >= 5,
         )));
     }
 }

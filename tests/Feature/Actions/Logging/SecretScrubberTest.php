@@ -50,6 +50,17 @@ final class SecretScrubberTest extends TestCase
         $this->assertStringNotContainsString('discord.com/api/webhooks/abc/xyz', $encoded);
     }
 
+    public function test_scrub_does_not_mangle_common_words_when_secret_is_short(): void
+    {
+        Config::set('database.connections.mysql.password', 'root');
+
+        $secretScrubber = new SecretScrubber;
+
+        // "root"(4文字) のような開発環境の短いパスワードは伏字化対象に含めない。
+        // chroot/uproot 等の無関係な単語まで破壊してしまうため。
+        $this->assertSame('chroot jail for root', $secretScrubber->scrub('chroot jail for root'));
+    }
+
     public function test_scrub_is_noop_when_no_secrets_configured(): void
     {
         Config::set('services.notion.secret', '');

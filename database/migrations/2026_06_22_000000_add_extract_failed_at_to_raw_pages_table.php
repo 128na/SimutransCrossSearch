@@ -12,7 +12,8 @@ return new class extends Migration
     {
         Schema::table('raw_pages', function (Blueprint $table): void {
             // 抽出失敗を隔離・可視化する。失敗時に行を削除する代わりにここへ記録する。
-            $table->timestamp('extract_failed_at')->nullable()->after('html');
+            // whereNotNull/whereNull で頻繁に絞り込まれるため index を付与する。
+            $table->timestamp('extract_failed_at')->nullable()->after('html')->index();
         });
     }
 
