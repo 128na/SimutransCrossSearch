@@ -11,7 +11,7 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == '128na/SimutransCrossSearch'
     steps:
       - if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           # Must be used to trigger workflow after push
           token: ${{ secrets.ACCESS_TOKEN }}
