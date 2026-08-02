@@ -11,7 +11,7 @@
         "php": "^8.3",
         "laravel/framework": "^12.64.0",
         "laravel/tinker": "^3.0.2",
-        "livewire/livewire": "^4.3.3",
+        "livewire/livewire": "^4.3.4",
         "mariosimao/notion-sdk-php": "^1.17",
         "marvinlabs/laravel-discord-logger": "^1.4.4",
         "spatie/laravel-feed": "^4.5.0",
@@ -21,11 +21,11 @@
         "barryvdh/laravel-ide-helper": "^3.7.0",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.10.0",
-        "laravel/pint": "^1.29.3",
+        "laravel/pint": "^1.30.3",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": ">=8.9.5",
         "phpunit/phpunit": ">=12.5.14",
-        "rector/rector": "^2.5.7",
+        "rector/rector": "^2.5.9",
         "spatie/laravel-ignition": "^2.12.0"
     },
     "autoload": {
