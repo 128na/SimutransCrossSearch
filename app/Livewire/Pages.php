@@ -7,22 +7,21 @@ namespace App\Livewire;
 use App\Actions\SearchPage\SearchAction;
 use App\Enums\PakSlug;
 use App\Enums\SiteName;
+use App\Models\Page;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 final class Pages extends Component
 {
-    use WithPagination;
-
+    #[Validate('string|max:191')]
     public string $keyword = '';
 
-    /**
-     * @var int|string|null
-     */
     #[Url]
-    public $page = 1;
+    public int $page = 1;
 
     /**
      * @var array<string|int,bool>
@@ -42,33 +41,37 @@ final class Pages extends Component
         SiteName::Portal->value => true,
     ];
 
-    public function render(SearchAction $searchAction): View
+    public function render(): View
     {
-        $this->resetPage();
-        if (! is_numeric($this->page)) {
-            $this->page = 1;
-        }
-
-        return view('livewire.pages', [
-            'pages' => $searchAction([
-                'keyword' => $this->keyword,
-                'paks' => $this->selectedPaks(),
-                'sites' => $this->selectedSites(),
-                'page' => $this->page,
-            ]),
-        ]);
+        return view('livewire.pages');
     }
 
-    public function onConditionUpdate(SearchAction $searchAction): View
+    /**
+     * ページネーションリンクは通常のURL遷移（`?page=N`）で行われ、`#[Url] $page` が唯一の状態源。
+     * 検索条件（キーワード・pak・サイト）を変えたときだけ、ここで明示的に1ページ目へ戻す。
+     */
+    public function onConditionUpdate(): void
     {
-
-        return $this->render($searchAction);
+        $this->page = 1;
     }
 
     public function clear(): void
     {
-        $this->resetPage();
-        $this->reset('keyword', 'paks', 'sites');
+        $this->reset('keyword', 'paks', 'sites', 'page');
+    }
+
+    /**
+     * @return LengthAwarePaginator<int, Page>
+     */
+    #[Computed]
+    public function pages(): LengthAwarePaginator
+    {
+        return (new SearchAction)([
+            'keyword' => $this->keyword,
+            'paks' => $this->selectedPaks(),
+            'sites' => $this->selectedSites(),
+            'page' => $this->page,
+        ]);
     }
 
     /**
