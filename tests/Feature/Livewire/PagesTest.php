@@ -9,6 +9,7 @@ use App\Enums\SiteName;
 use App\Livewire\Pages;
 use App\Models\Page;
 use App\Models\Pak;
+use App\Models\RawPage;
 use Livewire\Livewire;
 use Tests\Feature\TestCase;
 
@@ -43,22 +44,60 @@ final class PagesTest extends TestCase
             ->assertSet('page', 1);
     }
 
+    public function test_pagination_links_do_not_point_to_the_livewire_update_endpoint(): void
+    {
+        // WithPagination除去に伴い、ページネーションリンクの生成元パスをboot()で
+        // 明示的に補っている(Livewire::originalPath())。これが無いと、Livewireの
+        // アクション経由で再描画した際にリンク先がPOST専用の内部updateエンドポイント
+        // になり、通常のリンククリック(GET)が405になる回帰を防ぐテスト。
+        $pak = Pak::factory()->create(['slug' => PakSlug::Pak128]);
+        // Fakerの乱数urlは60件生成すると衝突しうる(raw_pages/pagesのurlユニーク制約)ため、
+        // テストの再現性を優先して明示的にユニークなurlを採番する。
+        for ($i = 0; $i < 60; $i++) {
+            $page = Page::factory()->create([
+                'site_name' => SiteName::Japan,
+                'url' => "https://example.test/page-{$i}",
+                'raw_page_id' => RawPage::factory()->create(['url' => "https://example.test/raw-{$i}"])->id,
+            ]);
+            $page->paks()->attach($pak);
+        }
+
+        $html = Livewire::test(Pages::class)
+            ->call('onConditionUpdate')
+            ->html();
+
+        $this->assertMatchesRegularExpression('#href="[^"]*\?page=2"#', $html);
+        $this->assertStringNotContainsString('/update?page=2', $html);
+    }
+
     public function test_clear_resets_keyword_paks_sites_and_page(): void
     {
         Livewire::test(Pages::class)
             ->set('keyword', 'foo')
             ->set('paks.'.PakSlug::Pak64->value, false)
+            ->set('sites.'.SiteName::Japan->value, false)
             ->set('page', 3)
             ->call('clear')
             ->assertSet('keyword', '')
             ->assertSet('page', 1)
-            ->assertSet('paks.'.PakSlug::Pak64->value, true);
+            ->assertSet('paks.'.PakSlug::Pak64->value, true)
+            ->assertSet('sites.'.SiteName::Japan->value, true);
+    }
+
+    public function test_negative_page_is_clamped_to_one(): void
+    {
+        $results = Livewire::test(Pages::class)
+            ->set('page', -1)
+            ->instance()
+            ->pages;
+
+        $this->assertSame(1, $results->currentPage());
     }
 
     public function test_keyword_over_max_length_fails_validation(): void
     {
         Livewire::test(Pages::class)
-            ->set('keyword', str_repeat('a', 192))
+            ->set('keyword', str_repeat('a', 21))
             ->assertHasErrors(['keyword' => 'max']);
     }
 
@@ -79,8 +118,7 @@ final class PagesTest extends TestCase
         $other->paks()->attach($pak);
 
         $testable = Livewire::test(Pages::class)
-            ->set('keyword', 'Locomotive')
-            ->call('onConditionUpdate');
+            ->set('keyword', 'Locomotive');
 
         $results = $testable->instance()->pages;
 
