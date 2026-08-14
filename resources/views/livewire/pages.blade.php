@@ -16,13 +16,16 @@
         <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700" wire:click="onConditionUpdate">検索</button>
         <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700" wire:click="clear">リセット</button>
     </div>
+    @error('keyword')
+        <p class="text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+    @enderror
 
     <div class="my-4">
-        {{ $pages->onEachSide(1)->links('tailwind_custom') }}
+        {{ $this->pages->onEachSide(1)->links('tailwind_custom') }}
     </div>
 
     <ul>
-        @forelse ($pages as $page)
+        @forelse ($this->pages as $page)
         <li class="my-2">
             <div>
                 @foreach ($page->paks as $pak)
@@ -42,6 +45,6 @@
         @endforelse
     </ul>
     <div class="my-4">
-        {{ $pages->onEachSide(1)->links('tailwind_custom') }}
+        {{ $this->pages->onEachSide(1)->links('tailwind_custom') }}
     </div>
 </div>
