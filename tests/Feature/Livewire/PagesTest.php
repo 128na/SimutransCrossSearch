@@ -97,6 +97,32 @@ final class PagesTest extends TestCase
         $this->assertMatchesRegularExpression('#href="[^"]*paks%5B'.PakSlug::Pak64->value.'%5D=0[^"]*"#', $html);
     }
 
+    public function test_paks_and_sites_are_normalized_to_booleans_after_url_hydration(): void
+    {
+        // #[Url]によるクエリ文字列からの配列ハイドレートは値が真偽値ではなく
+        // 文字列'0'/'1'になる。PHP側のarray_filter等では'0'はfalsy値として
+        // 扱われ検索フィルタは正しく動作するが、フロントに送られるJSON上は
+        // 非空文字列としてtruthyに評価され、チェックボックスの表示が実際の
+        // 選択状態を反映しなくなる不具合の回帰テスト。assertSetはゆるい比較
+        // ('0' == false は true)のため検知できず、instance()の値を厳密に
+        // 比較する。
+        $testable = Livewire::withQueryParams([
+            'paks' => ['64' => '0', '128' => '1', '128-japan' => '1'],
+            'sites' => ['japan' => '1', 'twitrans' => '0', 'portal' => '1'],
+        ])->test(Pages::class);
+
+        $this->assertSame([
+            PakSlug::Pak64->value => false,
+            PakSlug::Pak128->value => true,
+            PakSlug::Pak128Jp->value => true,
+        ], $testable->instance()->paks);
+        $this->assertSame([
+            SiteName::Japan->value => true,
+            SiteName::Twitrans->value => false,
+            SiteName::Portal->value => true,
+        ], $testable->instance()->sites);
+    }
+
     public function test_clear_resets_keyword_paks_sites_and_page(): void
     {
         Livewire::test(Pages::class)
