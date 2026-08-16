@@ -56,6 +56,15 @@ final class Pages extends Component
     public function boot(): void
     {
         Paginator::currentPathResolver(fn (): string => Livewire::originalPath());
+
+        // #[Url]経由でURLクエリ文字列から配列をハイドレートすると、値が
+        // 真偽値ではなく文字列 '0'/'1' になる（PHP側のarray_filter等では
+        // '0'はfalsy値として扱われるため検索フィルタ自体は正しく動作するが、
+        // フロントに送られるJSON上は非空文字列としてtruthyに評価されてしまい、
+        // チェックボックスの表示が実際の選択状態を反映しなくなる）。
+        // 明示的にboolへキャストし直して補正する。
+        $this->paks = array_map(fn (mixed $value): bool => (bool) $value, $this->paks);
+        $this->sites = array_map(fn (mixed $value): bool => (bool) $value, $this->sites);
     }
 
     public function render(): View
