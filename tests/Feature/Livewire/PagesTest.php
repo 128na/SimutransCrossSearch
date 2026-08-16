@@ -66,8 +66,35 @@ final class PagesTest extends TestCase
             ->call('onConditionUpdate')
             ->html();
 
-        $this->assertMatchesRegularExpression('#href="[^"]*\?page=2"#', $html);
-        $this->assertStringNotContainsString('/update?page=2', $html);
+        $this->assertMatchesRegularExpression('#href="[^"]*[?&](amp;)?page=2[^"]*"#', $html);
+        $this->assertStringNotContainsString('/update?', $html);
+        $this->assertStringNotContainsString('/update&amp;', $html);
+    }
+
+    public function test_pagination_links_preserve_search_conditions_across_pages(): void
+    {
+        // 検索キーワード等がページネーションリンク（プレーンな<a href>によるURL遷移）に
+        // 引き継がれず、2ページ目に遷移すると検索条件が失われる不具合の回帰テスト。
+        $pak = Pak::factory()->create(['slug' => PakSlug::Pak128]);
+        for ($i = 0; $i < 60; $i++) {
+            $page = Page::factory()->create([
+                'site_name' => SiteName::Japan,
+                'title' => "Locomotive Addon {$i}",
+                'url' => "https://example.test/loco-{$i}",
+                'raw_page_id' => RawPage::factory()->create(['url' => "https://example.test/loco-raw-{$i}"])->id,
+            ]);
+            $page->paks()->attach($pak);
+        }
+
+        $html = Livewire::test(Pages::class)
+            ->set('keyword', 'Locomotive')
+            ->set('paks.'.PakSlug::Pak64->value, false)
+            ->call('onConditionUpdate')
+            ->html();
+
+        $this->assertMatchesRegularExpression('#href="[^"]*[?&](amp;)?page=2[^"]*"#', $html);
+        $this->assertMatchesRegularExpression('#href="[^"]*keyword=Locomotive[^"]*"#', $html);
+        $this->assertMatchesRegularExpression('#href="[^"]*paks%5B'.PakSlug::Pak64->value.'%5D=0[^"]*"#', $html);
     }
 
     public function test_clear_resets_keyword_paks_sites_and_page(): void
