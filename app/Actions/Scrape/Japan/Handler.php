@@ -6,23 +6,23 @@ namespace App\Actions\Scrape\Japan;
 
 use App\Actions\Scrape\FetchHtml;
 use App\Actions\Scrape\HandlerInterface;
+use App\Actions\Scrape\SleepBetweenRequests;
 use App\Actions\Scrape\UpdateOrCreateRawPage;
 use App\Enums\Encoding;
 use App\Enums\SiteName;
-use Illuminate\Http\Client\RequestException;
-use Illuminate\Support\Sleep;
 use Psr\Log\LoggerInterface;
 
 final readonly class Handler implements HandlerInterface
 {
-    private const int IntervalSeconds = 2;
+    private const int INTERVAL_SECONDS = 2;
 
-    private const int RateLimitCooldownSeconds = 15;
+    private const int RATE_LIMIT_COOLDOWN_SECONDS = 15;
 
     public function __construct(
         private FetchHtml $fetchHtml,
         private FindUrls $findUrls,
         private UpdateOrCreateRawPage $updateOrCreateRawPage,
+        private SleepBetweenRequests $sleepBetweenRequests,
     ) {}
 
     #[\Override]
@@ -39,23 +39,11 @@ final readonly class Handler implements HandlerInterface
                     SiteName::Japan,
                     $html
                 );
-                Sleep::for(self::IntervalSeconds)->seconds();
+                ($this->sleepBetweenRequests)(null, self::INTERVAL_SECONDS, self::RATE_LIMIT_COOLDOWN_SECONDS);
             } catch (\Throwable $th) {
                 $logger->error('failed', [$url, $th]);
-                $this->sleepAfterFailure($th);
+                ($this->sleepBetweenRequests)($th, self::INTERVAL_SECONDS, self::RATE_LIMIT_COOLDOWN_SECONDS);
             }
         }
-    }
-
-    private function sleepAfterFailure(\Throwable $throwable): void
-    {
-        // 429 は通常のリトライ間隔では解消しないため、長めに待って次の URL へ進む。
-        if ($throwable instanceof RequestException && $throwable->response->status() === 429) {
-            Sleep::for(self::RateLimitCooldownSeconds)->seconds();
-
-            return;
-        }
-
-        Sleep::for(self::IntervalSeconds)->seconds();
     }
 }

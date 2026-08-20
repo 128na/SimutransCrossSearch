@@ -7,10 +7,12 @@ namespace Tests\Feature\Actions\Scrape\Japan;
 use App\Actions\Scrape\FetchHtml;
 use App\Actions\Scrape\Japan\FindUrls;
 use App\Actions\Scrape\Japan\Handler;
+use App\Actions\Scrape\SleepBetweenRequests;
 use App\Actions\Scrape\UpdateOrCreateRawPage;
 use App\Models\RawPage;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Sleep;
 use Psr\Log\NullLogger;
 use Tests\Feature\TestCase;
 
@@ -23,6 +25,7 @@ final class HandlerFailureTest extends TestCase
     public function test_does_not_write_raw_page_when_fetch_fails(): void
     {
         Http::preventStrayRequests();
+        Sleep::fake();
 
         $listHtml = '<html><body><div id="body"><ul><li>'
             .'<a href="https://japanese.simutrans.com:443/index.php?Addon128%2FTest">test</a>'
@@ -39,6 +42,7 @@ final class HandlerFailureTest extends TestCase
             new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false),
             new FindUrls(new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false)),
             new UpdateOrCreateRawPage,
+            new SleepBetweenRequests,
         );
 
         $handler(new NullLogger);
@@ -49,6 +53,7 @@ final class HandlerFailureTest extends TestCase
     public function test_does_not_write_raw_page_when_response_is_non_2xx(): void
     {
         Http::preventStrayRequests();
+        Sleep::fake();
 
         $listHtml = '<html><body><div id="body"><ul><li>'
             .'<a href="https://japanese.simutrans.com:443/index.php?Addon128%2FTest">test</a>'
@@ -63,6 +68,7 @@ final class HandlerFailureTest extends TestCase
             new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false),
             new FindUrls(new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false)),
             new UpdateOrCreateRawPage,
+            new SleepBetweenRequests,
         );
 
         $handler(new NullLogger);

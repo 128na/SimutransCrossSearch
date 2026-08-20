@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Actions\Scrape\Twitrans;
 
 use App\Actions\Scrape\FetchHtml;
+use App\Actions\Scrape\SleepBetweenRequests;
 use App\Actions\Scrape\Twitrans\FindUrls;
 use App\Actions\Scrape\Twitrans\Handler;
 use App\Actions\Scrape\UpdateOrCreateRawPage;
@@ -35,6 +36,7 @@ final class HandlerRateLimitTest extends TestCase
             new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false),
             new FindUrls(new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false)),
             new UpdateOrCreateRawPage,
+            new SleepBetweenRequests,
         );
 
         $handler(new NullLogger);
