@@ -67,9 +67,17 @@ final class ScrapeActionTest extends TestCase
         });
 
         $scrapeAction = app(ScrapeAction::class);
-        $scrapeAction(null, new NullLogger);
 
-        // Japan's list fetch fails entirely, but Twitrans must still run.
+        // Japan's list fetch fails entirely, but Twitrans must still run before
+        // the failure is rethrown so the caller (ScrapeCommand) can still
+        // report()/exit non-zero/skip the last_crawl cache update.
+        try {
+            $scrapeAction(null, new NullLogger);
+            $this->fail('Expected ConnectionException was not thrown.');
+        } catch (ConnectionException) {
+            // expected
+        }
+
         Http::assertNotSent(fn ($request): bool => str_contains((string) $request->url(), 'japanese.simutrans.com/index.php'));
         Http::assertSent(fn ($request): bool => str_contains((string) $request->url(), 'wikiwiki.jp/twitrans'));
     }
