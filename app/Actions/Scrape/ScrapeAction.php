@@ -17,8 +17,12 @@ final readonly class ScrapeAction
     {
         $siteNames = $siteName instanceof SiteName ? [$siteName] : SiteName::cases();
 
-        foreach ($this->handlerFactory->create($siteNames) as $handler) {
-            $handler($logger);
+        foreach ($this->handlerFactory->create($siteNames) as $index => $handler) {
+            try {
+                $handler($logger);
+            } catch (\Throwable $th) {
+                $logger->error('site failed', [$siteNames[$index]->value, $th]);
+            }
         }
     }
 }

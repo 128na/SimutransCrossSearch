@@ -9,6 +9,7 @@ use App\Actions\Scrape\Portal\Handler;
 use App\Actions\Scrape\ScrapeAction;
 use App\Enums\SiteName;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -50,5 +51,26 @@ final class ScrapeActionTest extends TestCase
 
         Http::assertSent(fn ($request): bool => str_contains((string) $request->url(), 'japanese.simutrans.com'));
         Http::assertNotSent(fn ($request): bool => str_contains((string) $request->url(), 'wikiwiki.jp/twitrans'));
+    }
+
+    public function test_one_site_failure_does_not_stop_other_sites(): void
+    {
+        Http::fake([
+            'https://japanese.simutrans.com?cmd=list' => fn (): never => throw new ConnectionException('connection failed'),
+            '*' => Http::response('<html><body></body></html>', 200),
+        ]);
+
+        // Mock PortalHandler to avoid database queries in CI where the portal connection is unmigrated
+        $this->app->bind(Handler::class, fn (): HandlerInterface => new class implements HandlerInterface
+        {
+            public function __invoke(LoggerInterface $logger): void {}
+        });
+
+        $scrapeAction = app(ScrapeAction::class);
+        $scrapeAction(null, new NullLogger);
+
+        // Japan's list fetch fails entirely, but Twitrans must still run.
+        Http::assertNotSent(fn ($request): bool => str_contains((string) $request->url(), 'japanese.simutrans.com/index.php'));
+        Http::assertSent(fn ($request): bool => str_contains((string) $request->url(), 'wikiwiki.jp/twitrans'));
     }
 }
