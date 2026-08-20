@@ -9,11 +9,16 @@ use App\Actions\Scrape\HandlerInterface;
 use App\Actions\Scrape\UpdateOrCreateRawPage;
 use App\Enums\Encoding;
 use App\Enums\SiteName;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Sleep;
 use Psr\Log\LoggerInterface;
 
 final readonly class Handler implements HandlerInterface
 {
+    private const int IntervalSeconds = 2;
+
+    private const int RateLimitCooldownSeconds = 15;
+
     public function __construct(
         private FetchHtml $fetchHtml,
         private FindUrls $findUrls,
@@ -34,10 +39,23 @@ final readonly class Handler implements HandlerInterface
                     SiteName::Japan,
                     $html
                 );
-                Sleep::for(1)->second();
+                Sleep::for(self::IntervalSeconds)->seconds();
             } catch (\Throwable $th) {
                 $logger->error('failed', [$url, $th]);
+                $this->sleepAfterFailure($th);
             }
         }
+    }
+
+    private function sleepAfterFailure(\Throwable $th): void
+    {
+        // 429 は通常のリトライ間隔では解消しないため、長めに待って次の URL へ進む。
+        if ($th instanceof RequestException && $th->response->status() === 429) {
+            Sleep::for(self::RateLimitCooldownSeconds)->seconds();
+
+            return;
+        }
+
+        Sleep::for(self::IntervalSeconds)->seconds();
     }
 }
