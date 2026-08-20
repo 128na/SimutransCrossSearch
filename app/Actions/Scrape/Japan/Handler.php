@@ -47,10 +47,10 @@ final readonly class Handler implements HandlerInterface
         }
     }
 
-    private function sleepAfterFailure(\Throwable $th): void
+    private function sleepAfterFailure(\Throwable $throwable): void
     {
         // 429 は通常のリトライ間隔では解消しないため、長めに待って次の URL へ進む。
-        if ($th instanceof RequestException && $th->response->status() === 429) {
+        if ($throwable instanceof RequestException && $throwable->response->status() === 429) {
             Sleep::for(self::RateLimitCooldownSeconds)->seconds();
 
             return;
