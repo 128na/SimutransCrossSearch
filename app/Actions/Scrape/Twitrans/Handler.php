@@ -15,9 +15,9 @@ use Psr\Log\LoggerInterface;
 
 final readonly class Handler implements HandlerInterface
 {
-    private const int IntervalSeconds = 2;
+    private const int IntervalSeconds = 10;
 
-    private const int RateLimitCooldownSeconds = 15;
+    private const int RateLimitCooldownSeconds = 60;
 
     public function __construct(
         private FetchHtml $fetchHtml,

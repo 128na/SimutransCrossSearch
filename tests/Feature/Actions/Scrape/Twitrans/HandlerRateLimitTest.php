@@ -39,10 +39,10 @@ final class HandlerRateLimitTest extends TestCase
 
         $handler(new NullLogger);
 
-        // 成功時は通常間隔(2秒)、429 を受けた直後はより長いクールダウン(15秒)。
+        // 成功時は通常間隔(10秒)、429 を受けた直後はより長いクールダウン(60秒)。
         Sleep::assertSequence([
-            Sleep::for(2)->seconds(),
-            Sleep::for(15)->seconds(),
+            Sleep::for(10)->seconds(),
+            Sleep::for(60)->seconds(),
         ]);
     }
 }
