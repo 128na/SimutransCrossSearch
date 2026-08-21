@@ -54,6 +54,10 @@ final readonly class FindUrls
         return ! (str_contains($url, 'test') || str_contains($url, 'index') || str_contains($url, 'menubar') || str_contains($url, '%e8%a4%87%e8%a3%bd'));
     }
 
+    /**
+     * 単純な相対→絶対URLの連結。Japan\FindUrls::toFullUrl() と異なり、
+     * このサイトの href はパーセントエンコードの再構築を必要としない。
+     */
     private function toFullUrl(string $url): string
     {
         return self::DOMAIN.$url;

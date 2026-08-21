@@ -22,6 +22,10 @@ final class ScrapeActionTest extends TestCase
     public function test_invokes_handlers_for_all_sites_when_null_provided(): void
     {
         Http::fake([
+            'https://japanese.simutrans.com?cmd=list' => Http::response(
+                '<html><body><div id="body"><ul><li><a href="./?Addon128/Aircrafts">Aircrafts</a></li></ul></div></body></html>',
+                200
+            ),
             '*' => Http::response('<html><body></body></html>', 200),
         ]);
 
@@ -43,6 +47,10 @@ final class ScrapeActionTest extends TestCase
     public function test_invokes_specific_handler_when_site_provided(): void
     {
         Http::fake([
+            'https://japanese.simutrans.com?cmd=list' => Http::response(
+                '<html><body><div id="body"><ul><li><a href="./?Addon128/Aircrafts">Aircrafts</a></li></ul></div></body></html>',
+                200
+            ),
             '*' => Http::response('<html><body></body></html>', 200),
         ]);
 
