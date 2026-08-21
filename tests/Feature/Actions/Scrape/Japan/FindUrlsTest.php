@@ -79,4 +79,68 @@ final class FindUrlsTest extends TestCase
             'https://japanese.simutrans.com:443/index.php?Addon128%2FAircrafts',
         ], $urls->values()->all());
     }
+
+    public function test_includes_the_standalone_addon_namespace_with_encoded_japanese_page_name(): void
+    {
+        Http::preventStrayRequests();
+
+        // 「アドオン/」名前空間（EUC-JPパーセントエンコード、スラッシュのみ非エンコード）。
+        // filter() の :443 抜けコピペミスの回帰テスト。
+        $listHtml = '<html><body><div id="body"><ul>'
+            .'<li><a href="./?%A5%A2%A5%C9%A5%AA%A5%F3/%CE%F3%BC%D620">addon</a></li>'
+            .'</ul></div></body></html>';
+
+        Http::fake([
+            'https://japanese.simutrans.com?cmd=list' => Http::response($listHtml, 200),
+        ]);
+
+        $findUrls = new FindUrls(new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false));
+
+        $urls = ($findUrls)();
+
+        $this->assertSame([
+            'https://japanese.simutrans.com:443/index.php?%A5%A2%A5%C9%A5%AA%A5%F3%2F%CE%F3%BC%D620',
+        ], $urls->values()->all());
+    }
+
+    public function test_ignores_hrefs_from_a_different_host(): void
+    {
+        Http::preventStrayRequests();
+
+        $listHtml = '<html><body><div id="body"><ul>'
+            .'<li><a href="https://example.com/?Addon128/Evil">evil</a></li>'
+            .'<li><a href="./?Addon128/Aircrafts">Aircrafts</a></li>'
+            .'</ul></div></body></html>';
+
+        Http::fake([
+            'https://japanese.simutrans.com?cmd=list' => Http::response($listHtml, 200),
+        ]);
+
+        $findUrls = new FindUrls(new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false));
+
+        $urls = ($findUrls)();
+
+        $this->assertSame([
+            'https://japanese.simutrans.com:443/index.php?Addon128%2FAircrafts',
+        ], $urls->values()->all());
+    }
+
+    public function test_throws_when_no_urls_match(): void
+    {
+        Http::preventStrayRequests();
+
+        $listHtml = '<html><body><div id="body"><ul>'
+            .'<li><a href="./?RecentChanges">RecentChanges</a></li>'
+            .'</ul></div></body></html>';
+
+        Http::fake([
+            'https://japanese.simutrans.com?cmd=list' => Http::response($listHtml, 200),
+        ]);
+
+        $findUrls = new FindUrls(new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false));
+
+        $this->expectException(\RuntimeException::class);
+
+        ($findUrls)();
+    }
 }
