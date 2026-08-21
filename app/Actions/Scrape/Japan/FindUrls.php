@@ -25,6 +25,7 @@ final readonly class FindUrls
     public function __invoke(): Collection
     {
         return $this->getTargetUrls()
+            ->map(fn (string $url): string => $this->toFullUrl($url))
             ->filter(fn (string $url): bool => $this->filter($url));
     }
 
@@ -41,6 +42,21 @@ final readonly class FindUrls
         return collect($urls)->filter(fn ($url): bool => is_string($url));
     }
 
+    /**
+     * サイト側が相対URL・非エンコードのスラッシュを返すようになったため、
+     * href が相対/絶対・新旧いずれのエンコーディングでも同じ絶対URLに
+     * 正規化する（既存 raw_pages.url との一致を保ち、重複行を作らない）。
+     */
+    private function toFullUrl(string $url): string
+    {
+        $query = parse_url($url, PHP_URL_QUERY);
+        if (! is_string($query) || $query === '') {
+            return $url;
+        }
+
+        return self::TOP_URL.':443/index.php?'.rawurlencode(urldecode($query));
+    }
+
     private function filter(string $url): bool
     {
         $url = strtolower($url);
@@ -49,7 +65,7 @@ final readonly class FindUrls
             ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addon128%2f')  // Addon128/
             && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addon128japan%2f')  // Addon128/Japan/
             && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addons%2f64%2f')  // Addons/
-            && ! str_starts_with($url, 'https://japanese.simutrans.com/index.php?%a5%a2%a5%c9%a5%aa%a5%f3%2f')  // アドオン/
+            && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?%a5%a2%a5%c9%a5%aa%a5%f3%2f')  // アドオン/
         ) {
             return false;
         }
