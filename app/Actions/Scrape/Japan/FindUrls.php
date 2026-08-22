@@ -7,6 +7,7 @@ namespace App\Actions\Scrape\Japan;
 use App\Actions\Scrape\FetchHtml;
 use App\Enums\Encoding;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
 final readonly class FindUrls
@@ -14,6 +15,25 @@ final readonly class FindUrls
     private const string TOP_URL = 'https://japanese.simutrans.com';
 
     private const string LIST_URL = 'https://japanese.simutrans.com?cmd=list';
+
+    /**
+     * 取得対象の名前空間プレフィックス（2026-08-22 網羅性調査で確認済み）。
+     * サイトの ?cmd=filelist（全ページの実ファイル一覧、?cmd=list とは独立した
+     * 列挙経路）と突き合わせても、これらの名前空間で漏れが無いことを確認済み。
+     *
+     * Addons/128/ は Addons/64/ と対の名前空間で、以前はここに無く、配下の
+     * Trains_01〜31 の13ページ（および直下のカテゴリページ自体は現在も対象外）
+     * が取得漏れしていた。
+     *
+     * @var list<string>
+     */
+    private const array ADDON_PREFIXES = [
+        'https://japanese.simutrans.com:443/index.php?addon128%2f',  // Addon128/ (pak128 用アドオン)
+        'https://japanese.simutrans.com:443/index.php?addon128japan%2f',  // Addon128Japan/ (pak128.japan 用アドオン)
+        'https://japanese.simutrans.com:443/index.php?addons%2f64%2f',  // Addons/64/ (pak64 用アドオン)
+        'https://japanese.simutrans.com:443/index.php?addons%2f128%2f',  // Addons/128/ (pak128 用アドオン)
+        'https://japanese.simutrans.com:443/index.php?%a5%a2%a5%c9%a5%aa%a5%f3%2f',  // アドオン/ (上記以外のパッケージ向けアドオン)
+    ];
 
     public function __construct(
         private FetchHtml $fetchHtml,
@@ -74,16 +94,21 @@ final readonly class FindUrls
         return self::TOP_URL.':443/index.php?'.rawurlencode(urldecode($query));
     }
 
+    /**
+     * 対象ページの判定基準（2026-08-22 網羅性調査で確認済み）。
+     * 取得対象の名前空間は self::ADDON_PREFIXES を参照。
+     *
+     * 【意図的に除外しているページ】上記名前空間の直下にあっても、以下は
+     * アドオン本体ではないため除外する。
+     * - MenuBar         : ナビゲーション用の共通メニュー
+     * - header          : ページ上部の共通ヘッダー
+     * - アドオン投稿報告 : 投稿報告用の掲示板ページ（%ca%f3%b9%f0 = EUC-JP「報告」）
+     */
     private function filter(string $url): bool
     {
         $url = strtolower($url);
         // アドオンページ以外
-        if (
-            ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addon128%2f')  // Addon128/
-            && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addon128japan%2f')  // Addon128/Japan/
-            && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addons%2f64%2f')  // Addons/
-            && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?%a5%a2%a5%c9%a5%aa%a5%f3%2f')  // アドオン/
-        ) {
+        if (! Str::startsWith($url, self::ADDON_PREFIXES)) {
             return false;
         }
 
@@ -92,7 +117,7 @@ final readonly class FindUrls
             return false;
         }
 
-        // 不要ページ
+        // 不要ページ（ナビゲーション用の共通ページ・投稿報告ページ）
         return ! (str_contains($url, 'menubar')
             || str_contains($url, 'header')
             || str_contains($url, '%ca%f3%b9%f0'));
