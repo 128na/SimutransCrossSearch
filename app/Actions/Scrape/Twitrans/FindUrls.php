@@ -42,6 +42,30 @@ final readonly class FindUrls
         return collect($urls)->filter(fn ($url): bool => is_string($url));
     }
 
+    /**
+     * 対象ページの判定基準（2026-08-22 網羅性調査で確認済み）。
+     *
+     * 【取得対象】addon/pak64/, addon/pak128/, addon/pak128.japan/ 配下の
+     * アドオン本体ページ。サイトの sitemap.txt（?cmd=list とは独立した
+     * 列挙経路）と突き合わせても漏れが無いことを確認済み。
+     *
+     * 【意図的に対象外にしているページ】以下はいずれも実データで中身を確認
+     * 済みで、含めると同じアドオンが検索結果に重複して出るか、そもそも
+     * ダウンロード対象が存在しないページのため、意図的に対象外のままに
+     * している。
+     * - addon/pak64|pak128/companyIndex/ : 各アドオンページの内容を会社別に
+     *   再編集しただけの一覧（prefix には一致するが "index" を含むため
+     *   下の不要ページ判定で弾かれる）
+     * - addon/Campany/ , addon/Other/    : companyIndex 以前からある、内容は
+     *   同じアドオンを別カテゴリで再掲載したページ（addon/pak64|128|128.japan/
+     *   のいずれにも一致しないため、上の prefix 判定の時点で弾かれる）
+     * - addon/series/                    : アドオン本体ではなく、実験室/日本語化
+     *                                       wiki/Addon Portal 横断の索引表
+     *                                       （同様に prefix 不一致で除外）
+     * - addon/Notice/                    : 未公開・制作予定アドオンの告知板
+     *                                       (ダウンロード対象が存在しない。
+     *                                       同様に prefix 不一致で除外)
+     */
     private function filter(string $url): bool
     {
         $url = strtolower($url);
@@ -50,7 +74,7 @@ final readonly class FindUrls
             return false;
         }
 
-        // 不要ページ
+        // 不要ページ（試験用・会社別索引ページ・共通メニュー・複製ページ）
         return ! (str_contains($url, 'test') || str_contains($url, 'index') || str_contains($url, 'menubar') || str_contains($url, '%e8%a4%87%e8%a3%bd'));
     }
 

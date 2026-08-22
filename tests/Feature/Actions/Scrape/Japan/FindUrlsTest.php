@@ -103,6 +103,29 @@ final class FindUrlsTest extends TestCase
         ], $urls->values()->all());
     }
 
+    public function test_includes_the_addons_128_namespace(): void
+    {
+        Http::preventStrayRequests();
+
+        // Addons/64/ と対の名前空間。以前はフィルタ条件に無く取得漏れしていた。
+        $listHtml = '<html><body><div id="body"><ul>'
+            .'<li><a href="./?Addons/128">Addons/128</a></li>'
+            .'<li><a href="./?Addons/128/Trains_01">Trains_01</a></li>'
+            .'</ul></div></body></html>';
+
+        Http::fake([
+            'https://japanese.simutrans.com?cmd=list' => Http::response($listHtml, 200),
+        ]);
+
+        $findUrls = new FindUrls(new FetchHtml(retryTimes: 1, sleepMilliseconds: 1, useCache: false));
+
+        $urls = ($findUrls)();
+
+        $this->assertSame([
+            'https://japanese.simutrans.com:443/index.php?Addons%2F128%2FTrains_01',
+        ], $urls->values()->all());
+    }
+
     public function test_ignores_hrefs_from_a_different_host(): void
     {
         Http::preventStrayRequests();
