@@ -7,6 +7,7 @@ namespace App\Actions\Scrape\Japan;
 use App\Actions\Scrape\FetchHtml;
 use App\Enums\Encoding;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
 final readonly class FindUrls
@@ -14,6 +15,25 @@ final readonly class FindUrls
     private const string TOP_URL = 'https://japanese.simutrans.com';
 
     private const string LIST_URL = 'https://japanese.simutrans.com?cmd=list';
+
+    /**
+     * 取得対象の名前空間プレフィックス（2026-08-22 網羅性調査で確認済み）。
+     * サイトの ?cmd=filelist（全ページの実ファイル一覧、?cmd=list とは独立した
+     * 列挙経路）と突き合わせても、これらの名前空間で漏れが無いことを確認済み。
+     *
+     * Addons/128/ は Addons/64/ と対の名前空間で、以前はここに無く、配下の
+     * Trains_01〜31 の13ページ（および直下のカテゴリページ自体は現在も対象外）
+     * が取得漏れしていた。
+     *
+     * @var list<string>
+     */
+    private const array ADDON_PREFIXES = [
+        'https://japanese.simutrans.com:443/index.php?addon128%2f',  // Addon128/ (pak128 用アドオン)
+        'https://japanese.simutrans.com:443/index.php?addon128japan%2f',  // Addon128Japan/ (pak128.japan 用アドオン)
+        'https://japanese.simutrans.com:443/index.php?addons%2f64%2f',  // Addons/64/ (pak64 用アドオン)
+        'https://japanese.simutrans.com:443/index.php?addons%2f128%2f',  // Addons/128/ (pak128 用アドオン)
+        'https://japanese.simutrans.com:443/index.php?%a5%a2%a5%c9%a5%aa%a5%f3%2f',  // アドオン/ (上記以外のパッケージ向けアドオン)
+    ];
 
     public function __construct(
         private FetchHtml $fetchHtml,
@@ -76,16 +96,7 @@ final readonly class FindUrls
 
     /**
      * 対象ページの判定基準（2026-08-22 網羅性調査で確認済み）。
-     *
-     * 【取得対象の名前空間】アドオン本体が置かれているページ群。
-     * サイトの ?cmd=filelist（全ページの実ファイル一覧、?cmd=list とは独立した
-     * 列挙経路）と突き合わせても、以下の名前空間で漏れが無いことを確認済み。
-     * - Addon128/       : pak128 用アドオン
-     * - Addon128Japan/  : pak128.japan 用アドオン
-     * - Addons/64/      : pak64 用アドオン
-     * - Addons/128/     : pak128 用アドオン（Addons/64/ と対の名前空間。
-     *                     以前は未対応で 14 ページ丸ごと取得漏れしていた）
-     * - アドオン/        : 上記以外のパッケージ向けアドオン
+     * 取得対象の名前空間は self::ADDON_PREFIXES を参照。
      *
      * 【意図的に除外しているページ】上記名前空間の直下にあっても、以下は
      * アドオン本体ではないため除外する。
@@ -97,13 +108,7 @@ final readonly class FindUrls
     {
         $url = strtolower($url);
         // アドオンページ以外
-        if (
-            ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addon128%2f')  // Addon128/
-            && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addon128japan%2f')  // Addon128Japan/
-            && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addons%2f64%2f')  // Addons/64/
-            && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?addons%2f128%2f')  // Addons/128/
-            && ! str_starts_with($url, 'https://japanese.simutrans.com:443/index.php?%a5%a2%a5%c9%a5%aa%a5%f3%2f')  // アドオン/
-        ) {
+        if (! Str::startsWith($url, self::ADDON_PREFIXES)) {
             return false;
         }
 
