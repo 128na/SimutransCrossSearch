@@ -62,7 +62,8 @@
             "@php artisan ide-helper:models -WR",
             "@rector",
             "@stan",
-            "@pint"
+            "@pint",
+            "@docs"
         ],
         "pint": [
             "@php ./vendor/bin/pint"
@@ -75,6 +76,9 @@
         ],
         "rector": [
             "@php ./vendor/bin/rector --no-diffs"
+        ],
+        "docs": [
+            "node tools/docs-lint.mjs"
         ]
     },
     "extra": {

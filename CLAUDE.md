@@ -13,7 +13,14 @@ composer run pint:check  # Pint dry-run
 composer run stan        # PHPStan
 composer run rector      # Rector (automated refactoring, dry-run by default)
 php artisan test         # PHPUnit
+
+composer run docs        # docs-lint (node tools/docs-lint.mjs)
 ```
+
+## Architecture
+
+ドキュメントは [docs/README.md](docs/README.md) の規約に従う。
+生きた文書は allowlist 制（`tools/docs-policy.json`）。記録は `docs/records/` に日付付きで不変。
 
 ## グローバル規約
 
