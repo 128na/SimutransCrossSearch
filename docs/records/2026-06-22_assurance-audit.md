@@ -1,7 +1,7 @@
 # Assurance Audit スナップショット（2026-06-22）
 
 これは初回の Assurance Audit（assurance-audit スキル）の診断記録。
-「現在の状態」は [known-risks.md](known-risks.md) を参照。本ファイルは**初回診断の根拠**を残すための凍結記録。
+「現在の状態」は [../known-risks.md](../known-risks.md) を参照。本ファイルは**初回診断の根拠**を残すための凍結記録。
 
 採点モデル: `Intent → Behavior → Control → Evidence`。
 Coverage（量）ではなく **Confidence（守られているか）** を採点する。
@@ -12,7 +12,7 @@ Coverage（量）ではなく **Confidence（守られているか）** を採�
 ## Step -1 所見（最優先）
 
 **脅威モデル・既知リスク・runbook が一切存在しない。** `docs/dependency-debt.md` は依存負債のみ。
-「何を守るべきか」の台帳が無いこと自体が最大の欠陥。本監査を機に [known-risks.md](known-risks.md) を新設した。
+「何を守るべきか」の台帳が無いこと自体が最大の欠陥。本監査を機に [known-risks.md](../known-risks.md) を新設した。
 
 ## New Candidate Risks（脅威探索で発見、既存台帳に無かった項目）
 
