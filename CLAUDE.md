@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-# Run all checks (dump-autoload + ide-helper + rector + phpstan + pint)
+# Run all checks (dump-autoload + ide-helper + rector + phpstan + pint + docs-lint)
 composer run all
 
 composer run pint        # Laravel Pint (format)
@@ -14,7 +14,7 @@ composer run stan        # PHPStan
 composer run rector      # Rector (automated refactoring, dry-run by default)
 php artisan test         # PHPUnit
 
-composer run docs        # docs-lint (node tools/docs-lint.mjs)
+composer run docs        # docs-lint (node tools/docs-lint.mjs, requires Node.js)
 ```
 
 ## Architecture

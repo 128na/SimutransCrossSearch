@@ -2,11 +2,13 @@ name: docs-lint
 
 on:
   push:
+    branches: [master]
     paths:
       - "**.md"
       - "tools/**"
       - ".github/workflows/docs-lint.yml"
   pull_request:
+    branches: [master, develop]
     paths:
       - "**.md"
       - "tools/**"
