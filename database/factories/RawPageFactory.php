@@ -19,7 +19,7 @@ final class RawPageFactory extends Factory
     {
         return [
             'site_name' => $this->faker->randomElement(SiteName::cases()),
-            'url' => $this->faker->url(),
+            'url' => $this->faker->unique()->url(),
             'html' => '<html><body>Example HTML</body></html>',
         ];
     }
