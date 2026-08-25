@@ -21,7 +21,7 @@ final class PageFactory extends Factory
         return [
             'raw_page_id' => RawPage::factory(),
             'site_name' => $this->faker->randomElement(SiteName::cases()),
-            'url' => $this->faker->url(),
+            'url' => $this->faker->unique()->url(),
             'title' => $this->faker->sentence(),
             'text' => $this->faker->paragraph(),
             'last_modified' => now(),
