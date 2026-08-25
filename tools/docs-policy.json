@@ -1,0 +1,23 @@
+{
+  "$comment": "docs-lint.mjs が読む機械可読ポリシー。生きた文書を増やす場合は livingDocs に追記し、理由を ADR として残すこと。",
+  "scanRoots": {
+    "recursive": ["docs"],
+    "flat": ["."]
+  },
+  "livingDocs": [
+    "README.md",
+    "CLAUDE.md",
+    "docs/README.md"
+  ],
+  "ledgers": [
+    "docs/dependency-debt.md",
+    "docs/known-risks.md"
+  ],
+  "recordDirs": ["docs/records"],
+  "adrDir": "docs/adr",
+  "templateDir": "docs/templates",
+  "forbiddenFileNames": ["INDEX.md", "index.md", "TODO.md"],
+  "forbiddenDirNames": ["temp", "tmp", "draft", "wip"],
+  "dependencyDebtHeader": "| Package | Current | Target | Blocker | Type | Revisit condition | Recorded |",
+  "dependencyDebtTypes": ["temporary", "infra", "behavior-change"]
+}

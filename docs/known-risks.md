@@ -6,7 +6,7 @@
 - **制御**: None（無し）/ Detective（事後に検知・通知のみ）/ Preventive（事前に阻止）
 - **Status**: 🔴 Missing/Stale/Weak ・ 🟡 Structural Weakness/SPOF ・ 🟢 OK
 - 是正が完了したら Status とテスト欄を更新する（行は削除せず履歴として残す）。
-- 初回診断の根拠は [assurance-audit-2026-06-22.md](assurance-audit-2026-06-22.md) を参照。
+- 初回診断の根拠は [records/2026-06-22_assurance-audit.md](records/2026-06-22_assurance-audit.md) を参照。
 
 ## A. Scrape / Extract パイプライン
 
