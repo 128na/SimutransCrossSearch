@@ -14,7 +14,7 @@ composer run stan        # PHPStan
 composer run rector      # Rector (automated refactoring, dry-run by default)
 php artisan test         # PHPUnit
 
-composer run docs        # docs-lint (node tools/docs-lint.mjs, requires Node.js)
+composer run docs        # docs-lint (npx github:128na/docs-lint#v1.0.0, requires Node.js)
 ```
 
 ## Architecture
