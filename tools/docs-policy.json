@@ -1,5 +1,5 @@
 {
-  "$comment": "docs-lint.mjs が読む機械可読ポリシー。生きた文書を増やす場合は livingDocs に追記し、理由を ADR として残すこと。",
+  "$comment": "docs-lint（github:128na/docs-lint）が読む機械可読ポリシー。生きた文書を増やす場合は livingDocs に追記し、理由を ADR として残すこと。",
   "scanRoots": {
     "recursive": ["docs"],
     "flat": ["."]

@@ -1,7 +1,7 @@
 # ドキュメント規約
 
 このリポジトリのドキュメントは「実装とテストが SSOT（唯一の真実）」を前提に、
-md として残すものを次の3種類に限定する。この規約は `tools/docs-lint.mjs` で機械検証される。
+md として残すものを次の3種類に限定する。この規約は [docs-lint](https://github.com/128na/docs-lint) で機械検証される。
 
 ## 原則
 
@@ -76,8 +76,10 @@ spec 相当文書を削除する前に:
 ## 検証
 
 ```bash
-node tools/docs-lint.mjs
+npx --yes github:128na/docs-lint#v1.0.0
 ```
 
 CI（`.github/workflows/docs-lint.yml`）でも同じものが走る。`composer run docs`（`composer run all` にも
-含まれる）からも実行できる。
+含まれる）からも実行できる。実体は [docs-lint](https://github.com/128na/docs-lint)
+パッケージ（複数リポジトリで共有、タグ `v1.0.0` 固定）。設定ファイルは引き続き
+`tools/docs-policy.json`。

@@ -78,7 +78,7 @@
             "@php ./vendor/bin/rector --no-diffs"
         ],
         "docs": [
-            "node tools/docs-lint.mjs"
+            "npx --yes github:128na/docs-lint#v1.0.0"
         ]
     },
     "extra": {
