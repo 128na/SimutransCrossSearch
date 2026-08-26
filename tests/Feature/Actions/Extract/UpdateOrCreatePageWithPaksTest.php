@@ -70,8 +70,8 @@ final class UpdateOrCreatePageWithPaksTest extends TestCase
         $thrown = null;
         try {
             $updateOrCreatePageWithPaks($rawPage, '新タイトル', '新本文', CarbonImmutable::now(), $invalidPaks);
-        } catch (\Throwable $e) {
-            $thrown = $e;
+        } catch (\Throwable $throwable) {
+            $thrown = $throwable;
         }
 
         $this->assertNotNull($thrown, 'SyncPak 内で例外が発生するはずだった');
