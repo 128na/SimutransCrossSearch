@@ -2,41 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Http\Resources;
+namespace Tests\Feature\Http;
 
 use App\Actions\SearchPage\SearchAction;
 use App\Enums\PakSlug;
 use App\Enums\SiteName;
-use App\Http\Resources\PageResource;
 use App\Models\Page;
 use App\Models\Pak;
 use App\Models\RawPage;
-use Illuminate\Http\Request;
 use Tests\Feature\TestCase;
 
-/**
- * D3: API/Feed 応答に内部フィールドを含めない（許可リストのみ）。
- * D1: 検索結果に raw_pages（生 HTML）を露出しない。
- */
-final class PageResourceTest extends TestCase
+final class PublicPageDataTest extends TestCase
 {
-    public function test_resource_exposes_only_whitelisted_fields(): void
-    {
-        $rawPage = RawPage::factory()->create(['html' => '<html>secret-internal-html</html>']);
-        $page = Page::factory()->create([
-            'raw_page_id' => $rawPage->id,
-            'site_name' => SiteName::Japan,
-        ]);
-
-        $array = (new PageResource($page))->toArray(Request::create('/'));
-
-        $this->assertSame(['title', 'site', 'paks', 'url', 'last_modified'], array_keys($array));
-        $this->assertArrayNotHasKey('raw_page_id', $array);
-        $this->assertArrayNotHasKey('id', $array);
-        $this->assertArrayNotHasKey('text', $array);
-        $this->assertStringNotContainsString('secret-internal-html', (string) json_encode($array));
-    }
-
     public function test_search_does_not_eager_load_raw_page_relation(): void
     {
         $pak = Pak::factory()->create(['slug' => PakSlug::Pak128]);
@@ -59,7 +36,7 @@ final class PageResourceTest extends TestCase
     }
 
     /**
-     * D3: RSS Feed（Page::toFeedItem）も内部フィールド・生 HTML を含めないこと。
+     * RSS Feed（Page::toFeedItem）も内部フィールド・生 HTML を含めないこと。
      */
     public function test_feed_item_does_not_expose_internal_fields_or_raw_html(): void
     {

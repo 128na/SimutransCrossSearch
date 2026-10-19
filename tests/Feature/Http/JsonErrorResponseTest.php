@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Route;
 use Tests\Feature\TestCase;
 
 /**
- * C2: 本番モード（APP_DEBUG=false）で API 例外応答にスタックトレースや
+ * C2: 本番モード（APP_DEBUG=false）で JSON 例外応答にスタックトレースや
  * 例外メッセージが含まれないこと。
  */
-final class ApiErrorResponseTest extends TestCase
+final class JsonErrorResponseTest extends TestCase
 {
     public function test_exception_response_does_not_leak_trace_in_production_mode(): void
     {
@@ -34,9 +34,9 @@ final class ApiErrorResponseTest extends TestCase
 
     /**
      * 例外メッセージに実際の機密値（DB 接続情報）が含まれているケースでも
-     * 本番モードでは API 応答に出ないこと。
+     * 本番モードでは JSON 応答に出ないこと。
      */
-    public function test_api_response_does_not_leak_secret_embedded_in_exception_message(): void
+    public function test_json_response_does_not_leak_secret_embedded_in_exception_message(): void
     {
         Config::set('app.debug', false);
         Config::set('database.connections.mysql.password', 'super-db-password');

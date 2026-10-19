@@ -31,8 +31,8 @@
 
 | ID | 保護すべき挙動 / Expected Outcome | 制御 | テスト | Status | 是正条件 | 記録日 |
 |----|----------------------------------|------|--------|--------|----------|--------|
-| C1 | デバッグページが config/スタックトレースを露出しない | Preventive（`.env.example`/`.ci`/`.deploy` すべて `APP_DEBUG=false`、コード既定も false） | 2（`Http/ApiErrorResponseTest` + `Http/WebErrorResponseTest`） | 🟢 OK | — | 2026-06-22 |
-| C2 | API 例外が生のトレースを返さない | Preventive（`APP_DEBUG=false` で汎用 JSON エラー） | 2（`Http/ApiErrorResponseTest`×2） | 🟢 OK | — | 2026-06-22 |
+| C1 | デバッグページが config/スタックトレースを露出しない | Preventive（`.env.example`/`.ci`/`.deploy` すべて `APP_DEBUG=false`、コード既定も false） | 2（`Http/JsonErrorResponseTest` + `Http/WebErrorResponseTest`） | 🟢 OK | — | 2026-06-22 |
+| C2 | JSON 例外が生のトレースを返さない | Preventive（`APP_DEBUG=false` で汎用 JSON エラー） | 2（`Http/JsonErrorResponseTest`×2） | 🟢 OK | — | 2026-06-22 |
 | C3 | 例外レポート（log/Discord）に機密値を混入させない | Preventive（`SecretScrubber`（伏字化対象は5文字以上の値のみ。"root"等の短い開発用パスワードでの誤爆を回避）+ `RedactSecretsProcessor`/tap + `ConvertDiscord`（親クラスの `addMessageStacktrace` を no-op 化し、未伏字化の生トレースでの上書きも防止） で送出前に伏字化） | 8（`SecretScrubberTest`×5 + `RedactSecretsProcessorTest` + `ConvertDiscordTest`×2） | 🟢 OK | — | 2026-08-26（assurance-audit是正: `test_scrub_array_recurses_and_masks_throwable` が `json_encode` 経由でアサートしており例外オブジェクトの伏字化を検証できていなかった欠陥を修正。`scrubArray()` の戻り値を直接アサートする形に変更し、5文字境界値テストを追加） |
 | C4 | 実シークレットを git に混入させない | Preventive（`.gitignore` で `.env` 除外、committed な `.env.*` は空値） | N/A | 🟢 OK | — | 2026-06-22 |
 
@@ -40,9 +40,9 @@
 
 | ID | 保護すべき挙動 / Expected Outcome | 制御 | テスト | Status | 是正条件 | 記録日 |
 |----|----------------------------------|------|--------|--------|----------|--------|
-| D1 | raw_pages（生 HTML）を公開経路に露出しない | Preventive（検索/Feed で rawPage を eager-load しない、Page に html 列無し） | 2（`PageResourceTest::test_search_does_not_eager_load_raw_page_relation` + `SearchPage/FeedActionTest`） | 🟢 OK | — | 2026-06-22 |
+| D1 | raw_pages（生 HTML）を公開経路に露出しない | Preventive（検索/Feed で rawPage を eager-load しない、Page に html 列無し） | 2（`PublicPageDataTest::test_search_does_not_eager_load_raw_page_relation` + `SearchPage/FeedActionTest`） | 🟢 OK | — | 2026-06-22 |
 | D2 | 非公開コンテンツを検索/Feed に出さない | N/A（Page に公開状態の概念が無い） | — | — | 対象外（将来 status 列を足す場合は再評価） | 2026-06-22 |
-| D3 | API/Feed 応答に内部フィールドを含めない | Preventive（PageResource 許可リスト + `Page::toFeedItem()`） | 2（`PageResourceTest::test_resource_exposes_only_whitelisted_fields` + `test_feed_item_does_not_expose_internal_fields_or_raw_html`） | 🟢 OK | — | 2026-06-22 |
+| D3 | API/Feed 応答に内部フィールドを含めない | Preventive（公開API廃止、Feed は `Page::toFeedItem()`） | 2（`RetiredPublicApiTest` + `PublicPageDataTest::test_feed_item_does_not_expose_internal_fields_or_raw_html`） | 🟢 OK | — | 2026-06-22 |
 | D4 | 半分書かれた Page 行を検索に見せない（原子性） | Preventive（`UpdateOrCreatePageWithPaks` が Page 更新 + Pak 同期を `DB::transaction()` で原子化。3 Handler すべてこれを使用） | 3（`Extract/UpdateOrCreatePageWithPaksTest`） | 🟢 OK | — | 2026-08-26（assurance-audit是正: 「DB::transaction が呼ばれたか」のモック確認と正常系コミットのみで、実際に途中失敗させてロールバックを確認するテストが無かった欠落を発見。`test_page_update_is_rolled_back_when_pak_sync_fails` を追加し、SyncPak/UpdateOrCreatePage が final のため実コードの契約違反経路で本物の失敗を起こしロールバックを検証） |
 
 <!--
