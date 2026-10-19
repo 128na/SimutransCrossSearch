@@ -10,16 +10,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
+/** @implements Scope<Category> */
 final class OnlyPakCategory implements Scope
 {
     /**
-     * @param  Builder<Model>  $builder
+     * @param  Builder<covariant Category>  $builder
+     * @param  Category  $model
      */
     #[\Override]
     public function apply(Builder $builder, Model $model): void
     {
-        assert($model instanceof Category);
-
         $builder->where('type', CategoryType::Pak);
     }
 }

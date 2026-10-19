@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 
 return [
 
+    'serializable_classes' => false,
+
     /*
     |--------------------------------------------------------------------------
     | Default Cache Store

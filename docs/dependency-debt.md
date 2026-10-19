@@ -9,8 +9,8 @@
 <!--
 運用メモ:
 - 本リポジトリの composer 更新は dependabot ではなく auto-package-update.yml が担当。
-  composer.json が laravel/framework を ^12 に固定しているため 13 のPRは生成されない（これが実質の歯止め）。
+  Laravel 13 への依存制約更新済み。以後のメジャー更新は別途検証する。
 - dependabot は github-actions のみを対象としているため、composer 側の ignore 追加は不要。
 - PHP 8.3.30 の platform 制約下でも Laravel 13.37.0 と Symfony 7.4 系で依存解決可能（2026-10-19 dry-run 確認）。旧 PHP 要件による infra ブロックは解消済み。
-- Laravel 13 へのメジャー更新は、アップグレードガイド・実動作を別途検証して進める。依存解決成功だけで自動更新しない。
+- メジャー更新ではアップグレードガイド・実動作を検証し、依存解決成功だけで自動更新しない。
 -->

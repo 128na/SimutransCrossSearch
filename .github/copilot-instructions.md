@@ -21,8 +21,8 @@ https://cross-search.128-bit.net
 ## 技術スタック
 
 -   **言語**: PHP 8.3+
--   **フレームワーク**: Laravel 12.x
--   **フロントエンド**: Livewire 3.x, Tailwind CSS
+-   **フレームワーク**: Laravel 13.x
+-   **フロントエンド**: Livewire 4.x, Tailwind CSS
 -   **データベース**: MySQL 8.0+
 -   **外部 API**: Notion API, Discord Logger
 -   **HTTP クライアント**: Guzzle
