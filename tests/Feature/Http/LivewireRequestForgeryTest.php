@@ -38,10 +38,11 @@ final class LivewireRequestForgeryTest extends TestCase
         $payload = $this->searchUpdatePayload();
         $payload['_token'] = session()->token();
 
-        $response = $this->postJson(Livewire::getUpdateUri(), $payload, ['X-Livewire' => 'true', ...$headers]);
+        $testResponse = $this->postJson(Livewire::getUpdateUri(), $payload, ['X-Livewire' => 'true', ...$headers]);
 
-        $response->assertOk();
-        $html = $response->json('components.0.effects.html');
+        $testResponse->assertOk();
+
+        $html = $testResponse->json('components.0.effects.html');
         $this->assertIsString($html);
         $this->assertStringContainsString('Steam Locomotive', $html);
         $this->assertStringNotContainsString('City Bus', $html);
@@ -80,10 +81,10 @@ final class LivewireRequestForgeryTest extends TestCase
     /** @return array<string, mixed> */
     private function searchUpdatePayload(): array
     {
-        $response = $this->get('/')->assertOk();
-        $document = new DOMDocument;
-        @$document->loadHTML($response->getContent());
-        $nodes = (new DOMXPath($document))->query('//*[@*[name()="wire:snapshot"]]');
+        $testResponse = $this->get('/')->assertOk();
+        $domDocument = new DOMDocument;
+        @$domDocument->loadHTML($testResponse->getContent());
+        $nodes = (new DOMXPath($domDocument))->query('//*[@*[name()="wire:snapshot"]]');
         $this->assertNotFalse($nodes);
         $component = $nodes->item(0);
         $this->assertInstanceOf(DOMElement::class, $component);
