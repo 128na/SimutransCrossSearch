@@ -99,18 +99,20 @@ final class PortalDatabaseConfigurationTest extends TestCase
         $this->assertSame('portal-reader', $portal['username']);
     }
 
-    public function test_dedicated_portal_url_is_parsed_independently(): void
+    public function test_url_cannot_bypass_explicit_portal_credentials(): void
     {
         $this->setLegacyValues();
         $this->setEnvironment('DB_URL', 'mysql://main-user:main-password@main-host:3307/main-data');
         $this->setEnvironment('PORTAL_DB_URL', 'mysql://portal-reader:portal-password@portal-host:3308/portal-data');
+        $this->setEnvironment('PORTAL_DB_USERNAME', 'explicit-reader');
+        $this->setEnvironment('PORTAL_DB_PASSWORD', 'explicit-secret');
         $portal = (new ConfigurationUrlParser)->parseConfiguration($this->configuration()['connections']['portal']);
 
-        $this->assertSame('portal-reader', $portal['username']);
-        $this->assertSame('portal-password', $portal['password']);
-        $this->assertSame('portal-host', $portal['host']);
-        $this->assertSame(3308, $portal['port']);
-        $this->assertSame('portal-data', $portal['database']);
+        $this->assertSame('explicit-reader', $portal['username']);
+        $this->assertSame('explicit-secret', $portal['password']);
+        $this->assertSame('legacy-host', $portal['host']);
+        $this->assertSame('3307', $portal['port']);
+        $this->assertNull($portal['url']);
     }
 
     private function setLegacyValues(): void

@@ -54,7 +54,7 @@ return [
         ],
         'portal' => [
             'driver' => 'mysql',
-            'url' => env('PORTAL_DB_URL'),
+            'url' => null,
             'host' => env('PORTAL_DB_HOST') ?? env('DB_HOST', '127.0.0.1'),
             'port' => env('PORTAL_DB_PORT', env('DB_PORT', '3306')),
             'database' => env('PORTAL_DB_DATABASE') ?? env('DB_DATABASE', 'laravel'),
