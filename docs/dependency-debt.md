@@ -5,12 +5,12 @@
 
 | Package | Current | Target | Blocker | Type | Revisit condition | Recorded |
 |---------|---------|--------|---------|------|-------------------|----------|
-| laravel/framework | 12.61 | 13.x | prod が PHP 8.3。Laravel 13.3+ は Symfony 8 を引き込み PHP 8.4.1+ が必須 | infra | prod を PHP 8.4+ に更新する | 2026-06-17 |
 
 <!--
 運用メモ:
 - 本リポジトリの composer 更新は dependabot ではなく auto-package-update.yml が担当。
   composer.json が laravel/framework を ^12 に固定しているため 13 のPRは生成されない（これが実質の歯止め）。
 - dependabot は github-actions のみを対象としているため、composer 側の ignore 追加は不要。
-- prod PHP を 8.4+ にできたら、composer.json の制約を ^13 に上げて Laravel 13 移行を実施する。
+- PHP 8.3.30 の platform 制約下でも Laravel 13.37.0 と Symfony 7.4 系で依存解決可能（2026-10-19 dry-run 確認）。旧 PHP 要件による infra ブロックは解消済み。
+- Laravel 13 へのメジャー更新は、アップグレードガイド・実動作を別途検証して進める。依存解決成功だけで自動更新しない。
 -->
