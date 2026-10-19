@@ -68,14 +68,6 @@ return [
             'tap' => [RedactSecretsTap::class],
         ],
 
-        'api' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/api.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'replace_placeholders' => true,
-            'tap' => [RedactSecretsTap::class],
-        ],
-
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
