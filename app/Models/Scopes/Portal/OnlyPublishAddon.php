@@ -11,16 +11,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
+/** @implements Scope<Article> */
 final class OnlyPublishAddon implements Scope
 {
     /**
-     * @param  Builder<Model>  $builder
+     * @param  Builder<covariant Article>  $builder
+     * @param  Article  $model
      */
     #[\Override]
     public function apply(Builder $builder, Model $model): void
     {
-        assert($model instanceof Article);
-
         $builder
             ->where('status', ArticleStatus::Publish)
             ->whereIn('post_type', [

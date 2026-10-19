@@ -16,8 +16,8 @@ Simutrans のアドオンや Mod 情報を複数のサイトから収集し、�
 ## 技術スタック
 
 -   **PHP**: 8.3+
--   **フレームワーク**: Laravel 12.x
--   **フロントエンド**: Livewire 3.x, Tailwind CSS
+-   **フレームワーク**: Laravel 13.x
+-   **フロントエンド**: Livewire 4.x, Tailwind CSS
 -   **データベース**: MySQL
 -   **外部連携**: Notion API, Discord Logger
 -   **その他**: Guzzle HTTP Client, Spatie Laravel Feed

@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 
 return [
 
+    'serialization' => 'json',
+
     /*
     |--------------------------------------------------------------------------
     | Default Session Driver
