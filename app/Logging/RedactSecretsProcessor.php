@@ -9,7 +9,7 @@ use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 
 /**
- * ファイルログ（daily / api チャンネル）に書き出す直前に機密値を伏字化する Monolog プロセッサ。
+ * ファイルログ（daily チャンネル）に書き出す直前に機密値を伏字化する Monolog プロセッサ。
  * Discord 送出経路は ConvertDiscord 側で別途スクラブする。
  */
 final readonly class RedactSecretsProcessor implements ProcessorInterface

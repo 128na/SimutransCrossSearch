@@ -9,13 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "laravel/framework": "^12.69.3",
+        "laravel/framework": "^12.70.0",
         "laravel/tinker": "^3.0.2",
         "livewire/livewire": "^4.4.7",
         "mariosimao/notion-sdk-php": "^1.17.1",
         "marvinlabs/laravel-discord-logger": "^1.4.4",
         "spatie/laravel-feed": "^4.5.0",
-        "symfony/browser-kit": ">=7.4.17"
+        "symfony/browser-kit": ">=7.4.21"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7.0",
