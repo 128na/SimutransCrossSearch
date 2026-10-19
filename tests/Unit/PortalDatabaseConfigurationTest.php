@@ -112,7 +112,7 @@ final class PortalDatabaseConfigurationTest extends TestCase
         $this->assertSame('explicit-secret', $portal['password']);
         $this->assertSame('legacy-host', $portal['host']);
         $this->assertSame('3307', $portal['port']);
-        $this->assertNull($portal['url']);
+        $this->assertArrayNotHasKey('url', $portal);
     }
 
     private function setLegacyValues(): void
