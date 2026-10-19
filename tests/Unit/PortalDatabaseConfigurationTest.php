@@ -37,6 +37,7 @@ final class PortalDatabaseConfigurationTest extends TestCase
             if ($original['has_env']) {
                 $_ENV[$key] = $original['env'];
             }
+
             if ($original['has_server']) {
                 $_SERVER[$key] = $original['server'];
             }
