@@ -9,25 +9,25 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "laravel/framework": "^13.37",
-        "livewire/livewire": "^4.4.7",
+        "laravel/framework": "^13.38",
+        "livewire/livewire": "^4.4.8",
         "mariosimao/notion-sdk-php": "^1.17.1",
         "marvinlabs/laravel-discord-logger": "^1.4.4",
         "spatie/laravel-feed": "^4.5.0",
-        "symfony/css-selector": "^7.4",
-        "symfony/dom-crawler": "^7.4"
+        "symfony/css-selector": "^7.4.18",
+        "symfony/dom-crawler": "^7.4.17"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7.0",
         "fakerphp/faker": "^1.24.1",
-        "larastan/larastan": "^3.13.0",
+        "larastan/larastan": "^3.13.2",
         "laravel/pint": "^1.32.1",
         "laravel/tinker": "^3.0.2",
         "mockery/mockery": "^1.6.15",
         "nunomaduro/collision": ">=8.9.5",
         "phpunit/phpunit": ">=12.5.14",
         "rector/rector": "^2.7.0",
-        "spatie/laravel-ignition": "^2.12.0"
+        "spatie/laravel-ignition": "^2.12.1"
     },
     "autoload": {
         "psr-4": {
