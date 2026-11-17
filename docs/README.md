@@ -60,7 +60,7 @@ spec 相当文書を削除する前に:
 ### 生きた文書 — allowlist 制
 
 - `tools/docs-policy.json` の `livingDocs` に列挙されたファイルのみ許可。現在の一覧:
-  `README.md` / `CLAUDE.md` / `docs/README.md`
+  `README.md` / `AGENTS.md` / `CLAUDE.md` / `docs/README.md`
 - allowlist へ追加する場合は、追加理由を ADR として残すこと。
 - 生きた文書は「常に現在を反映する義務」を負う。義務を果たせない文書は
   records 化（日付を付けて凍結）するか削除する。
