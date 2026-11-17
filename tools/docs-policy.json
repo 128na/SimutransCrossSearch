@@ -6,6 +6,7 @@
   },
   "livingDocs": [
     "README.md",
+    "AGENTS.md",
     "CLAUDE.md",
     "docs/README.md"
   ],
